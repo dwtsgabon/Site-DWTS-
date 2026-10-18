@@ -1468,3 +1468,5 @@ body::after {
 .selection__cadre, .selection__nom, .selection__taille { display: none; }
 /* Logia : écran WhatsApp en mode sombre */
 .telephone__ecran { background: #0b141a; }
+/* Visuo : curseur collaborateur retiré (il passait sur le titre) */
+.collab { display: none; }
