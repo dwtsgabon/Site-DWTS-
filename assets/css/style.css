@@ -463,15 +463,15 @@ body::after {
   transition: transform 1.2s var(--courbe);
 }
 .carte-branche--dex .carte-branche__fond {
-  background-image: url("../img/dex-cover.jpg"),
+  background-image: url("../img/dex-cover.jpg?v=202610180207"),
     radial-gradient(circle at 70% 20%, #1E6FD9, transparent 60%), linear-gradient(160deg, #0F2A4A, #060d18);
 }
 .carte-branche--visuo .carte-branche__fond {
-  background-image: url("../img/visuo-cover.jpg"),
+  background-image: url("../img/visuo-cover.jpg?v=202610180207"),
     radial-gradient(circle at 25% 20%, #FF6A00, transparent 55%), linear-gradient(160deg, #8B3DFF, #1a0b33);
 }
 .carte-branche--logia .carte-branche__fond {
-  background-image: url("../img/logia-cover.jpg"),
+  background-image: url("../img/logia-cover.jpg?v=202610180207"),
     radial-gradient(circle at 75% 25%, #22D3EE, transparent 55%), linear-gradient(160deg, #1E6FD9, #04121c);
 }
 .carte-branche:hover .carte-branche__fond { transform: scale(1.12); }
