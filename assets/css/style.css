@@ -1454,3 +1454,11 @@ body::after {
 .telephone__ecran--fixe { background: #05080f; }
 .telephone__ecran--fixe { display: flex; align-items: center; }
 .telephone__ecran--fixe img { animation: none; width: 100%; height: auto; }
+
+/* Logos des branches : détourés, sans cadre blanc */
+.logo-branche { display: block; width: auto; max-width: min(360px, 80%); height: auto; margin-bottom: 30px; filter: drop-shadow(0 12px 30px color-mix(in srgb, var(--accent) 30%, transparent)); }
+.logo-branche--dex { max-width: min(220px, 60%); filter: none; }
+.logo-branche--centre { margin: 46px auto 0; max-width: min(420px, 86%); }
+.carte-branche__logo { background: none; box-shadow: none; padding: 0; border-radius: 0; filter: drop-shadow(0 4px 14px rgba(0,0,0,.5)); }
+.carte-branche__logo img { height: 46px; width: auto; }
+.plan-travail__cadre .doc__nb { right: 12px; bottom: 12px; }
