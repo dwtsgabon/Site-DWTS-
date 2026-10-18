@@ -7,7 +7,7 @@ const { nouveauJeton, limiteTentatives, exigerConnexion } = require('../securite
 const routeur = express.Router();
 
 // N'accepte qu'un chemin interne au site après connexion (évite les redirections piégées).
-const suiteSure = (s) => (typeof s === 'string' && /^\/(?!\/)[^\\\s]*$/.test(s) ? s : '/mon-compte');
+const suiteSure = (s) => (typeof s === 'string' && /^\/(?!\/)[^\\\s]*$/.test(s) ? s : '/mes-commandes');
 
 const indisponible = (req, res, err) => {
   console.error(err);
@@ -33,7 +33,7 @@ routeur.post('/inscription', limiteTentatives(10), async (req, res) => {
     if (resultat.erreurs) return res.status(400).send(vues.pageInscription(req, res, { valeurs, erreurs: resultat.erreurs }));
     req.session.uid = resultat.utilisateur.id;
     nouveauJeton(req);
-    return res.redirect('/mon-compte');
+    return res.redirect('/mes-commandes');
   } catch (err) {
     return indisponible(req, res, err);
   }

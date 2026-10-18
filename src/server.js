@@ -38,6 +38,7 @@ app.use(async (req, res, next) => {
 });
 
 app.use(require('./routes/compte'));
+app.use(require('./routes/commandes'));
 
 // Pages du site vitrine : on ajoute dans le menu Connexion / Inscription ou Mon compte.
 const pagesHtml = new Map();

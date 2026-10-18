@@ -69,3 +69,51 @@
 @media (max-width: 560px) {
   .actions .bouton { flex: 1 1 100%; justify-content: center; }
 }
+
+/* Onglets de l'espace client */
+.onglets-espace { display: flex; gap: 6px; background: var(--surface); border: 1px solid var(--ligne); border-radius: 999px; padding: 5px; width: fit-content; max-width: 100%; }
+.onglets-espace a { padding: 9px 16px; border-radius: 999px; font-weight: 600; font-size: .92rem; color: var(--gris); }
+.onglets-espace a[aria-current="page"] { background: var(--accent); color: #fff; }
+.lien-retour { font-weight: 600; color: var(--accent-texte); }
+
+/* Statuts */
+.badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: .8rem; font-weight: 700; white-space: nowrap; }
+.badge--info { background: #eef5ff; color: #1559b3; }
+.badge--attente { background: #fff6e5; color: #8a5300; }
+.badge--ok { background: #e9f8ef; color: #0e5a2f; }
+.badge--erreur { background: #fff1f0; color: #8a1c12; }
+
+/* Liste des commandes */
+.liste-commandes { display: grid; gap: 10px; }
+.ligne-commande {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 14px 16px; border: 1px solid var(--ligne); border-radius: 14px; background: var(--surface-2);
+  text-decoration: none !important; color: var(--blanc) !important; font-weight: 400 !important;
+}
+.ligne-commande:hover { border-color: var(--accent); }
+.ligne-commande > span:first-child { display: grid; gap: 2px; min-width: 0; }
+.ligne-commande__numero { font-size: .8rem; color: var(--gris); }
+.ligne-commande__type { font-weight: 700; overflow-wrap: anywhere; }
+.ligne-commande__droite { display: grid; justify-items: end; gap: 4px; }
+.ligne-commande__prix { font-weight: 700; white-space: nowrap; }
+
+/* Simulateur */
+.choix-impression { border: 0; display: grid; gap: 10px; margin-bottom: 16px; }
+.option { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border: 1px solid var(--ligne); border-radius: 14px; cursor: pointer; background: var(--surface-2); }
+.option:has(input:checked) { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); background: #f3f8ff; }
+.option input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--accent); flex: none; }
+.option small { color: var(--gris); }
+.pages-impression[hidden], [hidden] { display: none !important; }
+
+.detail-total { width: 100%; border-collapse: collapse; margin: 8px 0 18px; font-size: .95rem; }
+.detail-total th { text-align: left; font-weight: 500; color: var(--gris); padding: 8px 0; }
+.detail-total td { text-align: right; font-weight: 600; padding: 8px 0 8px 12px; white-space: nowrap; }
+.detail-total tr { border-bottom: 1px dashed var(--ligne); }
+.detail-total__total th, .detail-total__total td { color: var(--blanc); font-weight: 800; font-size: 1.1rem; }
+.detail-total__total { border-bottom: 0 !important; }
+
+/* Écran Payer */
+.payer__libelle { color: var(--gris); font-weight: 600; margin-top: 4px; }
+.payer__montant { font-size: clamp(2.4rem, 13vw, 3.6rem); font-weight: 900; letter-spacing: -.03em; color: var(--accent); line-height: 1.1; margin: 4px 0 14px; }
+.consignes { margin: 20px 0 14px 20px; display: grid; gap: 8px; list-style: decimal; }
+.payer form { margin-top: 4px; }

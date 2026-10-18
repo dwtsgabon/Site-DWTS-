@@ -21,8 +21,14 @@ function menuCompte(utilisateur, actif) {
   return `<a href="/connexion"${courant('connexion')}>Connexion</a>\n      <a href="/inscription"${courant('inscription')}>Inscription</a>`;
 }
 
-function mise(req, res, { titre, contenu, actif }) {
+function mise(req, res, { titre, contenu, actif, onglet }) {
   const u = res.locals.utilisateur;
+  const ongletCourant = (nom) => (onglet === nom ? ' aria-current="page"' : '');
+  const onglets = u && onglet ? `
+      <nav class="onglets-espace" aria-label="Espace client">
+        <a href="/mes-commandes"${ongletCourant('commandes')}>Mes commandes</a>
+        <a href="/mon-compte"${ongletCourant('compte')}>Mon compte</a>
+      </nav>` : '';
   return `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -63,7 +69,7 @@ function mise(req, res, { titre, contenu, actif }) {
   </header>
 
   <main id="contenu" class="espace__main">
-    <div class="conteneur espace__conteneur">
+    <div class="conteneur espace__conteneur">${onglets}
 ${contenu}
     </div>
   </main>
@@ -149,6 +155,7 @@ function pageMonCompte(req, res, { parrain } = {}) {
   return mise(req, res, {
     titre: 'Mon compte',
     actif: 'compte',
+    onglet: 'compte',
     contenu: `
       <section class="carte-espace">
         <p class="surtitre">Espace client DEX</p>
