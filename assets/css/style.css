@@ -1451,3 +1451,6 @@ body::after {
 .selection { margin-top: 26px; }
 @media (max-width: 900px) { .pile { transform: translateX(8%); } }
 .visionneuse__scene img { max-height: calc(100vh - 210px); max-height: calc(100svh - 210px); }
+.telephone__ecran--fixe { background: #05080f; }
+.telephone__ecran--fixe { display: flex; align-items: center; }
+.telephone__ecran--fixe img { animation: none; width: 100%; height: auto; }
