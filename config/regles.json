@@ -1,0 +1,8 @@
+{
+  "impression_page_couleur": 500,
+  "impression_page_noir_blanc": 200,
+  "commission_seuil_prix_fixe": 1500,
+  "commission_petite": 300,
+  "commission_grande": 500,
+  "versement_minimum": 5000
+}

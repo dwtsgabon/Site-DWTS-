@@ -1,0 +1,28 @@
+{
+  "name": "site-dwts",
+  "version": "1.0.0",
+  "description": "Site DWTS + espace client DEX",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "preparer-sheet": "node scripts/preparer-sheet.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mbadingaryan-sketch/site-dwts-.git"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/mbadingaryan-sketch/site-dwts-/issues"
+  },
+  "homepage": "https://github.com/mbadingaryan-sketch/site-dwts-#readme",
+  "dependencies": {
+    "@googleapis/sheets": "^18.1.1",
+    "dotenv": "^18.0.8",
+    "express": "^4.22.3"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}
