@@ -5,7 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "preparer-sheet": "node scripts/preparer-sheet.js"
+    "preparer-sheet": "node scripts/preparer-sheet.js",
+    "simuler-pulse": "node scripts/simuler-pulse.js"
   },
   "repository": {
     "type": "git",

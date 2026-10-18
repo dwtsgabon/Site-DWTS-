@@ -19,6 +19,10 @@ app.set('trust proxy', 1); // Railway passe par un proxy HTTPS
 app.get('/health', (req, res) => res.json({ ok: true }));
 
 app.use(securite.entetes);
+
+// Pulses Chariow : avant les sessions et formulaires (besoin du corps brut, pas de CSRF).
+app.use(require('./routes/webhook'));
+
 app.use(securite.session);
 app.use(express.urlencoded({ extended: false, limit: '20kb' }));
 app.use(securite.csrf);
