@@ -26,7 +26,8 @@ function mise(req, res, { titre, contenu, actif, onglet }) {
   const ongletCourant = (nom) => (onglet === nom ? ' aria-current="page"' : '');
   const onglets = u && onglet ? `
       <nav class="onglets-espace" aria-label="Espace client">
-        <a href="/mes-commandes"${ongletCourant('commandes')}>Mes commandes</a>
+        <a href="/mes-commandes"${ongletCourant('commandes')}>Commandes</a>
+        <a href="/mon-parrainage"${ongletCourant('parrainage')}>Parrainage</a>
         <a href="/mon-compte"${ongletCourant('compte')}>Mon compte</a>
       </nav>` : '';
   return `<!DOCTYPE html>
@@ -150,8 +151,6 @@ function pageConnexion(req, res, { valeurs = {}, erreur, suite = '' } = {}) {
 
 function pageMonCompte(req, res, { parrain } = {}) {
   const u = res.locals.utilisateur;
-  const lienPartage = `${config.siteUrl}/inscription?parrain=${encodeURIComponent(u.code_parrain)}`;
-  const messagePartage = `Je te recommande DEX (DWTS) pour tes CV, exposés, rapports et mémoires. Inscris-toi avec mon code parrain ${u.code_parrain} : ${lienPartage}`;
   return mise(req, res, {
     titre: 'Mon compte',
     actif: 'compte',
@@ -168,19 +167,7 @@ function pageMonCompte(req, res, { parrain } = {}) {
         </dl>
       </section>
 
-      <section class="carte-espace">
-        <h2 class="espace__sous-titre">Mon code parrain</h2>
-        <p class="code-parrain" aria-label="Votre code parrain">${e(u.code_parrain)}</p>
-        <div class="actions">
-          <button class="bouton bouton--contour bouton--petit" type="button" data-copier="${e(u.code_parrain)}">Copier le code</button>
-        </div>
-        <p class="espace__intro">Partagez ce lien : la personne qui s'inscrit avec devient votre filleul.</p>
-        <p class="lien-partage">${e(lienPartage)}</p>
-        <div class="actions">
-          <button class="bouton bouton--contour bouton--petit" type="button" data-copier="${e(lienPartage)}">Copier le lien</button>
-          <a class="bouton bouton--petit" href="https://wa.me/?text=${e(encodeURIComponent(messagePartage))}" target="_blank" rel="noopener">Partager sur WhatsApp</a>
-        </div>
-      </section>
+      ${require('./vues-parrainage').blocPartage(u)}
 
       <form method="post" action="/deconnexion" class="deconnexion">
         ${jeton(res)}

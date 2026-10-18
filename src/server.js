@@ -43,6 +43,7 @@ app.use(async (req, res, next) => {
 
 app.use(require('./routes/compte'));
 app.use(require('./routes/commandes'));
+app.use(require('./routes/parrainage'));
 
 // Pages du site vitrine : on ajoute dans le menu Connexion / Inscription ou Mon compte.
 const pagesHtml = new Map();
@@ -68,6 +69,9 @@ async function demarrer() {
     try {
       const crees = await sheets.preparerOnglets();
       console.log(crees.length ? `Onglets créés : ${crees.join(', ')}` : 'Google Sheet prêt.');
+      // Toutes les 5 minutes : commissions des commandes passées à "paye" à la main dans le Sheet.
+      const commissions = require('./commissions');
+      setInterval(() => commissions.crediterManquantes().catch((err) => console.error('Commissions :', err.message)), 5 * 60 * 1000).unref();
     } catch (e) {
       console.error('Connexion au Google Sheet impossible :', e.message);
     }

@@ -117,3 +117,28 @@
 .payer__montant { font-size: clamp(2.4rem, 13vw, 3.6rem); font-weight: 900; letter-spacing: -.03em; color: var(--accent); line-height: 1.1; margin: 4px 0 14px; }
 .consignes { margin: 20px 0 14px 20px; display: grid; gap: 8px; list-style: decimal; }
 .payer form { margin-top: 4px; }
+
+/* Tableau de bord parrainage */
+.progression { height: 14px; border-radius: 999px; background: rgba(15, 42, 74, .08); overflow: hidden; margin: 4px 0 10px; }
+.progression span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #79b0ff, #1E6FD9); transition: width .6s var(--courbe); min-width: 6px; }
+.progression__texte { margin-bottom: 14px; }
+.chiffres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.chiffres div { background: var(--surface-2); border: 1px solid var(--ligne); border-radius: 14px; padding: 12px; display: grid; gap: 2px; }
+.chiffres span { font-size: .8rem; color: var(--gris); }
+.chiffres strong { font-size: 1.02rem; }
+.liste-simple { display: grid; }
+.liste-simple li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--ligne); }
+.liste-simple li:last-child { border-bottom: 0; }
+.liste-simple li > span:first-child { display: grid; gap: 2px; min-width: 0; }
+.liste-simple small { color: var(--gris); font-size: .85rem; }
+.montant { font-weight: 700; white-space: nowrap; }
+.montant--plus { color: #0e7a3c; }
+.regles-parrain { display: grid; gap: 8px; margin-left: 20px; list-style: disc; color: var(--gris); }
+@media (max-width: 420px) {
+  .chiffres { grid-template-columns: 1fr 1fr; }
+  .chiffres div:last-child { grid-column: 1 / -1; }
+}
+@media (max-width: 560px) {
+  .onglets-espace { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .onglets-espace a { padding: 9px 6px; text-align: center; font-size: .84rem; white-space: nowrap; }
+}

@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const express = require('express');
 const config = require('../config');
 const { traiterPulse } = require('../paiements');
+const { crediterManquantes } = require('../commissions');
 
 const routeur = express.Router();
 const deliveriesTraitees = new Set(); // mémoire rapide ; le Sheet Pulses_recus fait foi
@@ -45,7 +46,10 @@ routeur.post('/webhooks/chariow', express.raw({ type: () => true, limit: '1mb' }
     const resultat = await traiterPulse(deliveryId, payload, req.get('x-pulse-event'));
     deliveriesTraitees.add(deliveryId);
     console.log(`Pulse ${deliveryId} : ${resultat}`);
-    return res.status(200).send('OK');
+    res.status(200).send('OK');
+    // Commission du parrain, après la réponse à Chariow.
+    if (resultat === 'paye') crediterManquantes().catch((err) => console.error('Commissions :', err.message));
+    return undefined;
   } catch (err) {
     // Réponse 500 : Chariow renverra la livraison plus tard (10 s, 100 s, 17 min, 2 h 47).
     console.error(`Pulse ${deliveryId} non traité :`, err.message);
