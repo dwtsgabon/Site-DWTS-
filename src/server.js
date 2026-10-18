@@ -1,8 +1,15 @@
 // Serveur du site DWTS : site vitrine (dossier public/) + espace client DEX.
+const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const config = require('./config');
 const sheets = require('./sheets');
+const securite = require('./securite');
+const utilisateurs = require('./utilisateurs');
+const vues = require('./vues');
+
+const DOSSIER_PUBLIC = path.join(__dirname, '..', 'public');
+const MARQUEUR_MENU = '<!--menu-compte-->';
 
 const app = express();
 app.disable('x-powered-by');
@@ -11,10 +18,45 @@ app.set('trust proxy', 1); // Railway passe par un proxy HTTPS
 // Vérifie que le serveur répond (utilisé par Railway).
 app.get('/health', (req, res) => res.json({ ok: true }));
 
-// Site vitrine : seul le dossier public/ est servi, jamais la racine du dépôt.
-app.use(express.static(path.join(__dirname, '..', 'public'), { dotfiles: 'deny', index: 'index.html' }));
+app.use(securite.entetes);
+app.use(securite.session);
+app.use(express.urlencoded({ extended: false, limit: '20kb' }));
+app.use(securite.csrf);
 
-app.use((req, res) => res.status(404).send('Page introuvable.'));
+// Retrouve le client connecté (s'il y en a un).
+app.use(async (req, res, next) => {
+  res.locals.utilisateur = null;
+  if (req.session.uid && sheets.estConfigure()) {
+    try {
+      res.locals.utilisateur = await utilisateurs.trouverParId(req.session.uid);
+      if (!res.locals.utilisateur) req.session.uid = null;
+    } catch (err) {
+      console.error('Lecture du compte impossible :', err.message);
+    }
+  }
+  next();
+});
+
+app.use(require('./routes/compte'));
+
+// Pages du site vitrine : on ajoute dans le menu Connexion / Inscription ou Mon compte.
+const pagesHtml = new Map();
+for (const f of fs.readdirSync(DOSSIER_PUBLIC).filter((n) => n.endsWith('.html'))) {
+  pagesHtml.set('/' + f, fs.readFileSync(path.join(DOSSIER_PUBLIC, f), 'utf8'));
+}
+app.get(['/', '/:page.html'], (req, res, next) => {
+  const html = pagesHtml.get(req.path === '/' ? '/index.html' : req.path);
+  if (!html) return next();
+  res.type('html').send(html.replace(MARQUEUR_MENU, vues.menuCompte(res.locals.utilisateur)));
+});
+
+// Fichiers du site vitrine : seul le dossier public/ est servi, jamais la racine du dépôt.
+app.use(express.static(DOSSIER_PUBLIC, { dotfiles: 'deny', index: false }));
+
+app.use((req, res) => res.status(404).send(vues.pageMessage(req, res, {
+  titre: 'Page introuvable',
+  texte: "Cette page n'existe pas ou a été déplacée.",
+})));
 
 async function demarrer() {
   if (sheets.estConfigure()) {

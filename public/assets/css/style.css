@@ -270,6 +270,14 @@ body::after {
 }
 .nav__liens .bouton { margin-left: 10px; }
 
+/* Écrans moyens : le menu a plus de liens (Connexion, Inscription), on resserre */
+@media (min-width: 901px) and (max-width: 1240px) {
+  .marque__nom { display: none; }
+  .nav__inner { gap: 12px; }
+  .nav__liens { gap: 2px; }
+  .nav__liens a:not(.bouton) { padding: 8px 10px; font-size: .9rem; }
+}
+
 /* Bouton menu (téléphone) */
 .nav__burger {
   display: none; width: 46px; height: 46px; border-radius: 50%;

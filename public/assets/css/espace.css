@@ -1,0 +1,71 @@
+/* =========================================================
+   Espace client DEX (inscription, compte, commandes, parrainage)
+   Utilise les couleurs du thème « papier » de style.css.
+   ========================================================= */
+
+.espace__main { padding: calc(var(--nav-h) + 32px) 0 56px; min-height: 80vh; }
+.espace__conteneur { display: grid; gap: 20px; max-width: 720px; }
+
+.carte-espace {
+  background: var(--surface);
+  border: 1px solid var(--ligne);
+  border-radius: var(--rayon);
+  padding: clamp(20px, 5vw, 36px);
+  box-shadow: 0 20px 50px -30px rgba(15, 42, 74, .35);
+}
+.carte-espace--etroite { max-width: 480px; width: 100%; margin-inline: auto; }
+
+.espace__titre { font-size: clamp(1.7rem, 6vw, 2.3rem); line-height: 1.1; letter-spacing: -.03em; font-weight: 800; margin-bottom: 10px; }
+.espace__sous-titre { font-size: 1.2rem; font-weight: 700; letter-spacing: -.01em; margin-bottom: 12px; }
+.espace__intro { color: var(--gris); margin-bottom: 18px; }
+.espace__bas { margin-top: 18px; color: var(--gris); font-size: .95rem; }
+.carte-espace a:not(.bouton) { color: var(--accent-texte); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Formulaires */
+.champ { display: grid; gap: 6px; margin-bottom: 16px; }
+.champ label { font-weight: 600; font-size: .95rem; }
+.champ input, .champ select {
+  width: 100%; font: inherit; font-size: 1rem; /* 16px : évite le zoom automatique sur iPhone */
+  color: var(--blanc); background: var(--surface-2);
+  border: 1px solid rgba(15, 42, 74, .25); border-radius: 12px;
+  padding: 13px 14px; min-height: 48px;
+}
+.champ input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.champ__aide { font-size: .85rem; color: var(--gris); }
+.champ__erreur { font-size: .88rem; color: #b42318; font-weight: 600; }
+.champ--erreur input { border-color: #b42318; background: #fff6f5; }
+
+.bouton--plein { width: 100%; justify-content: center; margin-top: 6px; }
+
+.alerte { border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; font-weight: 500; }
+.alerte--erreur { background: #fff1f0; color: #8a1c12; border: 1px solid #f3c4bf; }
+.alerte--info { background: #eef5ff; color: #0f2a4a; border: 1px solid #c8dcfa; }
+.alerte--ok { background: #eefaf2; color: #0e5a2f; border: 1px solid #bfe6cc; }
+
+/* Infos du compte */
+.infos { display: grid; gap: 10px; margin-top: 8px; }
+.infos div { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px dashed var(--ligne); padding-bottom: 8px; }
+.infos dt { color: var(--gris); }
+.infos dd { font-weight: 600; text-align: right; overflow-wrap: anywhere; }
+
+/* Code parrain */
+.code-parrain {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: clamp(2rem, 11vw, 2.8rem); font-weight: 800; letter-spacing: .18em;
+  color: var(--accent); margin: 4px 0 12px;
+}
+.lien-partage {
+  font-size: .9rem; background: var(--surface-2); border: 1px dashed var(--ligne);
+  border-radius: 10px; padding: 10px 12px; overflow-wrap: anywhere; margin-bottom: 12px;
+}
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+.actions .bouton { margin: 0; }
+.deconnexion { text-align: center; }
+
+/* Pied de page simple */
+.espace__pied { border-top: 1px solid var(--ligne); padding: 22px 0; font-size: .88rem; color: var(--gris); }
+.espace__pied .conteneur { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+
+@media (max-width: 560px) {
+  .actions .bouton { flex: 1 1 100%; justify-content: center; }
+}
