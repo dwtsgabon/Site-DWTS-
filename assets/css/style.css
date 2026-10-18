@@ -21,6 +21,10 @@
    16. Pied de page
    17. Responsive (tablette, téléphone)
    18. Mouvement réduit (accessibilité)
+   19. Univers DEX (papier et documents)
+   20. Réalisations : filtres et visionneuse
+   21. Univers Visuo (atelier de conception)
+   22. Logia : vitrines de réalisations
    ========================================================= */
 
 
@@ -1010,6 +1014,415 @@ body::after {
 }
 
 
+/* =========================================================
+   19. UNIVERS DEX : le papier et les documents
+   (classe "theme-papier" sur la balise <body> de dex.html)
+   ========================================================= */
+.theme-papier {
+  --fond: #f4f1ea;            /* papier ivoire */
+  --blanc: #0F2A4A;           /* l'encre : texte principal bleu nuit */
+  --gris: #4d5d72;
+  --ligne: rgba(15, 42, 74, .13);
+  --surface: #ffffff;
+  --surface-2: #fbfaf6;
+  --accent: #1E6FD9;
+  --accent-texte: #1559b3;
+  --accent-2: #1E6FD9;
+  color-scheme: light;
+}
+.theme-papier body, body.theme-papier { background: var(--fond); }
+/* Grain du papier un peu plus visible */
+.theme-papier::after { opacity: .06; mix-blend-mode: multiply; }
+.theme-papier .bouton { --b-fond: #1E6FD9; color: #fff; box-shadow: 0 10px 30px -10px rgba(30,111,217,.6); }
+.theme-papier .bouton--contour { background: #fff; color: var(--blanc); border-color: var(--ligne); box-shadow: none; }
+.theme-papier .nav.est-defilee { background: rgba(244, 241, 234, .82); }
+.theme-papier .nav__liens a:not(.bouton) { color: rgba(15,42,74,.72); }
+.theme-papier .nav__liens a:not(.bouton):hover { background: rgba(15,42,74,.06); color: var(--blanc); }
+.theme-papier .nav__burger span { background: var(--blanc); }
+.theme-papier .marque__sigle::after { background: #1E6FD9; box-shadow: none; }
+.theme-papier .marque__nom b { color: #1E6FD9; }
+.theme-papier .pied__logo img { filter: invert(1) brightness(.35) sepia(1) hue-rotate(180deg) saturate(3); }
+.theme-papier .pied__geant { -webkit-text-stroke: 1px rgba(15,42,74,.07); }
+.theme-papier .pied__contact svg { stroke: #1E6FD9; }
+.theme-papier .pied a:hover { color: #1E6FD9; }
+.theme-papier .surtitre { color: #1559b3; }
+.theme-papier .bandeau__boite { background: #fff; }
+.theme-papier .bandeau__boite::after { background: radial-gradient(circle at 50% 120%, rgba(30,111,217,.12), transparent 60%), #fff; }
+.theme-papier .lien-evitement { background: #1E6FD9; color: #fff; }
+@media (max-width: 900px) {
+  .theme-papier .nav__liens { background: rgba(244,241,234,.98); }
+}
+
+/* Hero « cahier » : lignes bleues et marge rouge */
+.hero--papier::before {
+  background:
+    linear-gradient(90deg, transparent calc(6% - 1px), rgba(220, 70, 70, .35) calc(6% - 1px), rgba(220,70,70,.35) 6%, transparent 6%),
+    repeating-linear-gradient(180deg, transparent 0 37px, rgba(30, 111, 217, .12) 37px 38px);
+}
+.hero--papier::after { display: none; }
+.hero__grille { display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; }
+.hero--papier .hero__titre { color: var(--blanc); }
+.hero--papier .hero__machine { color: var(--gris); }
+
+/* Mot surligné au marqueur jaune */
+.surligne {
+  background: linear-gradient(transparent 58%, #ffe270 58%, #ffe270 92%, transparent 92%) no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 1.1s var(--courbe) .9s;
+}
+.intro-faite .surligne, .surligne.est-visible { background-size: 100% 100%; }
+
+/* Pile de vraies pages qui s'ouvre en éventail */
+.pile { position: relative; height: min(620px, 70vh); perspective: 1600px; }
+.pile__corps {
+  position: absolute; inset: 0; transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 8deg)) rotateY(var(--ry, -14deg));
+  transition: transform .8s var(--courbe);
+}
+.pile__page {
+  position: absolute; left: 50%; top: 50%; width: min(330px, 42vw); aspect-ratio: 1 / 1.414;
+  object-fit: cover; background: #fff; border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.05), 0 24px 50px -18px rgba(15,42,74,.45);
+  transform: translate(-50%, -50%) rotate(0deg);
+  transition: transform 1.2s var(--courbe);
+  transition-delay: calc(var(--i) * .08s + .4s);
+}
+.pile.est-ouverte .pile__page:nth-child(1) { transform: translate(-112%, -46%) rotate(-12deg) translateZ(0); }
+.pile.est-ouverte .pile__page:nth-child(2) { transform: translate(-78%, -52%) rotate(-4deg) translateZ(20px); }
+.pile.est-ouverte .pile__page:nth-child(3) { transform: translate(-28%, -50%) rotate(5deg) translateZ(40px); }
+.pile.est-ouverte .pile__page:nth-child(4) { transform: translate(8%, -44%) rotate(13deg) translateZ(60px); }
+.pile__trombone {
+  position: absolute; right: 12%; top: 6%; width: 44px; height: 110px; z-index: 5;
+  border: 4px solid #8c99aa; border-radius: 22px; transform: rotate(18deg);
+}
+.pile__trombone::after { content: ""; position: absolute; inset: 12px 8px 20px; border: 4px solid #8c99aa; border-radius: 16px; }
+
+/* Aperçu : la feuille reste blanche, le fond s'adapte */
+.theme-papier .feuille { box-shadow: 0 30px 60px -24px rgba(15,42,74,.45), 0 0 0 1px rgba(15,42,74,.06); }
+
+/* Cartes des 3 modes : fiches bristol */
+.theme-papier .carte-mode__face--avant {
+  background:
+    linear-gradient(90deg, transparent 38px, rgba(220,70,70,.35) 38px 39px, transparent 39px),
+    repeating-linear-gradient(180deg, #fff 0 33px, rgba(30,111,217,.14) 33px 34px);
+  border-color: rgba(15,42,74,.12);
+  box-shadow: 0 18px 40px -22px rgba(15,42,74,.45);
+}
+.theme-papier .carte-mode__num { -webkit-text-stroke: 1.5px rgba(30,111,217,.55); }
+.theme-papier .carte-mode__etiquette { color: #1559b3; }
+.theme-papier .carte-mode__face--avant .carte-mode__titre { color: var(--blanc); }
+.theme-papier .carte-mode__indice { color: var(--gris); }
+.carte-mode__onglet {
+  position: absolute; top: -1px; right: 28px; padding: 6px 14px 8px;
+  background: #1E6FD9; color: #fff; font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Liste des écritures façon SOMMAIRE (points de conduite + prix) */
+.sommaire { counter-reset: s; max-width: 900px; }
+.sommaire li {
+  display: flex; align-items: baseline; gap: 14px; padding: 16px 4px;
+  font-size: clamp(1.1rem, 2.2vw, 1.55rem); font-weight: 700; letter-spacing: -.01em;
+  border-bottom: 1px solid transparent; transition: background .3s, padding .4s var(--courbe);
+}
+.sommaire li::before {
+  counter-increment: s; content: counter(s, upper-roman) ".";
+  min-width: 2.6em; color: #1E6FD9; font-weight: 800; font-size: .8em;
+}
+.sommaire__points { flex: 1; border-bottom: 2px dotted rgba(15,42,74,.35); transform: translateY(-.3em); }
+.sommaire__prix { font-size: .8em; font-weight: 600; color: var(--gris); white-space: nowrap; }
+.sommaire__prix b { color: var(--blanc); }
+.sommaire li:hover { background: rgba(255, 226, 112, .45); padding-left: 14px; }
+.sommaire__titre-page {
+  text-align: center; font-weight: 900; letter-spacing: .3em; font-size: .9rem;
+  text-decoration: underline; text-underline-offset: 6px; margin-bottom: 26px; color: var(--blanc);
+}
+
+
+/* =========================================================
+   20. RÉALISATIONS (commun) : filtres et visionneuse
+   ========================================================= */
+.filtres { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
+.filtre {
+  padding: 10px 20px; border-radius: 999px; font-weight: 600; font-size: .92rem;
+  border: 1px solid var(--ligne); color: var(--gris); background: transparent;
+  transition: background .3s, color .3s, border-color .3s;
+}
+.filtre:hover { color: var(--blanc); border-color: var(--accent); }
+.filtre[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.est-masque { display: none !important; }
+.note-confid { margin-top: 36px; font-size: .88rem; color: var(--gris); display: flex; gap: 10px; align-items: center; }
+.note-confid svg { width: 18px; height: 18px; flex: none; stroke: currentColor; fill: none; stroke-width: 2; }
+
+/* Documents DEX : une pile de feuilles par réalisation */
+.docs { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 46px 34px; }
+.doc { display: flex; flex-direction: column; gap: 16px; text-align: left; color: inherit; }
+.doc__pile { position: relative; display: block; aspect-ratio: 1 / 1.414; }
+.doc__pile::before, .doc__pile::after {      /* feuilles en dessous */
+  content: ""; position: absolute; inset: 0; background: #fff; border-radius: 3px;
+  box-shadow: 0 10px 24px -14px rgba(15,42,74,.4);
+  transition: transform .6s var(--courbe);
+}
+.doc__pile::before { transform: rotate(-3deg) translate(-6px, 6px); }
+.doc__pile::after { transform: rotate(2.5deg) translate(6px, 4px); }
+.doc__pile img {
+  position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; border-radius: 3px;
+  box-shadow: 0 2px 0 rgba(0,0,0,.04), 0 22px 40px -22px rgba(15,42,74,.55);
+  transition: transform .6s var(--courbe);
+}
+.doc:hover .doc__pile img, .doc:focus-visible .doc__pile img { transform: translateY(-10px) rotate(-1.5deg); }
+.doc:hover .doc__pile::before { transform: rotate(-7deg) translate(-16px, 4px); }
+.doc:hover .doc__pile::after { transform: rotate(6deg) translate(16px, 2px); }
+.doc__legende b { display: block; font-size: 1.02rem; line-height: 1.3; color: var(--blanc); }
+.doc__legende small { display: block; margin-top: 4px; font-size: .84rem; color: var(--gris); }
+.doc__nb {
+  position: absolute; z-index: 2; right: 10px; bottom: 10px; padding: 4px 10px; border-radius: 999px;
+  background: rgba(15,42,74,.88); color: #fff; font-size: .72rem; font-weight: 700;
+}
+
+/* Visionneuse (clic sur une réalisation) */
+.visionneuse {
+  position: fixed; inset: 0; z-index: 950; display: grid; grid-template-rows: auto 1fr auto;
+  background: rgba(8, 10, 14, .94); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  color: #f5f5f7; opacity: 0; transition: opacity .35s;
+}
+.visionneuse.est-ouverte { opacity: 1; }
+.visionneuse[hidden] { display: none; }
+.visionneuse__haut { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 20px; }
+.visionneuse__titre { font-weight: 700; font-size: .98rem; }
+.visionneuse__titre small { display: block; font-weight: 400; color: #a1a1a6; font-size: .82rem; }
+.visionneuse__scene { position: relative; display: grid; place-items: center; padding: 0 70px; min-height: 0; }
+.visionneuse__scene img {
+  max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6); background: #fff;
+  animation: vision-entree .45s var(--courbe);
+}
+@keyframes vision-entree { from { opacity: 0; transform: scale(.96); } }
+.visionneuse__btn {
+  width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(255,255,255,.1); color: #fff; transition: background .25s;
+}
+.visionneuse__btn:hover { background: rgba(255,255,255,.22); }
+.visionneuse__btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; }
+.visionneuse__prec, .visionneuse__suiv { position: absolute; top: 50%; translate: 0 -50%; }
+.visionneuse__prec { left: 14px; } .visionneuse__suiv { right: 14px; }
+.visionneuse__bas { padding: 14px 20px 20px; text-align: center; font-size: .85rem; color: #a1a1a6; }
+.visionneuse__vignettes { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.visionneuse__vignettes button { width: 44px; height: 60px; border-radius: 3px; overflow: hidden; opacity: .45; border: 2px solid transparent; transition: opacity .25s; }
+.visionneuse__vignettes button[aria-current="true"] { opacity: 1; border-color: #fff; }
+.visionneuse__vignettes img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 600px) {
+  .visionneuse__scene { padding: 0 10px; }
+  .visionneuse__prec, .visionneuse__suiv { top: auto; bottom: -60px; translate: none; }
+  .visionneuse__prec { left: 20px; } .visionneuse__suiv { right: 20px; }
+}
+
+
+/* =========================================================
+   21. UNIVERS VISUO : l'atelier de conception
+   (logiciel de dessin : règles, plan de travail, calques)
+   ========================================================= */
+.theme-atelier { --fond: #18181b; --surface: #232327; --surface-2: #2a2a2f; }
+.theme-atelier body, body.theme-atelier { background: var(--fond); }
+
+.hero--atelier::before {          /* grille de points du plan de travail */
+  background:
+    radial-gradient(circle, rgba(255,255,255,.09) 1.2px, transparent 1.4px) 0 0 / 26px 26px,
+    radial-gradient(50% 60% at 80% 40%, rgba(139,61,255,.22), transparent 70%),
+    radial-gradient(40% 50% at 15% 85%, rgba(255,106,0,.16), transparent 70%);
+}
+.hero--atelier::after { display: none; }
+
+/* Règles graduées en haut et à gauche */
+.regle { position: absolute; z-index: 2; background-color: #222226; color: #77777f; font-size: 9px; pointer-events: none; }
+.regle--h {
+  top: var(--nav-h); left: 0; right: 0; height: 22px; border-bottom: 1px solid #333;
+  background-image:
+    repeating-linear-gradient(90deg, #55555c 0 1px, transparent 1px 100px),
+    repeating-linear-gradient(90deg, #3c3c42 0 1px, transparent 1px 20px);
+  background-size: 100% 100%, 100% 8px; background-repeat: no-repeat; background-position: 0 0, 0 100%;
+}
+.regle--v {
+  top: var(--nav-h); bottom: 0; left: 0; width: 22px; border-right: 1px solid #333;
+  background-image:
+    repeating-linear-gradient(180deg, #55555c 0 1px, transparent 1px 100px),
+    repeating-linear-gradient(180deg, #3c3c42 0 1px, transparent 1px 20px);
+  background-size: 100% 100%, 8px 100%; background-repeat: no-repeat; background-position: 0 0, 100% 0;
+}
+.regle__repere { position: absolute; background: #FF6A00; }
+.regle--h .regle__repere { top: 0; bottom: 0; width: 1px; left: var(--sx, -10px); }
+.regle--v .regle__repere { left: 0; right: 0; height: 1px; top: var(--sy, -10px); }
+
+/* Barre d'outils flottante */
+.outils {
+  position: absolute; z-index: 3; left: 50%; bottom: 34px; translate: -50% 0;
+  display: flex; gap: 4px; padding: 6px; border-radius: 14px;
+  background: #2a2a2f; border: 1px solid #3a3a40; box-shadow: 0 20px 40px rgba(0,0,0,.4);
+}
+.outils span { width: 40px; height: 40px; border-radius: 9px; display: grid; place-items: center; color: #c9c9cf; }
+.outils span.actif { background: #FF6A00; color: #111; }
+.outils svg { width: 19px; height: 19px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.hero--atelier .hero__defiler { display: none; }
+
+/* Le titre sélectionné comme un calque (cadre + 8 poignées) */
+.selection { position: relative; display: inline-block; padding: 14px 18px 6px; margin: 0 0 22px -18px; }
+.selection__cadre { position: absolute; inset: 0; border: 1.5px solid #4d8dff; pointer-events: none; }
+.selection__cadre i { position: absolute; width: 10px; height: 10px; background: #fff; border: 1.5px solid #4d8dff; }
+.selection__cadre i:nth-child(1) { left: -6px; top: -6px; } .selection__cadre i:nth-child(2) { left: calc(50% - 5px); top: -6px; }
+.selection__cadre i:nth-child(3) { right: -6px; top: -6px; } .selection__cadre i:nth-child(4) { right: -6px; top: calc(50% - 5px); }
+.selection__cadre i:nth-child(5) { right: -6px; bottom: -6px; } .selection__cadre i:nth-child(6) { left: calc(50% - 5px); bottom: -6px; }
+.selection__cadre i:nth-child(7) { left: -6px; bottom: -6px; } .selection__cadre i:nth-child(8) { left: -6px; top: calc(50% - 5px); }
+.selection__nom { position: absolute; left: -1px; top: -26px; font-size: .72rem; padding: 3px 8px; background: #4d8dff; color: #fff; border-radius: 4px 4px 4px 0; white-space: nowrap; }
+.selection__taille { position: absolute; left: 50%; bottom: -30px; translate: -50% 0; font-size: .7rem; padding: 3px 8px; background: #4d8dff; color: #fff; border-radius: 4px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.selection .hero__titre { margin-bottom: 0; }
+
+/* Plan de travail avec le tracé à la plume */
+.plan-zone { position: relative; display: grid; place-items: center; }
+.plan {
+  position: relative; width: min(440px, 80vw); aspect-ratio: 1; background: #fff; border-radius: 4px;
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,.6);
+}
+.plan__nom { position: absolute; left: 0; top: -24px; font-size: .74rem; color: #9a9aa2; }
+.plan svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.trace { fill: none; stroke: url(#trace-degrade); stroke-width: 26; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.trace-fin { fill: none; stroke: #4d8dff; stroke-width: 1.4; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.est-dessine .trace { animation: dessine 2.4s var(--courbe) forwards .3s; }
+.est-dessine .trace-fin { animation: dessine 2s var(--courbe) forwards; }
+.ancre { fill: #fff; stroke: #4d8dff; stroke-width: 1.5; opacity: 0; }
+.poignee-l { stroke: #4d8dff; stroke-width: 1; opacity: 0; }
+.est-dessine .ancre, .est-dessine .poignee-l { animation: noeud .4s var(--courbe) forwards; animation-delay: var(--d, 1s); }
+.plan__point { fill: url(#trace-degrade); opacity: 0; transform-box: fill-box; transform-origin: center; }
+.est-dessine .plan__point { animation: noeud .6s var(--courbe) forwards 2.4s; }
+
+/* Nuancier : cliquer change les couleurs du titre */
+.nuancier {
+  position: absolute; right: -10px; bottom: -34px; display: flex; gap: 8px; padding: 10px;
+  background: #2a2a2f; border: 1px solid #3a3a40; border-radius: 14px; box-shadow: 0 20px 40px rgba(0,0,0,.4);
+}
+.nuancier__titre { position: absolute; left: 12px; top: -22px; font-size: .7rem; color: #9a9aa2; }
+.nuance { width: 30px; height: 30px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 2px rgba(255,255,255,.15); transition: transform .25s var(--courbe); }
+.nuance:hover { transform: scale(1.15); }
+.nuance[aria-pressed="true"] { box-shadow: 0 0 0 2px #2a2a2f, 0 0 0 4px #fff; }
+
+/* Curseur d'un collaborateur qui se déplace */
+.collab { position: absolute; z-index: 4; left: 62%; top: 30%; pointer-events: none; animation: collab 14s ease-in-out infinite; }
+.collab svg { width: 22px; height: 22px; fill: #22D3EE; stroke: #0b0b0c; stroke-width: 1.5; }
+.collab span { position: absolute; left: 16px; top: 18px; padding: 3px 9px; border-radius: 6px; background: #22D3EE; color: #04121c; font-size: .72rem; font-weight: 700; white-space: nowrap; }
+@keyframes collab {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-180px, 140px); }
+  50% { transform: translate(60px, 260px); }
+  75% { transform: translate(120px, 60px); }
+}
+
+/* Panneau « Calques » pour la liste des services */
+.calques {
+  max-width: 760px; border-radius: 16px; overflow: hidden;
+  background: #232327; border: 1px solid #34343a; box-shadow: 0 30px 60px -30px rgba(0,0,0,.6);
+}
+.calques__entete { display: flex; justify-content: space-between; padding: 14px 20px; font-size: .82rem; color: #9a9aa2; border-bottom: 1px solid #34343a; }
+.calques__entete b { color: #f5f5f7; }
+.calques li {
+  display: flex; align-items: center; gap: 14px; padding: 15px 20px; font-weight: 600; font-size: 1.02rem;
+  border-bottom: 1px solid #2e2e33; transition: background .25s;
+}
+.calques li:last-child { border-bottom: 0; }
+.calques li:hover { background: rgba(77,141,255,.14); box-shadow: inset 2px 0 0 #4d8dff; }
+.calques__type { width: 30px; height: 30px; border-radius: 7px; display: grid; place-items: center; background: #2f2f35; color: #c9c9cf; font-size: .8rem; font-weight: 800; flex: none; }
+.calques__type svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+.calques__oeil { margin-left: auto; color: #77777f; }
+.calques__oeil svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+
+/* Réalisations Visuo : planche de plans de travail */
+.planche {
+  position: relative; padding: clamp(24px, 4vw, 50px); border-radius: 24px;
+  background: radial-gradient(circle, rgba(255,255,255,.07) 1.2px, transparent 1.4px) 0 0 / 24px 24px, #1f1f23;
+  border: 1px solid #2e2e33;
+}
+.planche__grille { columns: 3 280px; column-gap: 34px; }
+.plan-travail { break-inside: avoid; margin: 0 0 44px; }
+.plan-travail__nom { display: flex; justify-content: space-between; gap: 10px; font-size: .78rem; color: #9a9aa2; margin-bottom: 8px; }
+.plan-travail__nom span:last-child { color: #6e6e76; font-variant-numeric: tabular-nums; }
+.plan-travail__cadre { display: block; width: 100%; position: relative; border-radius: 3px; outline-offset: 6px; }
+.plan-travail__cadre img { width: 100%; height: auto; border-radius: 3px; box-shadow: 0 24px 50px -24px rgba(0,0,0,.8); transition: transform .5s var(--courbe); }
+.plan-travail__cadre::after { content: ""; position: absolute; inset: -6px; border: 1.5px solid #4d8dff; opacity: 0; transition: opacity .25s; pointer-events: none; }
+.plan-travail__cadre:hover::after, .plan-travail__cadre:focus-visible::after { opacity: 1; }
+.plan-travail__cadre:hover img { transform: translateY(-4px); }
+.plan-travail__duo { display: grid; gap: 14px; }
+.cadre-navigateur { border-radius: 10px; overflow: hidden; background: #2a2a2f; box-shadow: 0 24px 50px -24px rgba(0,0,0,.8); }
+.cadre-navigateur__barre { display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: #2f2f35; }
+.cadre-navigateur__barre i { width: 9px; height: 9px; border-radius: 50%; background: #55555c; }
+.cadre-navigateur__barre span { margin-left: 10px; flex: 1; padding: 4px 10px; border-radius: 6px; background: #232327; font-size: .68rem; color: #9a9aa2; }
+.cadre-navigateur img { box-shadow: none; border-radius: 0; }
+
+
+/* =========================================================
+   22. LOGIA : vitrines de réalisations (téléphone, écran)
+   ========================================================= */
+.vitrines { display: grid; gap: clamp(70px, 10vw, 130px); }
+.vitrine { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 6vw, 80px); align-items: center; }
+.vitrine:nth-child(even) .vitrine__visuel { order: 2; }
+.vitrine__texte h3 { font-size: clamp(1.7rem, 3.4vw, 2.6rem); font-weight: 900; letter-spacing: -.035em; line-height: 1.05; margin-bottom: 14px; }
+.vitrine__texte p { color: var(--gris); max-width: 46ch; }
+.vitrine__texte ul { margin-top: 18px; display: grid; gap: 8px; }
+.vitrine__texte li { display: flex; gap: 10px; color: rgba(245,245,247,.88); }
+.vitrine__texte li::before { content: ""; flex: none; width: 8px; height: 8px; margin-top: .6em; border-radius: 2px; background: var(--logia-cyan); box-shadow: 0 0 10px var(--logia-cyan); }
+.vitrine__visuel { display: grid; place-items: center; }
+.vitrine__visuel > button { display: block; width: 100%; border-radius: 16px; }
+
+/* Téléphone : la conversation défile toute seule */
+.telephone {
+  position: relative; width: min(300px, 70vw); aspect-ratio: 9 / 19; margin: auto;
+  border-radius: 44px; padding: 12px; background: #0d0d10;
+  box-shadow: 0 0 0 2px #2a2a30, 0 40px 90px -30px rgba(34,211,238,.45);
+}
+.telephone::before { content: ""; position: absolute; z-index: 2; top: 20px; left: 50%; translate: -50% 0; width: 90px; height: 24px; border-radius: 20px; background: #0d0d10; }
+.telephone__ecran { position: relative; height: 100%; border-radius: 34px; overflow: hidden; background: #efe7de; }
+.telephone__ecran img { width: 100%; height: auto; animation: defile-chat 14s ease-in-out infinite alternate; }
+@keyframes defile-chat { 0%, 15% { transform: translateY(0); } 85%, 100% { transform: translateY(calc(-100% + 600px)); } }
+
+/* Écran d'ordinateur */
+.ecran-pc { width: 100%; perspective: 1600px; }
+.ecran-pc__corps {
+  border-radius: 14px; overflow: hidden; background: #1a1d24; border: 1px solid rgba(34,211,238,.25);
+  box-shadow: 0 50px 100px -40px rgba(34,211,238,.45);
+  transform: rotateY(-10deg) rotateX(4deg); transition: transform .8s var(--courbe);
+}
+.vitrine:nth-child(even) .ecran-pc__corps { transform: rotateY(10deg) rotateX(4deg); }
+.ecran-pc:hover .ecran-pc__corps { transform: none; }
+.ecran-pc__barre { display: flex; gap: 7px; padding: 11px 14px; background: #232731; }
+.ecran-pc__barre i { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+.ecran-pc__barre i:nth-child(2) { background: #febc2e; } .ecran-pc__barre i:nth-child(3) { background: #28c840; }
+.ecran-pc img { width: 100%; height: auto; display: block; }
+
+@media (max-width: 900px) {
+  .hero__grille { grid-template-columns: 1fr; }
+  .pile { height: 360px; margin-top: 10px; }
+  .pile__page { width: min(220px, 46vw); }
+  .plan-zone { margin-top: 30px; }
+  .nuancier { right: 50%; translate: 50% 0; }
+  .collab, .regle { display: none; }
+  .outils { display: none; }
+  .vitrine { grid-template-columns: 1fr; }
+  .vitrine:nth-child(even) .vitrine__visuel { order: 0; }
+  .selection { margin-left: 0; }
+  .selection__taille { display: none; }
+}
+@media (max-width: 560px) {
+  .docs { grid-template-columns: repeat(2, 1fr); gap: 34px 18px; }
+  .doc__legende b { font-size: .92rem; }
+  .sommaire li { font-size: 1rem; }
+  .sommaire__prix { font-size: .78em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pile__page { transition: none; }
+  .surligne { background-size: 100% 100%; }
+  .trace, .trace-fin { stroke-dashoffset: 0; }
+  .ancre, .poignee-l, .plan__point { opacity: 1; }
+  .collab { display: none; }
+  .telephone__ecran img { animation: none; }
+}
+
 /* ---------- 18. Mouvement réduit ----------
    Si l'utilisateur a demandé moins d'animations dans son système,
    on coupe les animations lourdes et on montre tout directement. */
@@ -1029,3 +1442,12 @@ body::after {
   .halo { display: none; }
   .degrade-anime { animation: none; }
 }
+
+/* Éléments en <span> dans des boutons : affichage en bloc */
+.telephone, .telephone__ecran, .ecran-pc, .cadre-navigateur, .doc__pile img { display: block; }
+.vitrine__visuel > button { text-align: left; }
+/* Réglages fins des en-têtes DEX et Visuo */
+.hero--papier .hero__titre { font-size: clamp(2.6rem, 6vw, 5.6rem); }
+.selection { margin-top: 26px; }
+@media (max-width: 900px) { .pile { transform: translateX(8%); } }
+.visionneuse__scene img { max-height: calc(100vh - 210px); max-height: calc(100svh - 210px); }

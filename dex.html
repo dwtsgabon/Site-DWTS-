@@ -19,7 +19,7 @@
   <!-- Indique que JavaScript est actif (sert aux animations d'apparition) -->
   <script>document.documentElement.className += ' js';</script>
 </head>
-<body class="page-dex">
+<body class="page-dex theme-papier">
 
   <a class="lien-evitement" href="#contenu">Aller au contenu</a>
 
@@ -46,48 +46,36 @@
 
   <main id="contenu">
 
-    <!-- ===== Hero : nœud de tore bleu ===== -->
-    <section class="hero hero--branche" aria-labelledby="titre-principal">
-      <canvas class="hero__scene" data-forme="noeud" data-couleur="#1E6FD9" data-couleur2="#79b0ff" aria-hidden="true"></canvas>
-      <div class="conteneur">
+    <!-- ===== Hero « cahier » : pile de vraies pages de garde ===== -->
+    <section class="hero hero--branche hero--papier" aria-labelledby="titre-principal">
+      <div class="conteneur hero__grille">
         <div class="hero__contenu">
           <p class="surtitre intro">DEX · DocuExpress</p>
-          <h1 id="titre-principal" class="hero__titre intro">
-          <span class="ligne"><span class="degrade-anime">Votre document,</span></span>
-          <span class="ligne"><span class="degrade-anime">parfaitement</span></span>
-          <span class="ligne"><span class="degrade-anime">mis en page.</span></span>
-        </h1>
+          <h1 class="hero__titre intro" id="titre-principal">
+            <span class="ligne"><span>Votre document,</span></span>
+            <span class="ligne"><span class="surligne">parfaitement</span></span>
+            <span class="ligne"><span>mis en page.</span></span>
+          </h1>
           <p class="hero__machine intro"><span aria-hidden="true" data-machine='["Saisie.", "Mise en forme.", "Enrichissement des idées.", "Création complète."]'>Saisie.</span><span class="sr-only">Saisie. Mise en forme. Enrichissement des idées. Création complète.</span></p>
           <div class="hero__actions intro">
             <a class="bouton" href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20je%20souhaite%20commander%20un%20document%20%28DEX%29." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3Z"/></svg><span>Commander sur WhatsApp</span><span class="sr-only"> (ouvre WhatsApp dans un nouvel onglet)</span></a>
-            <a class="bouton bouton--contour" href="tarifs.html#dex">Voir les tarifs DEX</a>
+            <a class="bouton bouton--contour" href="#realisations">Voir nos réalisations</a>
           </div>
         </div>
+        <div class="pile" data-pile aria-hidden="true">
+          <div class="pile__corps">
+            <img class="pile__page" style="--i:0" src="assets/img/dex/memoire-master.jpg" alt="">
+            <img class="pile__page" style="--i:1" src="assets/img/dex/expose-classicisme.jpg" alt="">
+            <img class="pile__page" style="--i:2" src="assets/img/dex/memoire-licence.jpg" alt="">
+            <img class="pile__page" style="--i:3" src="assets/img/dex/expose-nzebi.jpg" alt="">
+          </div>
+          <span class="pile__trombone"></span>
+        </div>
       </div>
-    <!-- Circuit qui se dessine à l'entrée (pathLength="1" simplifie l'animation) -->
-    <svg class="circuit" viewBox="0 0 1440 130" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
-      <path pathLength="1" style="--d:0s"   d="M0 110 H260 L300 70 H520 L550 40 H640"/>
-      <path pathLength="1" style="--d:.2s"  d="M1440 100 H1180 L1140 60 H930 L900 30 H820"/>
-      <path pathLength="1" style="--d:.35s" d="M0 125 H420 L450 95 H700"/>
-      <path pathLength="1" style="--d:.5s"  d="M1440 122 H1000 L970 90 H880"/>
-      <path pathLength="1" style="--d:.15s" d="M120 130 V80 L150 50 H240"/>
-      <path pathLength="1" style="--d:.3s"  d="M1320 130 V70 L1290 40 H1220"/>
-      <path pathLength="1" style="--d:.6s"  d="M560 130 V112 H760 L780 92 H800"/>
-      <path class="influx" pathLength="1" style="--d:0s"   d="M0 110 H260 L300 70 H520 L550 40 H640"/>
-      <path class="influx" pathLength="1" style="--d:.2s"  d="M1440 100 H1180 L1140 60 H930 L900 30 H820"/>
-      <path class="influx" pathLength="1" style="--d:.35s" d="M0 125 H420 L450 95 H700"/>
-      <circle style="--d:0s"   cx="640" cy="40" r="5"/>
-      <rect   style="--d:.2s"  x="812" y="22" width="16" height="16" rx="3"/>
-      <circle style="--d:.35s" cx="700" cy="95" r="5"/>
-      <circle style="--d:.5s"  cx="880" cy="90" r="5"/>
-      <rect   style="--d:.15s" x="236" y="46" width="8" height="8" rx="2"/>
-      <circle style="--d:.3s"  cx="1220" cy="40" r="4"/>
-      <circle style="--d:.6s"  cx="800" cy="92" r="4"/>
-    </svg>
     <div class="hero__defiler" aria-hidden="true">Défiler<i></i></div>
     </section>
 
-    <!-- ===== Aperçu : document balayé par un scan ===== -->
+    <!-- ===== Aperçu : document balayé par le scanner ===== -->
     <section class="section" aria-labelledby="titre-apercu">
       <div class="conteneur apercu">
         <div class="apparait">
@@ -98,10 +86,10 @@
           <h2 class="titre-section" id="titre-apercu">Chaque page, soignée.</h2>
           <p class="intro-section">Un document clair se lit mieux et se note mieux. Nous structurons chaque page pour qu'elle soit prête à imprimer ou à envoyer.</p>
           <ul class="apercu__points">
-            <li>Page de garde et sommaire</li>
-            <li>Titres hiérarchisés et pagination</li>
-            <li>Mise en forme cohérente du début à la fin</li>
-            <li>Fichier prêt à imprimer ou à envoyer</li>
+            <li>Page de garde aux couleurs de votre établissement</li>
+            <li>Sommaire, titres hiérarchisés et pagination</li>
+            <li>Images choisies selon le sujet</li>
+            <li>Fichier PDF prêt à imprimer ou à envoyer</li>
           </ul>
         </div>
         <div class="apercu__scene apparait" style="--delai:.15s" aria-hidden="true">
@@ -116,24 +104,25 @@
       </div>
     </section>
 
-    <!-- ===== Trois modes (cartes retournables) ===== -->
+    <!-- ===== Trois modes : fiches bristol retournables ===== -->
     <section class="section" aria-labelledby="titre-modes">
       <div class="conteneur">
         <div class="entete-section apparait">
           <p class="surtitre">Trois modes</p>
           <h2 class="titre-section" id="titre-modes">Choisissez votre façon de travailler.</h2>
-          <p class="intro-section">Survolez ou touchez une carte pour la retourner.</p>
+          <p class="intro-section">Survolez ou touchez une fiche pour la retourner.</p>
         </div>
         <div class="cartes-modes">
           <div class="carte-mode apparait" style="--delai:0.0s">
-            <div class="carte-mode__bouton" role="button" tabindex="0" aria-pressed="false" aria-label="Mode 1 : Saisie et mise en forme pure. Retourner la carte pour voir le détail.">
+            <div class="carte-mode__bouton" role="button" tabindex="0" aria-pressed="false" aria-label="Mode 1 : Saisie et mise en forme pure. Retourner la fiche pour voir le détail.">
               <div class="carte-mode__interieur">
                 <div class="carte-mode__face carte-mode__face--avant">
-                  <span class="carte-mode__etiquette">Mode 1</span>
+                  <span class="carte-mode__onglet" aria-hidden="true">MODE 1</span>
+                  <span class="carte-mode__etiquette">Fiche n° 1</span>
                   <span class="carte-mode__num" aria-hidden="true">01</span>
                   <div>
                     <p class="carte-mode__titre">Saisie et mise en forme pure</p>
-                    <p class="carte-mode__indice"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2M18 3v3h-3M6 21v-3h3"/></svg>Retourner la carte</p>
+                    <p class="carte-mode__indice"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2M18 3v3h-3M6 21v-3h3"/></svg>Retourner la fiche</p>
                   </div>
                 </div>
                 <div class="carte-mode__face carte-mode__face--arriere">
@@ -147,14 +136,15 @@
             </div>
           </div>
           <div class="carte-mode apparait" style="--delai:0.1s">
-            <div class="carte-mode__bouton" role="button" tabindex="0" aria-pressed="false" aria-label="Mode 2 : Saisie et enrichissement des idées. Retourner la carte pour voir le détail.">
+            <div class="carte-mode__bouton" role="button" tabindex="0" aria-pressed="false" aria-label="Mode 2 : Saisie et enrichissement des idées. Retourner la fiche pour voir le détail.">
               <div class="carte-mode__interieur">
                 <div class="carte-mode__face carte-mode__face--avant">
-                  <span class="carte-mode__etiquette">Mode 2</span>
+                  <span class="carte-mode__onglet" aria-hidden="true">MODE 2</span>
+                  <span class="carte-mode__etiquette">Fiche n° 2</span>
                   <span class="carte-mode__num" aria-hidden="true">02</span>
                   <div>
                     <p class="carte-mode__titre">Saisie et enrichissement des idées</p>
-                    <p class="carte-mode__indice"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2M18 3v3h-3M6 21v-3h3"/></svg>Retourner la carte</p>
+                    <p class="carte-mode__indice"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2M18 3v3h-3M6 21v-3h3"/></svg>Retourner la fiche</p>
                   </div>
                 </div>
                 <div class="carte-mode__face carte-mode__face--arriere">
@@ -168,14 +158,15 @@
             </div>
           </div>
           <div class="carte-mode apparait" style="--delai:0.2s">
-            <div class="carte-mode__bouton" role="button" tabindex="0" aria-pressed="false" aria-label="Mode 3 : Création complète à partir du sujet. Retourner la carte pour voir le détail.">
+            <div class="carte-mode__bouton" role="button" tabindex="0" aria-pressed="false" aria-label="Mode 3 : Création complète à partir du sujet. Retourner la fiche pour voir le détail.">
               <div class="carte-mode__interieur">
                 <div class="carte-mode__face carte-mode__face--avant">
-                  <span class="carte-mode__etiquette">Mode 3</span>
+                  <span class="carte-mode__onglet" aria-hidden="true">MODE 3</span>
+                  <span class="carte-mode__etiquette">Fiche n° 3</span>
                   <span class="carte-mode__num" aria-hidden="true">03</span>
                   <div>
                     <p class="carte-mode__titre">Création complète à partir du sujet</p>
-                    <p class="carte-mode__indice"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2M18 3v3h-3M6 21v-3h3"/></svg>Retourner la carte</p>
+                    <p class="carte-mode__indice"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2M18 3v3h-3M6 21v-3h3"/></svg>Retourner la fiche</p>
                   </div>
                 </div>
                 <div class="carte-mode__face carte-mode__face--arriere">
@@ -192,64 +183,85 @@
       </div>
     </section>
 
-    <!-- ===== Liste des services ===== -->
+    <!-- ===== Ce que nous rédigeons : présenté comme un sommaire ===== -->
     <section class="section" aria-labelledby="titre-liste">
       <div class="conteneur">
         <div class="entete-section apparait">
           <p class="surtitre">Ce que nous rédigeons</p>
           <h2 class="titre-section" id="titre-liste">Du CV à la thèse.</h2>
         </div>
-        <ul class="liste-services">
-          <li class="apparait" style="--delai:0.08s"><span>CV + Lettre</span><span class="liste-services__num" aria-hidden="true">01</span></li>
-          <li class="apparait" style="--delai:0.00s"><span>Exposé simple</span><span class="liste-services__num" aria-hidden="true">02</span></li>
-          <li class="apparait" style="--delai:0.08s"><span>Exposé complexe</span><span class="liste-services__num" aria-hidden="true">03</span></li>
-          <li class="apparait" style="--delai:0.00s"><span>Rapport de stage</span><span class="liste-services__num" aria-hidden="true">04</span></li>
-          <li class="apparait" style="--delai:0.08s"><span>Mémoire</span><span class="liste-services__num" aria-hidden="true">05</span></li>
-          <li class="apparait" style="--delai:0.00s"><span>Document professionnel</span><span class="liste-services__num" aria-hidden="true">06</span></li>
-          <li class="apparait" style="--delai:0.08s"><span>Master & thèse</span><span class="liste-services__num" aria-hidden="true">07</span></li>
-        </ul>
+        <p class="sommaire__titre-page apparait">SOMMAIRE</p>
+        <ol class="sommaire">
+          <li class="apparait" style="--delai:0.00s"><span>CV + Lettre</span><span class="sommaire__points" aria-hidden="true"></span><span class="sommaire__prix">dès <b>1 500</b> XAF</span></li>
+          <li class="apparait" style="--delai:0.06s"><span>Exposé simple</span><span class="sommaire__points" aria-hidden="true"></span><span class="sommaire__prix">dès <b>2 500</b> XAF</span></li>
+          <li class="apparait" style="--delai:0.12s"><span>Exposé complexe</span><span class="sommaire__points" aria-hidden="true"></span><span class="sommaire__prix">dès <b>5 500</b> XAF</span></li>
+          <li class="apparait" style="--delai:0.18s"><span>Rapport de stage</span><span class="sommaire__points" aria-hidden="true"></span><span class="sommaire__prix">dès <b>7 500</b> XAF</span></li>
+          <li class="apparait" style="--delai:0.24s"><span>Mémoire</span><span class="sommaire__points" aria-hidden="true"></span><span class="sommaire__prix">dès <b>10 500</b> XAF</span></li>
+          <li class="apparait" style="--delai:0.30s"><span>Document professionnel</span><span class="sommaire__points" aria-hidden="true"></span><span class="sommaire__prix">dès <b>10 500</b> XAF</span></li>
+          <li class="apparait" style="--delai:0.36s"><span>Master & thèse</span><span class="sommaire__points" aria-hidden="true"></span><span class="sommaire__prix">dès <b>15 500</b> XAF</span></li>
+        </ol>
       </div>
     </section>
 
-    <!-- ===== Galerie : images assets/img/dex-1.jpg à dex-3.jpg ===== -->
-    <section class="section" aria-label="Galerie">
-      <div class="conteneur galerie">
-        <figure class="galerie__item">
-          <div class="galerie__cadre">
-            <div class="galerie__image img-dex-1" role="img" aria-label="Exposés et rapports mis en forme par DEX"></div>
-            <figcaption class="galerie__legende">
-              <div>
-                <span class="galerie__num">01 / 03</span>
-                <h3>Exposés et rapports</h3>
-              </div>
-              <p>Des documents structurés, lisibles et prêts à présenter.</p>
-            </figcaption>
-          </div>
-        </figure>
-        <figure class="galerie__item">
-          <div class="galerie__cadre">
-            <div class="galerie__image img-dex-2" role="img" aria-label="Mémoires et thèses mis en forme par DEX"></div>
-            <figcaption class="galerie__legende">
-              <div>
-                <span class="galerie__num">02 / 03</span>
-                <h3>Mémoires et thèses</h3>
-              </div>
-              <p>La rigueur de la mise en page académique, du sommaire à la bibliographie.</p>
-            </figcaption>
-          </div>
-        </figure>
-        <figure class="galerie__item">
-          <div class="galerie__cadre">
-            <div class="galerie__image img-dex-3" role="img" aria-label="Documents professionnels mis en forme par DEX"></div>
-            <figcaption class="galerie__legende">
-              <div>
-                <span class="galerie__num">03 / 03</span>
-                <h3>Documents professionnels</h3>
-              </div>
-              <p>Une présentation sérieuse pour l'image de votre entreprise.</p>
-            </figcaption>
-          </div>
-        </figure>
+    <!-- ===== Nos réalisations (clic = aperçu page par page) ===== -->
+    <section class="section" id="realisations" aria-labelledby="titre-real">
+      <div class="conteneur">
+        <div class="entete-section apparait">
+          <p class="surtitre">Nos réalisations</p>
+          <h2 class="titre-section" id="titre-real">Des documents rendus, pas des promesses.</h2>
+          <p class="intro-section">Pages de garde et pages intérieures de documents réalisés par DEX. Touchez un document pour le feuilleter.</p>
+        </div>
+        <div class="filtres" data-filtres role="group" aria-label="Filtrer les réalisations">
+          <button class="filtre" type="button" data-filtre="tous" aria-pressed="true">Tous</button>
+          <button class="filtre" type="button" data-filtre="expose" aria-pressed="false">Exposés</button>
+          <button class="filtre" type="button" data-filtre="rapport" aria-pressed="false">Rapports de stage</button>
+          <button class="filtre" type="button" data-filtre="memoire" aria-pressed="false">Mémoires</button>
+          <button class="filtre" type="button" data-filtre="cv" aria-pressed="false">CV et lettres</button>
+          <button class="filtre" type="button" data-filtre="pro" aria-pressed="false">Documents professionnels</button>
+        </div>
+        <div class="docs">
+          <button class="doc apparait" type="button" style="--delai:0.00s" data-cat="expose" data-pages="assets/img/dex/expose-nzebi.jpg|assets/img/dex/expose-nzebi-2.jpg|assets/img/dex/expose-nzebi-3.jpg|assets/img/dex/expose-nzebi-4.jpg|assets/img/dex/expose-nzebi-5.jpg" data-titre="Le mariage coutumier chez les Nzebi" data-sous="Exposé · Économie familiale · Seconde">
+            <span class="doc__pile"><img src="assets/img/dex/expose-nzebi.jpg" alt="Page de garde : Le mariage coutumier chez les Nzebi" loading="lazy" width="820" height="1159"><span class="doc__nb">5 pages</span></span>
+            <span class="doc__legende"><b>Le mariage coutumier chez les Nzebi</b><small>Exposé · Économie familiale · Seconde</small></span>
+          </button>
+          <button class="doc apparait" type="button" style="--delai:0.07s" data-cat="expose" data-pages="assets/img/dex/expose-meyene.jpg|assets/img/dex/expose-meyene-2.jpg|assets/img/dex/expose-meyene-3.jpg|assets/img/dex/expose-meyene-4.jpg" data-titre="Le mariage coutumier chez les Myènè" data-sous="Exposé · Économie familiale · Seconde">
+            <span class="doc__pile"><img src="assets/img/dex/expose-meyene.jpg" alt="Page de garde : Le mariage coutumier chez les Myènè" loading="lazy" width="820" height="1159"><span class="doc__nb">4 pages</span></span>
+            <span class="doc__legende"><b>Le mariage coutumier chez les Myènè</b><small>Exposé · Économie familiale · Seconde</small></span>
+          </button>
+          <button class="doc apparait" type="button" style="--delai:0.14s" data-cat="expose" data-pages="assets/img/dex/expose-francais.jpg" data-titre="Souffrance partagée" data-sous="Exposé · Français · Seconde">
+            <span class="doc__pile"><img src="assets/img/dex/expose-francais.jpg" alt="Page de garde : Souffrance partagée" loading="lazy" width="820" height="1159"></span>
+            <span class="doc__legende"><b>Souffrance partagée</b><small>Exposé · Français · Seconde</small></span>
+          </button>
+          <button class="doc apparait" type="button" style="--delai:0.21s" data-cat="expose" data-pages="assets/img/dex/expose-classicisme.jpg" data-titre="Le classicisme" data-sous="Exposé · Français · Première">
+            <span class="doc__pile"><img src="assets/img/dex/expose-classicisme.jpg" alt="Page de garde : Le classicisme" loading="lazy" width="820" height="1159"></span>
+            <span class="doc__legende"><b>Le classicisme</b><small>Exposé · Français · Première</small></span>
+          </button>
+          <button class="doc apparait" type="button" style="--delai:0.00s" data-cat="rapport" data-pages="assets/img/dex/rapport-stage.jpg" data-titre="La gestion des stocks au sein d’une PME" data-sous="Rapport de stage · BTS Gestion commerciale">
+            <span class="doc__pile"><img src="assets/img/dex/rapport-stage.jpg" alt="Page de garde : La gestion des stocks au sein d’une PME" loading="lazy" width="820" height="1159"></span>
+            <span class="doc__legende"><b>La gestion des stocks au sein d’une PME</b><small>Rapport de stage · BTS Gestion commerciale</small></span>
+          </button>
+          <button class="doc apparait" type="button" style="--delai:0.07s" data-cat="memoire" data-pages="assets/img/dex/memoire-licence.jpg" data-titre="Le mobile money et les petits commerces" data-sous="Mémoire de fin de cycle · Licence 3">
+            <span class="doc__pile"><img src="assets/img/dex/memoire-licence.jpg" alt="Page de garde : Le mobile money et les petits commerces" loading="lazy" width="820" height="1159"></span>
+            <span class="doc__legende"><b>Le mobile money et les petits commerces</b><small>Mémoire de fin de cycle · Licence 3</small></span>
+          </button>
+          <button class="doc apparait" type="button" style="--delai:0.14s" data-cat="memoire" data-pages="assets/img/dex/memoire-master.jpg" data-titre="Gouvernance des PME familiales" data-sous="Mémoire de master · Sciences de gestion">
+            <span class="doc__pile"><img src="assets/img/dex/memoire-master.jpg" alt="Page de garde : Gouvernance des PME familiales" loading="lazy" width="820" height="1159"></span>
+            <span class="doc__legende"><b>Gouvernance des PME familiales</b><small>Mémoire de master · Sciences de gestion</small></span>
+          </button>
+          <button class="doc apparait" type="button" style="--delai:0.21s" data-cat="cv" data-pages="assets/img/dex/cv.jpg|assets/img/dex/lettre.jpg" data-titre="CV et lettre de motivation" data-sous="Assistante comptable · 2 pages">
+            <span class="doc__pile"><img src="assets/img/dex/cv.jpg" alt="Page de garde : CV et lettre de motivation" loading="lazy" width="820" height="1159"><span class="doc__nb">2 pages</span></span>
+            <span class="doc__legende"><b>CV et lettre de motivation</b><small>Assistante comptable · 2 pages</small></span>
+          </button>
+          <button class="doc apparait" type="button" style="--delai:0.00s" data-cat="pro" data-pages="assets/img/dex/plan-affaires.jpg" data-titre="Plan d’affaires 2026" data-sous="Document professionnel · Entreprise">
+            <span class="doc__pile"><img src="assets/img/dex/plan-affaires.jpg" alt="Page de garde : Plan d’affaires 2026" loading="lazy" width="820" height="1159"></span>
+            <span class="doc__legende"><b>Plan d’affaires 2026</b><small>Document professionnel · Entreprise</small></span>
+          </button>
+          <button class="doc apparait" type="button" style="--delai:0.07s" data-cat="expose" data-pages="assets/img/dex/expose-anglais.jpg" data-titre="Value proposition" data-sous="Exposé · Anglais · École de commerce">
+            <span class="doc__pile"><img src="assets/img/dex/expose-anglais.jpg" alt="Page de garde : Value proposition" loading="lazy" width="820" height="1159"></span>
+            <span class="doc__legende"><b>Value proposition</b><small>Exposé · Anglais · École de commerce</small></span>
+          </button>
+        </div>
+        <p class="note-confid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Les noms des élèves, des enseignants et des clients sont masqués par respect de leur vie privée.</p>
       </div>
     </section>
 
@@ -315,7 +327,6 @@
   <!-- Bibliothèques (CDN) puis script du site -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

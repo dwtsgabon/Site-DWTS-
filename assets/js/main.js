@@ -20,6 +20,7 @@
    12. Galerie : révélation et parallaxe
    13. Tarifs : onglets, compteurs, liens de commande, halo
    14. Année du pied de page
+   15-18. Pile DEX, atelier Visuo, filtres, visionneuse
    ========================================================= */
 
 (function () {
@@ -696,6 +697,180 @@
       hx = e.clientX; hy = e.clientY;
       if (!enCours) { enCours = true; requestAnimationFrame(animerHalo); }
     }, { passive: true });
+  }
+
+
+  /* ---------- 15. DEX : pile de pages qui s'ouvre et suit la souris ---------- */
+  var pile = $('[data-pile]');
+  if (pile) {
+    setTimeout(function () { pile.classList.add('est-ouverte'); }, mouvementReduit ? 0 : 300);
+    var corps = $('.pile__corps', pile);
+    if (corps && !tactile && !mouvementReduit) {
+      window.addEventListener('pointermove', function (e) {
+        var x = e.clientX / innerWidth - 0.5, y = e.clientY / innerHeight - 0.5;
+        corps.style.setProperty('--ry', (-14 + x * 16).toFixed(1) + 'deg');
+        corps.style.setProperty('--rx', (8 - y * 10).toFixed(1) + 'deg');
+      }, { passive: true });
+    }
+  }
+
+
+  /* ---------- 16. VISUO : plan de travail, règles, nuancier ---------- */
+  // Le tracé à la plume se dessine quand il est visible
+  $$('[data-trace]').forEach(function (el) {
+    if (mouvementReduit || !('IntersectionObserver' in window)) { el.classList.add('est-dessine'); return; }
+    var o = new IntersectionObserver(function (e) {
+      if (e[0].isIntersecting) { el.classList.add('est-dessine'); o.disconnect(); }
+    }, { threshold: 0.3 });
+    o.observe(el);
+  });
+
+  // Repères orange sur les règles : suivent la souris
+  var regleH = $('.regle--h'), regleV = $('.regle--v');
+  if (regleH && regleV && !tactile) {
+    window.addEventListener('pointermove', function (e) {
+      regleH.style.setProperty('--sx', e.clientX + 'px');
+      var r = regleV.getBoundingClientRect();
+      regleV.style.setProperty('--sy', (e.clientY - r.top) + 'px');
+    }, { passive: true });
+  }
+
+  // Taille affichée sous le titre sélectionné (vraie taille en pixels)
+  var selection = $('.selection');
+  var tailleSel = $('.selection__taille');
+  if (selection && tailleSel) {
+    var majTaille = function () {
+      tailleSel.textContent = 'L ' + Math.round(selection.offsetWidth) + ' × H ' + Math.round(selection.offsetHeight);
+    };
+    majTaille();
+    window.addEventListener('resize', majTaille);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(majTaille);
+  }
+
+  // Nuancier : chaque pastille change les couleurs du grand titre
+  var nuances = $$('.nuance');
+  nuances.forEach(function (n) {
+    n.addEventListener('click', function () {
+      var hero = n.closest('.hero');
+      if (!hero) return;
+      hero.style.setProperty('--accent', n.getAttribute('data-c1'));
+      hero.style.setProperty('--accent-2', n.getAttribute('data-c2'));
+      nuances.forEach(function (x) { x.setAttribute('aria-pressed', x === n ? 'true' : 'false'); });
+    });
+  });
+
+
+  /* ---------- 17. Réalisations : filtres ---------- */
+  $$('[data-filtres]').forEach(function (groupe) {
+    var section = groupe.closest('section') || document;
+    var boutons = $$('[data-filtre]', groupe);
+    boutons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var f = b.getAttribute('data-filtre');
+        boutons.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        $$('[data-cat]', section).forEach(function (item) {
+          var montrer = f === 'tous' || item.getAttribute('data-cat').split(' ').indexOf(f) !== -1;
+          item.classList.toggle('est-masque', !montrer);
+          if (montrer && !mouvementReduit && item.animate) {
+            item.animate([{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.2,.8,.2,1)' });
+          }
+        });
+      });
+    });
+  });
+
+
+  /* ---------- 18. Visionneuse (clic sur une réalisation) ----------
+     <button data-pages="a.jpg|b.jpg" data-titre="…" data-sous="…"> */
+  var ouvrables = $$('[data-pages]');
+  if (ouvrables.length) {
+    var icone = function (d) { return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + d + '"/></svg>'; };
+    var v = document.createElement('div');
+    v.className = 'visionneuse';
+    v.hidden = true;
+    v.setAttribute('role', 'dialog');
+    v.setAttribute('aria-modal', 'true');
+    v.setAttribute('aria-label', 'Aperçu de la réalisation');
+    v.innerHTML =
+      '<div class="visionneuse__haut"><p class="visionneuse__titre"></p>' +
+      '<button class="visionneuse__btn" data-fermer aria-label="Fermer l\'aperçu">' + icone('M6 6l12 12M18 6L6 18') + '</button></div>' +
+      '<div class="visionneuse__scene"><img alt="">' +
+      '<button class="visionneuse__btn visionneuse__prec" aria-label="Page précédente">' + icone('M15 5l-7 7 7 7') + '</button>' +
+      '<button class="visionneuse__btn visionneuse__suiv" aria-label="Page suivante">' + icone('M9 5l7 7-7 7') + '</button></div>' +
+      '<div class="visionneuse__bas"><div class="visionneuse__vignettes"></div><span class="visionneuse__compteur"></span></div>';
+    document.body.appendChild(v);
+
+    var vImg = $('.visionneuse__scene img', v), vTitre = $('.visionneuse__titre', v);
+    var vCompteur = $('.visionneuse__compteur', v), vVign = $('.visionneuse__vignettes', v);
+    var vPrec = $('.visionneuse__prec', v), vSuiv = $('.visionneuse__suiv', v);
+    var pages = [], indexPage = 0, declencheur = null, alt = '';
+
+    var afficher = function (i) {
+      indexPage = (i + pages.length) % pages.length;
+      vImg.src = pages[indexPage];
+      vImg.alt = alt + (pages.length > 1 ? ' — page ' + (indexPage + 1) : '');
+      vCompteur.textContent = pages.length > 1 ? 'Page ' + (indexPage + 1) + ' sur ' + pages.length : '';
+      $$('button', vVign).forEach(function (b, n) { b.setAttribute('aria-current', n === indexPage ? 'true' : 'false'); });
+      vPrec.hidden = vSuiv.hidden = pages.length < 2;
+    };
+    var ouvrir = function (el) {
+      declencheur = el;
+      pages = el.getAttribute('data-pages').split('|');
+      alt = el.getAttribute('data-titre') || '';
+      vTitre.innerHTML = '';
+      vTitre.appendChild(document.createTextNode(alt));
+      if (el.getAttribute('data-sous')) {
+        var s = document.createElement('small');
+        s.textContent = el.getAttribute('data-sous');
+        vTitre.appendChild(s);
+      }
+      vVign.innerHTML = '';
+      if (pages.length > 1) {
+        pages.forEach(function (p, n) {
+          var b = document.createElement('button');
+          b.setAttribute('aria-label', 'Aller à la page ' + (n + 1));
+          b.innerHTML = '<img src="' + p + '" alt="">';
+          b.addEventListener('click', function () { afficher(n); });
+          vVign.appendChild(b);
+        });
+      }
+      afficher(0);
+      v.hidden = false;
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(function () { v.classList.add('est-ouverte'); });
+      $('[data-fermer]', v).focus();
+    };
+    var fermer = function () {
+      v.classList.remove('est-ouverte');
+      document.body.style.overflow = '';
+      setTimeout(function () { v.hidden = true; }, mouvementReduit ? 0 : 300);
+      if (declencheur) declencheur.focus();
+    };
+    ouvrables.forEach(function (el) { el.addEventListener('click', function () { ouvrir(el); }); });
+    $('[data-fermer]', v).addEventListener('click', fermer);
+    vPrec.addEventListener('click', function () { afficher(indexPage - 1); });
+    vSuiv.addEventListener('click', function () { afficher(indexPage + 1); });
+    v.addEventListener('click', function (e) { if (e.target === v || e.target.classList.contains('visionneuse__scene')) fermer(); });
+    document.addEventListener('keydown', function (e) {
+      if (v.hidden) return;
+      if (e.key === 'Escape') fermer();
+      if (e.key === 'ArrowRight') afficher(indexPage + 1);
+      if (e.key === 'ArrowLeft') afficher(indexPage - 1);
+      if (e.key === 'Tab') {             // le focus reste dans la visionneuse
+        var f = $$('button:not([hidden])', v);
+        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+    // Glisser du doigt pour changer de page
+    var dx = null;
+    v.addEventListener('touchstart', function (e) { dx = e.touches[0].clientX; }, { passive: true });
+    v.addEventListener('touchend', function (e) {
+      if (dx === null) return;
+      var d = e.changedTouches[0].clientX - dx;
+      if (Math.abs(d) > 50) afficher(indexPage + (d < 0 ? 1 : -1));
+      dx = null;
+    });
   }
 
 

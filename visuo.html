@@ -19,7 +19,7 @@
   <!-- Indique que JavaScript est actif (sert aux animations d'apparition) -->
   <script>document.documentElement.className += ' js';</script>
 </head>
-<body class="page-visuo">
+<body class="page-visuo theme-atelier">
 
   <a class="lien-evitement" href="#contenu">Aller au contenu</a>
 
@@ -46,44 +46,49 @@
 
   <main id="contenu">
 
-    <!-- ===== Hero : cube orange en fil de fer ===== -->
-    <section class="hero hero--branche" aria-labelledby="titre-principal">
-      <canvas class="hero__scene" data-forme="cube" data-couleur="#FF6A00" data-couleur2="#8B3DFF" aria-hidden="true"></canvas>
-      <div class="conteneur">
+    <!-- ===== Hero « atelier » : règles, titre sélectionné, plan de travail ===== -->
+    <section class="hero hero--branche hero--atelier" aria-labelledby="titre-principal">
+      <div class="regle regle--h" aria-hidden="true"><span class="regle__repere"></span></div>
+      <div class="regle regle--v" aria-hidden="true"><span class="regle__repere"></span></div>
+      <div class="conteneur hero__grille">
         <div class="hero__contenu">
           <p class="surtitre intro">Visuo · Conception</p>
-          <h1 id="titre-principal" class="hero__titre intro">
+          <div class="selection intro">
+            <span class="selection__cadre" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="selection__nom" aria-hidden="true">Titre · Inter Black</span>
+            <h1 class="hero__titre" id="titre-principal">
           <span class="ligne"><span class="degrade-anime">Votre image,</span></span>
           <span class="ligne"><span class="degrade-anime">votre marque.</span></span>
         </h1>
+            <span class="selection__taille" aria-hidden="true"></span>
+          </div>
           <p class="hero__machine intro"><span aria-hidden="true" data-machine='["Logos.", "Affiches et flyers.", "Vidéos publicitaires.", "Sites web."]'>Logos.</span><span class="sr-only">Logos. Affiches et flyers. Vidéos publicitaires. Sites web.</span></p>
           <div class="hero__actions intro">
             <a class="bouton" href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20je%20souhaite%20un%20travail%20de%20conception%20%28Visuo%29." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3Z"/></svg><span>Commander sur WhatsApp</span><span class="sr-only"> (ouvre WhatsApp dans un nouvel onglet)</span></a>
-            <a class="bouton bouton--contour" href="tarifs.html#visuo">Voir les tarifs Visuo</a>
+            <a class="bouton bouton--contour" href="#realisations">Voir nos réalisations</a>
+          </div>
+        </div>
+        <div class="plan-zone intro">
+          <div class="plan" data-trace>
+            <span class="plan__nom" aria-hidden="true">Logo · 1080 × 1080</span>
+            <svg viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+              <defs><linearGradient id="trace-degrade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF6A00"/><stop offset="1" stop-color="#8B3DFF"/></linearGradient></defs>
+              <path class="trace" pathLength="1" d="M70 150 V110 Q70 70 110 70 H150 M250 70 H290 Q330 70 330 110 V150 M330 250 V290 Q330 330 290 330 H250 M150 330 H110 Q70 330 70 290 V250"/>
+              <path class="trace-fin" pathLength="1" d="M70 150 V110 Q70 70 110 70 H150"/>
+              <line class="poignee-l" x1="70" y1="70" x2="40" y2="40" style="--d:1.3s"/><line class="poignee-l" x1="70" y1="70" x2="110" y2="40" style="--d:1.3s"/>
+              <rect class="ancre" x="64" y="144" width="12" height="12" style="--d:.9s"/><rect class="ancre" x="144" y="64" width="12" height="12" style="--d:1.1s"/>
+              <rect class="ancre" x="324" y="244" width="12" height="12" style="--d:1.5s"/><rect class="ancre" x="244" y="324" width="12" height="12" style="--d:1.7s"/>
+              <circle cx="40" cy="40" r="5" class="ancre" style="--d:1.4s"/><circle cx="110" cy="40" r="5" class="ancre" style="--d:1.4s"/>
+              <circle class="plan__point" cx="200" cy="200" r="42"/>
+            </svg>
+            <div class="nuancier" role="group" aria-label="Changer les couleurs du titre">
+              <span class="nuancier__titre">Nuancier</span><button class="nuance" type="button" style="--c:linear-gradient(135deg,#FF6A00,#8B3DFF)" data-c1="#FF6A00" data-c2="#8B3DFF" aria-label="Couleurs du titre : Orange et violet" aria-pressed="true"></button><button class="nuance" type="button" style="--c:linear-gradient(135deg,#ff5e62,#ff9ad5)" data-c1="#ff5e62" data-c2="#ff9ad5" aria-label="Couleurs du titre : Corail et rose" aria-pressed="false"></button><button class="nuance" type="button" style="--c:linear-gradient(135deg,#22D3EE,#4f7bff)" data-c1="#22D3EE" data-c2="#4f7bff" aria-label="Couleurs du titre : Cyan et bleu" aria-pressed="false"></button><button class="nuance" type="button" style="--c:linear-gradient(135deg,#1fd17a,#ffd23f)" data-c1="#1fd17a" data-c2="#ffd23f" aria-label="Couleurs du titre : Vert et jaune" aria-pressed="false"></button><button class="nuance" type="button" style="--c:linear-gradient(135deg,#f2b632,#b8642b)" data-c1="#f2b632" data-c2="#b8642b" aria-label="Couleurs du titre : Or et brun" aria-pressed="false"></button>
+            </div>
           </div>
         </div>
       </div>
-    <!-- Circuit qui se dessine à l'entrée (pathLength="1" simplifie l'animation) -->
-    <svg class="circuit" viewBox="0 0 1440 130" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
-      <path pathLength="1" style="--d:0s"   d="M0 110 H260 L300 70 H520 L550 40 H640"/>
-      <path pathLength="1" style="--d:.2s"  d="M1440 100 H1180 L1140 60 H930 L900 30 H820"/>
-      <path pathLength="1" style="--d:.35s" d="M0 125 H420 L450 95 H700"/>
-      <path pathLength="1" style="--d:.5s"  d="M1440 122 H1000 L970 90 H880"/>
-      <path pathLength="1" style="--d:.15s" d="M120 130 V80 L150 50 H240"/>
-      <path pathLength="1" style="--d:.3s"  d="M1320 130 V70 L1290 40 H1220"/>
-      <path pathLength="1" style="--d:.6s"  d="M560 130 V112 H760 L780 92 H800"/>
-      <path class="influx" pathLength="1" style="--d:0s"   d="M0 110 H260 L300 70 H520 L550 40 H640"/>
-      <path class="influx" pathLength="1" style="--d:.2s"  d="M1440 100 H1180 L1140 60 H930 L900 30 H820"/>
-      <path class="influx" pathLength="1" style="--d:.35s" d="M0 125 H420 L450 95 H700"/>
-      <circle style="--d:0s"   cx="640" cy="40" r="5"/>
-      <rect   style="--d:.2s"  x="812" y="22" width="16" height="16" rx="3"/>
-      <circle style="--d:.35s" cx="700" cy="95" r="5"/>
-      <circle style="--d:.5s"  cx="880" cy="90" r="5"/>
-      <rect   style="--d:.15s" x="236" y="46" width="8" height="8" rx="2"/>
-      <circle style="--d:.3s"  cx="1220" cy="40" r="4"/>
-      <circle style="--d:.6s"  cx="800" cy="92" r="4"/>
-    </svg>
-    <div class="hero__defiler" aria-hidden="true">Défiler<i></i></div>
+      <div class="collab" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 2l7 19 3-8 8-3z"/></svg><span>Visuo</span></div>
+      <div class="outils" aria-hidden="true"><span><svg viewBox="0 0 24 24"><path d="M5 3l14 8-6 2-3 6z"/></svg></span><span class="actif"><svg viewBox="0 0 24 24"><path d="M12 3l7 7-7 11-7-11zM12 3v8M10 13a2 2 0 1 0 4 0 2 2 0 0 0-4 0"/></svg></span><span><svg viewBox="0 0 24 24"><path d="M5 5h14M12 5v14"/></svg></span><span><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg></span><span><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16z"/></svg></span><span><svg viewBox="0 0 24 24"><path d="M3 21l7-7M14 4l6 6-8 8-6-6z"/></svg></span></div>
     </section>
 
     <!-- ===== Notre promesse : slogan dans un viseur ===== -->
@@ -105,65 +110,97 @@
       </div>
     </section>
 
-    <!-- ===== Liste des services ===== -->
+    <!-- ===== Nos services : panneau « Calques » ===== -->
     <section class="section" aria-labelledby="titre-liste">
       <div class="conteneur">
         <div class="entete-section apparait">
           <p class="surtitre">Nos services</p>
           <h2 class="titre-section" id="titre-liste">Tout pour une image qui vend.</h2>
         </div>
-        <ul class="liste-services">
-          <li class="apparait" style="--delai:0.08s"><span>Logos</span><span class="liste-services__num" aria-hidden="true">01</span></li>
-          <li class="apparait" style="--delai:0.00s"><span>Affiches et flyers</span><span class="liste-services__num" aria-hidden="true">02</span></li>
-          <li class="apparait" style="--delai:0.08s"><span>Cartes d'invitation</span><span class="liste-services__num" aria-hidden="true">03</span></li>
-          <li class="apparait" style="--delai:0.00s"><span>Factures et devis</span><span class="liste-services__num" aria-hidden="true">04</span></li>
-          <li class="apparait" style="--delai:0.08s"><span>Publications pour les réseaux sociaux</span><span class="liste-services__num" aria-hidden="true">05</span></li>
-          <li class="apparait" style="--delai:0.00s"><span>Vidéos publicitaires</span><span class="liste-services__num" aria-hidden="true">06</span></li>
-          <li class="apparait" style="--delai:0.08s"><span>Sites web</span><span class="liste-services__num" aria-hidden="true">07</span></li>
-          <li class="apparait" style="--delai:0.00s"><span>Gestion de vos pages</span><span class="liste-services__num" aria-hidden="true">08</span></li>
-        </ul>
+        <div class="calques apparait">
+          <div class="calques__entete" aria-hidden="true"><b>Calques</b><span>8 éléments</span></div>
+          <ul>
+            <li><span class="calques__type"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 16l5-5 4 4 3-3 6 6"/></svg></span><span>Logos</span><span class="calques__oeil" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span></li>
+            <li><span class="calques__type"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/></svg></span><span>Affiches et flyers</span><span class="calques__oeil" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span></li>
+            <li><span class="calques__type"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/></svg></span><span>Cartes d'invitation</span><span class="calques__oeil" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span></li>
+            <li><span class="calques__type">T</span><span>Factures et devis</span><span class="calques__oeil" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span></li>
+            <li><span class="calques__type"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 16l5-5 4 4 3-3 6 6"/></svg></span><span>Publications pour les réseaux sociaux</span><span class="calques__oeil" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span></li>
+            <li><span class="calques__type"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></span><span>Vidéos publicitaires</span><span class="calques__oeil" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span></li>
+            <li><span class="calques__type"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg></span><span>Sites web</span><span class="calques__oeil" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span></li>
+            <li><span class="calques__type"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg></span><span>Gestion de vos pages</span><span class="calques__oeil" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span></li>
+          </ul>
+        </div>
       </div>
     </section>
 
-    <!-- ===== Galerie : images assets/img/visuo-1.jpg à visuo-3.jpg ===== -->
-    <section class="section" aria-label="Galerie">
-      <div class="conteneur galerie">
-        <figure class="galerie__item">
-          <div class="galerie__cadre">
-            <div class="galerie__image img-visuo-1" role="img" aria-label="Logos et identités visuelles conçus par Visuo"></div>
-            <figcaption class="galerie__legende">
-              <div>
-                <span class="galerie__num">01 / 03</span>
-                <h3>Logos et identités</h3>
-              </div>
-              <p>Un logo mémorable, décliné sur tous vos supports.</p>
-            </figcaption>
+    <!-- ===== Nos réalisations : planche de plans de travail ===== -->
+    <section class="section" id="realisations" aria-labelledby="titre-real">
+      <div class="conteneur">
+        <div class="entete-section apparait">
+          <p class="surtitre">Nos réalisations</p>
+          <h2 class="titre-section" id="titre-real">Sortis de l'atelier.</h2>
+          <p class="intro-section">Affiches, publications, identités, imprimés et sites conçus par Visuo. Touchez un visuel pour l'agrandir.</p>
+        </div>
+        <div class="filtres" data-filtres role="group" aria-label="Filtrer les réalisations">
+          <button class="filtre" type="button" data-filtre="tous" aria-pressed="true">Tous</button>
+          <button class="filtre" type="button" data-filtre="affiche" aria-pressed="false">Affiches et flyers</button>
+          <button class="filtre" type="button" data-filtre="reseaux" aria-pressed="false">Réseaux sociaux</button>
+          <button class="filtre" type="button" data-filtre="identite" aria-pressed="false">Logos et identité</button>
+          <button class="filtre" type="button" data-filtre="imprime" aria-pressed="false">Imprimés</button>
+          <button class="filtre" type="button" data-filtre="video" aria-pressed="false">Vidéo</button>
+          <button class="filtre" type="button" data-filtre="web" aria-pressed="false">Sites web</button>
+        </div>
+        <div class="planche apparait">
+          <div class="planche__grille">
+          <figure class="plan-travail" data-cat="affiche">
+            <figcaption class="plan-travail__nom"><span>Affiche · Rentrée DEX</span><span>A3</span></figcaption>
+            <button class="plan-travail__cadre" type="button" data-pages="assets/img/visuo/affiche-dex.jpg" data-titre="Affiche · Rentrée DEX" data-sous="Format A3"><img src="assets/img/visuo/affiche-dex.jpg" alt="Affiche de rentrée pour DEX" loading="lazy"></button>
+          </figure>
+          <figure class="plan-travail" data-cat="reseaux">
+            <figcaption class="plan-travail__nom"><span>Publication · Logo</span><span>1080 × 1080</span></figcaption>
+            <button class="plan-travail__cadre" type="button" data-pages="assets/img/visuo/post-logo.jpg" data-titre="Publication · Logo" data-sous="Format 1080 × 1080"><img src="assets/img/visuo/post-logo.jpg" alt="Publication carrée pour les logos Visuo" loading="lazy"></button>
+          </figure>
+          <figure class="plan-travail" data-cat="identite">
+            <figcaption class="plan-travail__nom"><span>Identité · Marques DWTS</span><span>1600 × 1000</span></figcaption>
+            <button class="plan-travail__cadre" type="button" data-pages="assets/img/visuo/identite.jpg" data-titre="Identité · Marques DWTS" data-sous="Format 1600 × 1000"><img src="assets/img/visuo/identite.jpg" alt="Planche d’identité des marques DWTS" loading="lazy"></button>
+          </figure>
+          <figure class="plan-travail" data-cat="identite imprime">
+            <figcaption class="plan-travail__nom"><span>Carte de visite · DWTS</span><span>85 × 55 mm</span></figcaption>
+            <button class="plan-travail__cadre plan-travail__duo" type="button" data-pages="assets/img/visuo/carte-recto.jpg|assets/img/visuo/carte-verso.jpg" data-titre="Carte de visite DWTS" data-sous="Recto et verso"><img src="assets/img/visuo/carte-recto.jpg" alt="Carte de visite DWTS, recto" loading="lazy"><img src="assets/img/visuo/carte-verso.jpg" alt="Carte de visite DWTS, verso" loading="lazy"></button>
+          </figure>
+          <figure class="plan-travail" data-cat="affiche">
+            <figcaption class="plan-travail__nom"><span>Flyer · Services Visuo</span><span>A5</span></figcaption>
+            <button class="plan-travail__cadre" type="button" data-pages="assets/img/visuo/flyer-visuo.jpg" data-titre="Flyer · Services Visuo" data-sous="Format A5"><img src="assets/img/visuo/flyer-visuo.jpg" alt="Flyer des services Visuo" loading="lazy"></button>
+          </figure>
+          <figure class="plan-travail" data-cat="reseaux">
+            <figcaption class="plan-travail__nom"><span>Publication · DEX</span><span>1080 × 1080</span></figcaption>
+            <button class="plan-travail__cadre" type="button" data-pages="assets/img/visuo/post-dex.jpg" data-titre="Publication · DEX" data-sous="Format 1080 × 1080"><img src="assets/img/visuo/post-dex.jpg" alt="Publication pour DEX" loading="lazy"></button>
+          </figure>
+          <figure class="plan-travail" data-cat="web">
+            <figcaption class="plan-travail__nom"><span>Site web · DWTS</span><span>1440 × 900</span></figcaption>
+            <button class="plan-travail__cadre" type="button" data-pages="assets/img/visuo/site-web.jpg" data-titre="Site web DWTS" data-sous="Site vitrine">
+              <span class="cadre-navigateur"><span class="cadre-navigateur__barre"><i></i><i></i><i></i><span>dwts — accueil</span></span><img src="assets/img/visuo/site-web.jpg" alt="Page d’accueil du site DWTS" loading="lazy"></span>
+            </button>
+          </figure>
+          <figure class="plan-travail" data-cat="imprime">
+            <figcaption class="plan-travail__nom"><span>Carte d’invitation · Mariage coutumier</span><span>12 × 17 cm</span></figcaption>
+            <button class="plan-travail__cadre" type="button" data-pages="assets/img/visuo/invitation.jpg" data-titre="Carte d’invitation · Mariage coutumier" data-sous="Format 12 × 17 cm"><img src="assets/img/visuo/invitation.jpg" alt="Carte d’invitation de mariage coutumier" loading="lazy"></button>
+          </figure>
+          <figure class="plan-travail" data-cat="video">
+            <figcaption class="plan-travail__nom"><span>Vidéo publicitaire · Story</span><span>1080 × 1920</span></figcaption>
+            <button class="plan-travail__cadre" type="button" data-pages="assets/img/visuo/video.jpg" data-titre="Vidéo publicitaire · Story" data-sous="Format 1080 × 1920"><img src="assets/img/visuo/video.jpg" alt="Image de la vidéo publicitaire Visuo" loading="lazy"></button>
+          </figure>
+          <figure class="plan-travail" data-cat="reseaux">
+            <figcaption class="plan-travail__nom"><span>Publication · Logia</span><span>1080 × 1080</span></figcaption>
+            <button class="plan-travail__cadre" type="button" data-pages="assets/img/visuo/post-logia.jpg" data-titre="Publication · Logia" data-sous="Format 1080 × 1080"><img src="assets/img/visuo/post-logia.jpg" alt="Publication pour Logia" loading="lazy"></button>
+          </figure>
+          <figure class="plan-travail" data-cat="imprime">
+            <figcaption class="plan-travail__nom"><span>Facture · Modèle DWTS</span><span>A4</span></figcaption>
+            <button class="plan-travail__cadre" type="button" data-pages="assets/img/visuo/facture.jpg" data-titre="Facture · Modèle DWTS" data-sous="Format A4"><img src="assets/img/visuo/facture.jpg" alt="Modèle de facture DWTS" loading="lazy"></button>
+          </figure>
           </div>
-        </figure>
-        <figure class="galerie__item">
-          <div class="galerie__cadre">
-            <div class="galerie__image img-visuo-2" role="img" aria-label="Affiches et flyers conçus par Visuo"></div>
-            <figcaption class="galerie__legende">
-              <div>
-                <span class="galerie__num">02 / 03</span>
-                <h3>Affiches et flyers</h3>
-              </div>
-              <p>Des visuels qui arrêtent le regard, en ligne comme sur papier.</p>
-            </figcaption>
-          </div>
-        </figure>
-        <figure class="galerie__item">
-          <div class="galerie__cadre">
-            <div class="galerie__image img-visuo-3" role="img" aria-label="Vidéos publicitaires et sites web conçus par Visuo"></div>
-            <figcaption class="galerie__legende">
-              <div>
-                <span class="galerie__num">03 / 03</span>
-                <h3>Vidéos et sites web</h3>
-              </div>
-              <p>Votre marque en mouvement et en ligne.</p>
-            </figcaption>
-          </div>
-        </figure>
+        </div>
+        <p class="note-confid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Les noms et coordonnées des clients sont masqués par respect de leur vie privée.</p>
       </div>
     </section>
 
@@ -229,7 +266,6 @@
   <!-- Bibliothèques (CDN) puis script du site -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>
