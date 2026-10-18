@@ -1575,3 +1575,20 @@ body::after {
 @media (max-width: 560px) { .etapes { grid-template-columns: 1fr; } .retrait { flex-direction: column; align-items: flex-start; } }
 @media (hover: none) { .gain { transform: none !important; } }
 ol { list-style: none; }
+
+/* DEX : 2 modes, grille des exposés par paliers, règles */
+.cartes-modes { grid-template-columns: repeat(2, 1fr); max-width: 900px; }
+.vignettes--deux { grid-template-columns: repeat(2, 1fr); }
+.carte-paliers { grid-column: 1 / -1; }
+.paliers { display: grid; gap: 10px; transform: translateZ(30px); }
+.palier { display: grid; grid-template-columns: 1fr minmax(260px, 340px); gap: 16px; align-items: center; padding: 12px 0; border-top: 1px dashed var(--ligne); }
+.palier__critere b { display: block; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--acc); }
+.palier__critere span { font-size: .98rem; }
+.note-prix--regles { border-style: solid; }
+.regles { margin-top: 8px; display: grid; gap: 6px; }
+.regles li { position: relative; padding-left: 16px; color: rgba(245,245,247,.85); }
+.regles li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 6px; border-radius: 2px; background: var(--acc); }
+@media (max-width: 700px) {
+  .cartes-modes { grid-template-columns: 1fr; }
+  .palier { grid-template-columns: 1fr; gap: 8px; }
+}

@@ -603,7 +603,7 @@
         var prixEl = $('[data-compte]', v) || (carte ? $('[data-compte]', carte) : null);
         var prix = prixEl ? prixEl.textContent.replace(/\D/g, '') : '';
         var msg = 'Bonjour DWTS, je souhaite commander (' + branche + ') : ' + service +
-          (niveau ? ' — ' + niveau.textContent.trim() : '') +
+          (v.getAttribute('data-niveau') ? ' — ' + v.getAttribute('data-niveau') : (niveau ? ' — ' + niveau.textContent.trim() : '')) +
           (prix ? ', ' + formatPrix(prix).replace(/ /g, ' ') + ' XAF.' : '.');
         v.setAttribute('href', lienWhatsApp(msg));
       });
