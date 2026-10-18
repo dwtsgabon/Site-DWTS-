@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DWTS — Digital World Technology Service</title>
+  <meta name="description" content="DWTS, services numériques au Gabon : documents (DEX), conception graphique et sites web (Visuo), logiciels et automatisation (Logia).">
+  <meta name="theme-color" content="#0a0a0b">
+  <link rel="icon" type="image/png" href="assets/img/logo-dwts.png">
+
+  <!-- Police Inter (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&amp;display=swap" rel="stylesheet">
+
+  <!-- Styles du site -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Indique que JavaScript est actif (sert aux animations d'apparition) -->
+  <script>document.documentElement.className += ' js';</script>
+</head>
+<body class="page-accueil">
+
+  <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+  <!-- ===== Navigation fixe ===== -->
+  <header class="nav">
+    <div class="conteneur nav__inner">
+      <a class="marque" href="index.html" aria-label="DWTS, retour à l'accueil">
+        <span class="marque__sigle">DWTS</span>
+        <span class="marque__nom" aria-hidden="true">Digital World<br>Technology <b>Service</b></span>
+      </a>
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu">
+        <span></span><span></span>
+      </button>
+      <nav id="menu" class="nav__liens" aria-label="Navigation principale">
+      <a href="index.html" aria-current="page">DWTS</a>
+      <a href="dex.html">DEX</a>
+      <a href="visuo.html">Visuo</a>
+      <a href="logia.html">Logia</a>
+      <a href="tarifs.html">Tarifs</a>
+        <a class="bouton bouton--petit" href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20je%20souhaite%20des%20informations%20sur%20vos%20services." target="_blank" rel="noopener">Commander<span class="sr-only"> sur WhatsApp (nouvel onglet)</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+
+    <!-- ===== Hero : scène 3D + titre ===== -->
+    <section class="hero" aria-labelledby="titre-principal">
+      <canvas class="hero__scene" data-forme="sphere" data-couleur="#FF6A00" data-couleur2="#ffb067" aria-hidden="true"></canvas>
+      <div class="conteneur">
+        <div class="hero__contenu">
+          <p class="surtitre intro">Digital World Technology Service · Gabon</p>
+          <h1 id="titre-principal" class="hero__titre intro">
+          <span class="ligne"><span class="degrade-anime">Le monde</span></span>
+          <span class="ligne"><span class="degrade-anime">numérique,</span></span>
+          <span class="ligne"><span class="degrade-anime">à votre portée.</span></span>
+        </h1>
+          <p class="hero__machine intro"><span aria-hidden="true" data-machine='["Des exposés bien construits.", "Des logos et des affiches.", "Des sites web.", "Des logiciels.", "De l&#39;automatisation."]'>Des exposés bien construits.</span><span class="sr-only">Des exposés bien construits. Des logos et des affiches. Des sites web. Des logiciels. De l'automatisation.</span></p>
+          <div class="hero__actions intro">
+            <a class="bouton" href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20je%20souhaite%20des%20informations%20sur%20vos%20services." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3Z"/></svg><span>Commander sur WhatsApp</span><span class="sr-only"> (ouvre WhatsApp dans un nouvel onglet)</span></a>
+            <a class="bouton bouton--contour" href="#branches">Découvrir nos branches</a>
+          </div>
+        </div>
+      </div>
+    <!-- Circuit qui se dessine à l'entrée (pathLength="1" simplifie l'animation) -->
+    <svg class="circuit" viewBox="0 0 1440 130" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+      <path pathLength="1" style="--d:0s"   d="M0 110 H260 L300 70 H520 L550 40 H640"/>
+      <path pathLength="1" style="--d:.2s"  d="M1440 100 H1180 L1140 60 H930 L900 30 H820"/>
+      <path pathLength="1" style="--d:.35s" d="M0 125 H420 L450 95 H700"/>
+      <path pathLength="1" style="--d:.5s"  d="M1440 122 H1000 L970 90 H880"/>
+      <path pathLength="1" style="--d:.15s" d="M120 130 V80 L150 50 H240"/>
+      <path pathLength="1" style="--d:.3s"  d="M1320 130 V70 L1290 40 H1220"/>
+      <path pathLength="1" style="--d:.6s"  d="M560 130 V112 H760 L780 92 H800"/>
+      <path class="influx" pathLength="1" style="--d:0s"   d="M0 110 H260 L300 70 H520 L550 40 H640"/>
+      <path class="influx" pathLength="1" style="--d:.2s"  d="M1440 100 H1180 L1140 60 H930 L900 30 H820"/>
+      <path class="influx" pathLength="1" style="--d:.35s" d="M0 125 H420 L450 95 H700"/>
+      <circle style="--d:0s"   cx="640" cy="40" r="5"/>
+      <rect   style="--d:.2s"  x="812" y="22" width="16" height="16" rx="3"/>
+      <circle style="--d:.35s" cx="700" cy="95" r="5"/>
+      <circle style="--d:.5s"  cx="880" cy="90" r="5"/>
+      <rect   style="--d:.15s" x="236" y="46" width="8" height="8" rx="2"/>
+      <circle style="--d:.3s"  cx="1220" cy="40" r="4"/>
+      <circle style="--d:.6s"  cx="800" cy="92" r="4"/>
+    </svg>
+    <div class="hero__defiler" aria-hidden="true">Défiler<i></i></div>
+    </section>
+
+    <!-- ===== Bandeau défilant ===== -->
+    <div class="defilant" aria-hidden="true">
+      <div class="defilant__piste"><span>Exposés</span><span>Mémoires</span><span>CV</span><span>Logos</span><span>Affiches</span><span>Vidéos</span><span>Sites web</span><span>Bots WhatsApp</span><span>Logiciels</span><span>Automatisation</span><span>Exposés</span><span>Mémoires</span><span>CV</span><span>Logos</span><span>Affiches</span><span>Vidéos</span><span>Sites web</span><span>Bots WhatsApp</span><span>Logiciels</span><span>Automatisation</span></div>
+    </div>
+
+    <!-- ===== Nos branches ===== -->
+    <section class="section" id="branches" aria-labelledby="titre-branches">
+      <div class="conteneur">
+        <div class="entete-section apparait">
+          <p class="surtitre">Nos branches</p>
+          <h2 class="titre-section" id="titre-branches">Trois expertises, une seule maison.</h2>
+          <p class="intro-section">DWTS réunit trois branches spécialisées. Choisissez celle qui répond à votre besoin.</p>
+        </div>
+
+        <div class="branches">
+          <article class="carte-branche carte-branche--dex apparait" data-incline="7">
+            <div class="carte-branche__fond" role="img" aria-label="Illustration de la branche DEX"></div>
+            <span class="carte-branche__numero">01</span>
+            <div class="carte-branche__logo carte-branche__logo--carre"><img src="assets/img/logo-dex.png" alt="Logo DEX DocuExpress" width="900" height="889" loading="lazy"></div>
+            <div class="carte-branche__contenu">
+              <h3 class="carte-branche__nom">DEX</h3>
+              <p class="carte-branche__role">DocuExpress — Documents</p>
+              <p class="carte-branche__texte">Saisie et mise en forme de documents académiques et professionnels : exposés, rapports, mémoires, CV.</p>
+              <a class="carte-branche__lien" href="dex.html">Découvrir DEX <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="carte-branche carte-branche--visuo apparait" style="--delai:.1s" data-incline="7">
+            <div class="carte-branche__fond" role="img" aria-label="Illustration de la branche Visuo"></div>
+            <span class="carte-branche__numero">02</span>
+            <div class="carte-branche__logo"><img src="assets/img/logo-visuo.png" alt="Logo Visuo" width="900" height="306" loading="lazy"></div>
+            <div class="carte-branche__contenu">
+              <h3 class="carte-branche__nom">Visuo</h3>
+              <p class="carte-branche__role">Conception — Bien vue, bien vendue.</p>
+              <p class="carte-branche__texte">Logos, affiches, flyers, vidéos publicitaires et sites web pour une marque qui se remarque.</p>
+              <a class="carte-branche__lien" href="visuo.html">Découvrir Visuo <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="carte-branche carte-branche--logia apparait" style="--delai:.2s" data-incline="7">
+            <div class="carte-branche__fond" role="img" aria-label="Illustration de la branche Logia"></div>
+            <span class="carte-branche__numero">03</span>
+            <div class="carte-branche__logo"><img src="assets/img/logo-logia.png" alt="Logo Logia" width="900" height="255" loading="lazy"></div>
+            <div class="carte-branche__contenu">
+              <h3 class="carte-branche__nom">Logia</h3>
+              <p class="carte-branche__role">Logiciels — Automatisez, respirez.</p>
+              <p class="carte-branche__texte">Logiciels, applications, bots WhatsApp et automatisation de vos tâches répétitives.</p>
+              <a class="carte-branche__lien" href="logia.html">Découvrir Logia <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Qui sommes-nous ===== -->
+    <section class="section" aria-labelledby="titre-presentation">
+      <div class="conteneur presentation">
+        <div class="presentation__logo apparait">
+          <img src="assets/img/logo-dwts-clair.png" alt="Logo Digital World Technology Service" width="900" height="715" loading="lazy">
+        </div>
+        <div class="apparait" style="--delai:.1s">
+          <p class="surtitre">Qui sommes-nous</p>
+          <h2 class="titre-section" id="titre-presentation">Le numérique, simple et utile.</h2>
+          <p><strong>DWTS — Digital World Technology Service</strong> est une entreprise de services numériques au Gabon.</p>
+          <p>Notre mission : rendre le numérique accessible, beau et utile pour les étudiants, les entrepreneurs et les entreprises. Un seul interlocuteur pour vos documents, votre image et vos outils.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Technologie ===== -->
+    <section class="section" aria-labelledby="titre-techno">
+      <div class="conteneur">
+        <div class="entete-section apparait">
+          <p class="surtitre">Technologie</p>
+          <h2 class="titre-section" id="titre-techno">La technologie au service de vos projets.</h2>
+        </div>
+
+        <div class="blocs-tech">
+          <article class="bloc-tech apparait" data-incline="9">
+            <span class="bloc-tech__index" aria-hidden="true">01</span>
+            <div class="bloc-tech__icone icone-pulse" aria-hidden="true">
+              <svg viewBox="0 0 32 32"><path d="M8 22 16 9l8 13Z"/><circle cx="16" cy="9" r="3"/><circle cx="8" cy="22" r="3"/><circle cx="24" cy="22" r="3"/></svg>
+            </div>
+            <h3>Intelligence artificielle</h3>
+            <p>L'intelligence artificielle accélère nos recherches, nos visuels et notre code. Chaque livrable est relu et ajusté par notre équipe.</p>
+          </article>
+
+          <article class="bloc-tech apparait" style="--delai:.1s" data-incline="9">
+            <span class="bloc-tech__index" aria-hidden="true">02</span>
+            <div class="bloc-tech__icone icone-rotation" aria-hidden="true">
+              <svg viewBox="0 0 32 32"><g class="rouage"><circle cx="16" cy="16" r="5"/><path d="M16 4v4M16 24v4M4 16h4M24 16h4M7.5 7.5l2.8 2.8M21.7 21.7l2.8 2.8M7.5 24.5l2.8-2.8M21.7 10.3l2.8-2.8"/></g></svg>
+            </div>
+            <h3>Automatisation</h3>
+            <p>Bots WhatsApp, rappels, suivis : ce qui peut tourner seul tourne seul. Vous gagnez du temps pour l'essentiel.</p>
+          </article>
+
+          <article class="bloc-tech apparait" style="--delai:.2s" data-incline="9">
+            <span class="bloc-tech__index" aria-hidden="true">03</span>
+            <div class="bloc-tech__icone icone-pulse" aria-hidden="true">
+              <svg viewBox="0 0 32 32"><path d="M5 11V7a2 2 0 0 1 2-2h4M21 5h4a2 2 0 0 1 2 2v4M27 21v4a2 2 0 0 1-2 2h-4M11 27H7a2 2 0 0 1-2-2v-4"/><circle cx="16" cy="16" r="3.5"/></svg>
+            </div>
+            <h3>Identité de marque</h3>
+            <p>Logo, couleurs, supports : une image cohérente qui inspire confiance et donne envie d'acheter.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Bandeau final ===== -->
+    <section class="bandeau" aria-labelledby="titre-bandeau">
+      <div class="conteneur">
+        <div class="bandeau__boite apparait">
+          <h2 id="titre-bandeau">Prêt à passer au niveau supérieur ?</h2>
+          <p>Écrivez-nous sur WhatsApp et décrivez votre besoin : nous vous proposons la solution adaptée.</p>
+          <div class="bandeau__actions">
+            <a class="bouton" href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20je%20souhaite%20des%20informations%20sur%20vos%20services." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3Z"/></svg><span>Commander sur WhatsApp</span><span class="sr-only"> (ouvre WhatsApp dans un nouvel onglet)</span></a>
+            <a class="bouton bouton--contour" href="tarifs.html">Voir les tarifs</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Pied de page ===== -->
+  <footer class="pied">
+    <div class="conteneur">
+      <div class="pied__grille">
+        <div class="pied__logo">
+          <img src="assets/img/logo-dwts-clair.png" alt="Logo Digital World Technology Service" width="900" height="715" loading="lazy">
+          <p>Services numériques au Gabon : documents, conception graphique, sites web, logiciels et automatisation.</p>
+        </div>
+        <div>
+          <h2>Nos branches</h2>
+          <ul>
+            <li><a href="dex.html">DEX — DocuExpress</a></li>
+            <li><a href="visuo.html">Visuo — Conception</a></li>
+            <li><a href="logia.html">Logia — Logiciels</a></li>
+            <li><a href="tarifs.html">Tarifs</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Nous contacter</h2>
+          <ul class="pied__contact">
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg>
+              <a href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20je%20souhaite%20des%20informations%20sur%20vos%20services." target="_blank" rel="noopener">+241 62 67 14 45 (WhatsApp)</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              <a href="mailto:digitalwtservice@gmail.com">digitalwtservice@gmail.com</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H7v4h3v6h4v-6h3l1-4h-4V8Z"/></svg>
+              <a href="https://www.facebook.com/search/top?q=DIGITAL%20WORLD%20TECHNOLOGY%20SERVICE" target="_blank" rel="noopener">Facebook : DIGITAL WORLD TECHNOLOGY SERVICE</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="pied__bas">
+        <span>© <span data-annee>2026</span> DWTS — Digital World Technology Service. Gabon.</span>
+        <a href="#contenu">Retour en haut ↑</a>
+      </div>
+    </div>
+    <div class="pied__geant" aria-hidden="true">DWTS</div>
+  </footer>
+
+  <!-- Bibliothèques (CDN) puis script du site -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

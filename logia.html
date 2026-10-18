@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logia — Logiciels | DWTS</title>
+  <meta name="description" content="Logia, la branche logiciels de DWTS : logiciels de gestion, applications, bots WhatsApp et automatisation. Automatisez, respirez.">
+  <meta name="theme-color" content="#0a0a0b">
+  <link rel="icon" type="image/png" href="assets/img/logo-dwts.png">
+
+  <!-- Police Inter (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&amp;display=swap" rel="stylesheet">
+
+  <!-- Styles du site -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Indique que JavaScript est actif (sert aux animations d'apparition) -->
+  <script>document.documentElement.className += ' js';</script>
+</head>
+<body class="page-logia">
+
+  <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+  <!-- ===== Navigation fixe ===== -->
+  <header class="nav">
+    <div class="conteneur nav__inner">
+      <a class="marque" href="index.html" aria-label="DWTS, retour à l'accueil">
+        <span class="marque__sigle">DWTS</span>
+        <span class="marque__nom" aria-hidden="true">Digital World<br>Technology <b>Service</b></span>
+      </a>
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu">
+        <span></span><span></span>
+      </button>
+      <nav id="menu" class="nav__liens" aria-label="Navigation principale">
+      <a href="index.html">DWTS</a>
+      <a href="dex.html">DEX</a>
+      <a href="visuo.html">Visuo</a>
+      <a href="logia.html" aria-current="page">Logia</a>
+      <a href="tarifs.html">Tarifs</a>
+        <a class="bouton bouton--petit" href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20je%20souhaite%20un%20logiciel%20ou%20une%20automatisation%20%28Logia%29." target="_blank" rel="noopener">Commander<span class="sr-only"> sur WhatsApp (nouvel onglet)</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+
+    <!-- ===== Hero : icosaèdre cyan ===== -->
+    <section class="hero hero--branche" aria-labelledby="titre-principal">
+      <canvas class="hero__scene" data-forme="icosaedre" data-couleur="#22D3EE" data-couleur2="#1E6FD9" aria-hidden="true"></canvas>
+      <div class="conteneur">
+        <div class="hero__contenu">
+          <p class="surtitre intro">Logia · Logiciels</p>
+          <h1 id="titre-principal" class="hero__titre intro">
+          <span class="ligne"><span class="degrade-anime">Des logiciels</span></span>
+          <span class="ligne"><span class="degrade-anime">qui travaillent</span></span>
+          <span class="ligne"><span class="degrade-anime">pour vous.</span></span>
+        </h1>
+          <p class="hero__machine intro"><strong class="machine-texte">Automatisez, respirez.</strong></p>
+          <div class="hero__actions intro">
+            <a class="bouton" href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20je%20souhaite%20un%20logiciel%20ou%20une%20automatisation%20%28Logia%29." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3Z"/></svg><span>Commander sur WhatsApp</span><span class="sr-only"> (ouvre WhatsApp dans un nouvel onglet)</span></a>
+            <a class="bouton bouton--contour" href="tarifs.html#logia">Voir les tarifs Logia</a>
+          </div>
+        </div>
+      </div>
+    <!-- Circuit qui se dessine à l'entrée (pathLength="1" simplifie l'animation) -->
+    <svg class="circuit" viewBox="0 0 1440 130" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+      <path pathLength="1" style="--d:0s"   d="M0 110 H260 L300 70 H520 L550 40 H640"/>
+      <path pathLength="1" style="--d:.2s"  d="M1440 100 H1180 L1140 60 H930 L900 30 H820"/>
+      <path pathLength="1" style="--d:.35s" d="M0 125 H420 L450 95 H700"/>
+      <path pathLength="1" style="--d:.5s"  d="M1440 122 H1000 L970 90 H880"/>
+      <path pathLength="1" style="--d:.15s" d="M120 130 V80 L150 50 H240"/>
+      <path pathLength="1" style="--d:.3s"  d="M1320 130 V70 L1290 40 H1220"/>
+      <path pathLength="1" style="--d:.6s"  d="M560 130 V112 H760 L780 92 H800"/>
+      <path class="influx" pathLength="1" style="--d:0s"   d="M0 110 H260 L300 70 H520 L550 40 H640"/>
+      <path class="influx" pathLength="1" style="--d:.2s"  d="M1440 100 H1180 L1140 60 H930 L900 30 H820"/>
+      <path class="influx" pathLength="1" style="--d:.35s" d="M0 125 H420 L450 95 H700"/>
+      <circle style="--d:0s"   cx="640" cy="40" r="5"/>
+      <rect   style="--d:.2s"  x="812" y="22" width="16" height="16" rx="3"/>
+      <circle style="--d:.35s" cx="700" cy="95" r="5"/>
+      <circle style="--d:.5s"  cx="880" cy="90" r="5"/>
+      <rect   style="--d:.15s" x="236" y="46" width="8" height="8" rx="2"/>
+      <circle style="--d:.3s"  cx="1220" cy="40" r="4"/>
+      <circle style="--d:.6s"  cx="800" cy="92" r="4"/>
+    </svg>
+    <div class="hero__defiler" aria-hidden="true">Défiler<i></i></div>
+    </section>
+
+    <!-- ===== Fenêtre de code ===== -->
+    <section class="section" aria-labelledby="titre-code">
+      <div class="conteneur code-bloc">
+        <div class="terminal apparait">
+          <div class="terminal__barre" aria-hidden="true"><i></i><i></i><i></i><span>logia.js</span></div>
+          <p class="sr-only">Exemple de code : const dwts = await logia.automatiser(); Bot WhatsApp en ligne. Suivi mensuel activé.</p>
+          <div class="terminal__corps" data-terminal aria-hidden="true"></div>
+        </div>
+        <div class="apparait" style="--delai:.15s">
+          <div class="pastille-logo pastille-logo--petite">
+            <img src="assets/img/logo-logia.png" alt="Logo Logia" width="900" height="255" loading="lazy">
+          </div>
+          <p class="surtitre">En coulisses</p>
+          <h2 class="titre-section" id="titre-code">Vos tâches tournent toutes seules.</h2>
+          <p class="intro-section">Nous concevons des outils qui travaillent à votre place : répondre à vos clients, envoyer des rappels, suivre vos ventes. Vous gardez du temps pour développer votre activité.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Liste des services ===== -->
+    <section class="section" aria-labelledby="titre-liste">
+      <div class="conteneur">
+        <div class="entete-section apparait">
+          <p class="surtitre">Nos solutions</p>
+          <h2 class="titre-section" id="titre-liste">Moins de tâches, plus de résultats.</h2>
+        </div>
+        <ul class="liste-services">
+          <li class="apparait" style="--delai:0.08s"><span>Automatisation<small>Les tâches répétitives, faites sans vous.</small></span><span class="liste-services__num" aria-hidden="true">01</span></li>
+          <li class="apparait" style="--delai:0.00s"><span>Bot WhatsApp<small>Réponses et prises de commande automatiques.</small></span><span class="liste-services__num" aria-hidden="true">02</span></li>
+          <li class="apparait" style="--delai:0.08s"><span>Logiciel de gestion<small>Ventes, stocks, clients : tout au même endroit.</small></span><span class="liste-services__num" aria-hidden="true">03</span></li>
+          <li class="apparait" style="--delai:0.00s"><span>Suivi mensuel<small>Mises à jour et assistance chaque mois.</small></span><span class="liste-services__num" aria-hidden="true">04</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Galerie : images assets/img/logia-1.jpg à logia-3.jpg ===== -->
+    <section class="section" aria-label="Galerie">
+      <div class="conteneur galerie">
+        <figure class="galerie__item">
+          <div class="galerie__cadre">
+            <div class="galerie__image img-logia-1" role="img" aria-label="Automatisation de processus par Logia"></div>
+            <figcaption class="galerie__legende">
+              <div>
+                <span class="galerie__num">01 / 03</span>
+                <h3>Automatisation</h3>
+              </div>
+              <p>Vos processus répétitifs confiés à la machine.</p>
+            </figcaption>
+          </div>
+        </figure>
+        <figure class="galerie__item">
+          <div class="galerie__cadre">
+            <div class="galerie__image img-logia-2" role="img" aria-label="Bots WhatsApp conçus par Logia"></div>
+            <figcaption class="galerie__legende">
+              <div>
+                <span class="galerie__num">02 / 03</span>
+                <h3>Bots WhatsApp</h3>
+              </div>
+              <p>Vos clients reçoivent une réponse, même quand vous dormez.</p>
+            </figcaption>
+          </div>
+        </figure>
+        <figure class="galerie__item">
+          <div class="galerie__cadre">
+            <div class="galerie__image img-logia-3" role="img" aria-label="Logiciels de gestion conçus par Logia"></div>
+            <figcaption class="galerie__legende">
+              <div>
+                <span class="galerie__num">03 / 03</span>
+                <h3>Logiciels de gestion</h3>
+              </div>
+              <p>Un outil sur mesure pour piloter votre activité.</p>
+            </figcaption>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===== Bandeau final ===== -->
+    <section class="bandeau" aria-labelledby="titre-bandeau">
+      <div class="conteneur">
+        <div class="bandeau__boite apparait">
+          <h2 id="titre-bandeau">Votre processus, automatisé.</h2>
+          <p>Décrivez-nous la tâche qui vous prend du temps : nous vous proposons une solution et un devis.</p>
+          <div class="bandeau__actions">
+            <a class="bouton" href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20je%20souhaite%20un%20logiciel%20ou%20une%20automatisation%20%28Logia%29." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3Z"/></svg><span>Commander sur WhatsApp</span><span class="sr-only"> (ouvre WhatsApp dans un nouvel onglet)</span></a>
+            <a class="bouton bouton--contour" href="tarifs.html#logia">Voir les tarifs Logia</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Pied de page ===== -->
+  <footer class="pied">
+    <div class="conteneur">
+      <div class="pied__grille">
+        <div class="pied__logo">
+          <img src="assets/img/logo-dwts-clair.png" alt="Logo Digital World Technology Service" width="900" height="715" loading="lazy">
+          <p>Services numériques au Gabon : documents, conception graphique, sites web, logiciels et automatisation.</p>
+        </div>
+        <div>
+          <h2>Nos branches</h2>
+          <ul>
+            <li><a href="dex.html">DEX — DocuExpress</a></li>
+            <li><a href="visuo.html">Visuo — Conception</a></li>
+            <li><a href="logia.html">Logia — Logiciels</a></li>
+            <li><a href="tarifs.html">Tarifs</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Nous contacter</h2>
+          <ul class="pied__contact">
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg>
+              <a href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20je%20souhaite%20un%20logiciel%20ou%20une%20automatisation%20%28Logia%29." target="_blank" rel="noopener">+241 62 67 14 45 (WhatsApp)</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              <a href="mailto:digitalwtservice@gmail.com">digitalwtservice@gmail.com</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H7v4h3v6h4v-6h3l1-4h-4V8Z"/></svg>
+              <a href="https://www.facebook.com/search/top?q=DIGITAL%20WORLD%20TECHNOLOGY%20SERVICE" target="_blank" rel="noopener">Facebook : DIGITAL WORLD TECHNOLOGY SERVICE</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="pied__bas">
+        <span>© <span data-annee>2026</span> DWTS — Digital World Technology Service. Gabon.</span>
+        <a href="#contenu">Retour en haut ↑</a>
+      </div>
+    </div>
+    <div class="pied__geant" aria-hidden="true">DWTS</div>
+  </footer>
+
+  <!-- Bibliothèques (CDN) puis script du site -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
