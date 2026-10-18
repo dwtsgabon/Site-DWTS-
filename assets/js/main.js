@@ -874,6 +874,45 @@
   }
 
 
+  /* ---------- 19. Parrainage : simulateur de gains ----------
+     Commissions (à modifier ici si elles changent) :
+     DEX 500 FCFA par commande ; Visuo et Logia : montant mensuel selon le pack (bouton choisi). */
+  var sim = $('[data-simulateur]');
+  if (sim) {
+    var SEUIL = 5000, DEX_PAR_COMMANDE = 500;
+    var pack = { visuo: 1000, logia: 1000 };
+    var majCurseur = function (c) { c.style.setProperty('--p', (c.value - c.min) / (c.max - c.min) * 100 + '%'); };
+    var calculer = function () {
+      var v = {};
+      $$('[data-curseur]', sim).forEach(function (c) {
+        v[c.getAttribute('data-curseur')] = parseInt(c.value, 10);
+        $('[data-sortie="' + c.getAttribute('data-curseur') + '"]', sim).textContent = c.value;
+        majCurseur(c);
+      });
+      var total = v.dex * DEX_PAR_COMMANDE + v.visuo * pack.visuo + v.logia * pack.logia;
+      var filleuls = v.visuo + v.logia + (v.dex > 0 ? 1 : 0);
+      $('[data-sim-total]', sim).textContent = formatPrix(total);
+      $('[data-sim-an]', sim).textContent = formatPrix(total * 12);
+      var nb = v.visuo + v.logia;
+      $('[data-sim-filleuls]', sim).textContent = v.dex + ' commande' + (v.dex > 1 ? 's' : '') + ' · ' + nb + ' pack' + (nb > 1 ? 's' : '');
+      $('[data-sim-barre]', sim).style.width = Math.min(100, total / SEUIL * 100) + '%';
+      var s = $('[data-sim-seuil]', sim);
+      s.textContent = total >= SEUIL ? '✔ Seuil de retrait atteint : versé en fin de mois' : 'Encore ' + formatPrix(SEUIL - total) + ' FCFA pour atteindre le retrait minimum (5 000 FCFA)';
+      s.classList.toggle('ok', total >= SEUIL);
+    };
+    $$('[data-curseur]', sim).forEach(function (c) { c.addEventListener('input', calculer); });
+    $$('.choix', sim).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var g = b.getAttribute('data-groupe');
+        pack[g] = parseInt(b.getAttribute('data-valeur'), 10);
+        $$('.choix[data-groupe="' + g + '"]', sim).forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        calculer();
+      });
+    });
+    calculer();
+  }
+
+
   /* ---------- 14. Année du pied de page ---------- */
   $$('[data-annee]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
 
