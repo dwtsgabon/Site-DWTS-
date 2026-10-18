@@ -32,7 +32,9 @@ function api() {
     return client;
   }
   if (!estConfigure()) throw new Error('Google Sheets non configuré (GOOGLE_SHEET_ID / GOOGLE_SERVICE_ACCOUNT_JSON).');
-  const identifiants = JSON.parse(Buffer.from(config.googleServiceAccountJson, 'base64').toString('utf8'));
+  // Accepte la clé en base64 (recommandé) ou collée telle quelle (JSON).
+  const brut = config.googleServiceAccountJson.trim();
+  const identifiants = JSON.parse(brut.startsWith('{') ? brut : Buffer.from(brut, 'base64').toString('utf8'));
   const auth = new googleAuth.GoogleAuth({
     credentials: identifiants,
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
