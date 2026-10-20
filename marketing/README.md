@@ -7,6 +7,7 @@ Ce dossier contient les outils qui fabriquent les publications de DWTS (affiches
 - Branche locomotive : **DEX** (environ 70 % des posts). **Visuo** : 1 post par semaine. **Logia** : 1 post toutes les deux semaines.
 - Reels = tutoriels courts utiles (Word, page de garde, CV, IA pour étudiants), puis appel à l'action : « DEX le fait pour toi. Écris-nous sur WhatsApp ».
 - Pas de publicité pour le bot de trading Sentinel-Grid.
+- **Jamais de post texte seul** : chaque publication a une image (affiche) ou une vidéo. Facebook limite la portée des posts sans visuel.
 - Contact : WhatsApp 062 67 14 45 (`https://wa.me/24162671445`).
 - Voix off officielle : ElevenLabs **Paul K** (`voice_id` `ecxPjiGTvAfpGEams6ec`), modèle `eleven_v4`, **1 seule prise** par vidéo.
 - Uniquement de vraies réalisations (`assets/img/dex`, `assets/img/visuo`, `assets/img/logia`), jamais d'images inventées.
@@ -15,7 +16,7 @@ Ce dossier contient les outils qui fabriquent les publications de DWTS (affiches
 
 | Jour | Facebook / TikTok / YouTube | Chaîne WhatsApp (publiée à la main) |
 |---|---|---|
-| Lundi | Post texte DEX | Astuce du jour |
+| Lundi | Affiche DEX (accroche courte) | Astuce du jour |
 | Mardi | Reel tuto 1 | Avant / après |
 | Mercredi | Affiche DEX | Offre DEX |
 | Jeudi | Reel tuto 2 | Astuce |
