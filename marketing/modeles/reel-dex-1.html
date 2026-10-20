@@ -1,0 +1,65 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;font-family:Inter,sans-serif;color:#f5f5f7;overflow:hidden;
+ background:radial-gradient(1000px 800px at 85% 10%,#1E6FD9 0%,rgba(30,111,217,0) 60%),linear-gradient(165deg,#0F2A4A 0%,#0a0a0b 70%)}
+.logo{position:absolute;top:110px;left:80px;height:100px}
+.scene{position:absolute;inset:0;opacity:0;animation:show var(--d) linear var(--s) both}
+@keyframes show{0%{opacity:0;transform:translateY(40px)}6%{opacity:1;transform:none}94%{opacity:1}100%{opacity:0}}
+@keyframes last{0%{opacity:0;transform:translateY(40px)}6%{opacity:1;transform:none}100%{opacity:1}}
+.hook{top:0}
+.big{position:absolute;left:80px;right:80px;top:560px;font-size:120px;font-weight:900;line-height:1.02;letter-spacing:-3px}
+.big span{color:#79b0ff}
+.num{position:absolute;left:80px;top:420px;font-size:300px;font-weight:900;color:#1E6FD9;line-height:1}
+.err{position:absolute;left:80px;right:80px;top:780px;font-size:96px;font-weight:900;line-height:1.05;letter-spacing:-2px}
+.fix{position:absolute;left:80px;right:80px;top:1120px;font-size:46px;line-height:1.35;color:#c9d6ea;font-weight:500}
+.fix b{color:#79b0ff}
+.x{position:absolute;right:80px;top:470px;width:170px;height:170px;border-radius:50%;background:#e5484d;font-size:120px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.docs img{position:absolute;width:420px;border-radius:12px;box-shadow:0 30px 70px rgba(0,0,0,.6)}
+.d1{left:70px;top:820px;transform:rotate(-8deg)}
+.d3{right:70px;top:820px;transform:rotate(8deg)}
+.d2{left:330px;top:760px;z-index:2}
+.end .big{top:420px;font-size:110px}
+.cta{position:absolute;bottom:170px;left:80px;right:80px;background:#1E6FD9;border-radius:34px;padding:40px;text-align:center}
+.cta b{display:block;font-size:52px;font-weight:800}
+.cta span{display:block;margin-top:10px;font-size:48px;font-weight:600;color:#dbe8ff}
+.bar{position:absolute;left:0;bottom:0;height:12px;background:#79b0ff;animation:grow 14s linear both}
+@keyframes grow{from{width:0}to{width:100%}}
+</style></head><body>
+<img class="logo" src="assets/img/logo-dex-marque-clair.png">
+
+<div class="scene hook" style="--s:0s;--d:3s">
+ <div class="big">3 erreurs qui font <span>perdre des points</span> à ton exposé 📉</div>
+</div>
+
+<div class="scene" style="--s:3s;--d:2.6s">
+ <div class="num">1</div><div class="x">✕</div>
+ <div class="err">Pas de sommaire</div>
+ <div class="fix">Le prof cherche tes parties.<br><b>Un sommaire automatique</b> se crée en 30 secondes dans Word.</div>
+</div>
+
+<div class="scene" style="--s:5.6s;--d:2.6s">
+ <div class="num">2</div><div class="x">✕</div>
+ <div class="err">Une page de garde bâclée</div>
+ <div class="fix">C'est la première impression.<br><b>Établissement, titre, noms, professeur, année</b> : tout doit y être.</div>
+</div>
+
+<div class="scene" style="--s:8.2s;--d:2.6s">
+ <div class="num">3</div><div class="x">✕</div>
+ <div class="err">Des polices partout</div>
+ <div class="fix">Un document lisible se note mieux.<br><b>Une police, des titres cohérents</b>, des marges régulières.</div>
+</div>
+
+<div class="scene end" style="--s:10.8s;--d:3.2s;animation-name:last">
+ <div class="big">DEX corrige <span>tout ça</span> pour toi.</div>
+ <div class="docs">
+  <img class="d1" src="assets/img/dex/expose-francais.jpg">
+  <img class="d2" src="assets/img/dex/expose-nzebi.jpg">
+  <img class="d3" src="assets/img/dex/expose-anglais.jpg">
+ </div>
+ <div class="cta"><b>Écris-nous sur WhatsApp</b><span>062 67 14 45</span></div>
+</div>
+
+<div class="bar"></div>
+</body></html>
