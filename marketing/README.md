@@ -5,7 +5,11 @@ Ce dossier contient les outils qui fabriquent les publications de DWTS (affiches
 ## Ligne éditoriale
 
 - Branche locomotive : **DEX** (environ 70 % des posts). **Visuo** : 1 post par semaine. **Logia** : 1 post toutes les deux semaines.
-- Reels = tutoriels courts utiles (Word, page de garde, CV, IA pour étudiants), puis appel à l'action : « DEX le fait pour toi. Écris-nous sur WhatsApp ».
+- Reels = tutoriels courts utiles (Word, page de garde, CV, IA pour étudiants), puis appel à l'action.
+- **Un seul bouton partout : « Commander sur WhatsApp »** (affiches, fin des reels, légendes : `📲 Commander sur WhatsApp : wa.me/24162671445`).
+- **Toujours un prix visible** (vrais prix de `tarifs.html`) : CV dès 1 500 XAF, exposé dès 2 500 XAF, affiche dès 2 500 XAF, logo dès 6 500 XAF.
+- **Preuve honnête** : « ✅ Aperçu avant paiement » (vrai pour DEX et Visuo). Jamais de faux avis, fausse urgence ou fausse rareté ; ajouter les vrais avis clients quand il y en aura.
+- Méthode de référence : skill `campagne-pub-ia` (test des 3 secondes, un seul message, bénéfice avant caractéristique).
 - Pas de publicité pour le bot de trading Sentinel-Grid.
 - **Jamais de post texte seul** : chaque publication a une image (affiche) ou une vidéo. Facebook limite la portée des posts sans visuel.
 - Contact : WhatsApp 062 67 14 45 (`https://wa.me/24162671445`).
