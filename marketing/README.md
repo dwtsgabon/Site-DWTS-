@@ -14,7 +14,7 @@ Ce dossier contient les outils qui fabriquent les publications de DWTS (affiches
 
 ## Semaine type
 
-| Jour | Facebook / TikTok / YouTube | Chaîne WhatsApp (publiée à la main) |
+| Jour | Facebook | Chaîne WhatsApp (publiée à la main) |
 |---|---|---|
 | Lundi | Affiche DEX (accroche courte) | Astuce du jour |
 | Mardi | Reel tuto 1 | Avant / après |
@@ -42,4 +42,4 @@ Pour une affiche (1080×1350) : `node render.js modele.html sortie.png 1080 1350
 
 Les médias vont dans `media/<année>-s<semaine>/`. Metricool les lit à l'adresse
 `https://raw.githubusercontent.com/mbadingaryan-sketch/Site-DWTS-/<branche>/media/...`.
-Marque Metricool : `blogId` 7424675, fuseau `Africa/Libreville`. Réseaux connectés : Facebook, TikTok, YouTube.
+Marque Metricool : `blogId` 7424675, fuseau `Africa/Libreville`. **Publier uniquement sur Facebook** (décision d'Elie) ; TikTok et YouTube restent connectés mais ne reçoivent rien. La chaîne WhatsApp est publiée à la main.
