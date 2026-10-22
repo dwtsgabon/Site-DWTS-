@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paiement | DWTS</title>
+  <meta name="description" content="Payez votre commande DWTS par Airtel Money ou Mobicash après avoir validé votre aperçu, puis envoyez la capture de votre paiement.">
+  <meta name="theme-color" content="#0a0a0b">
+  <link rel="icon" type="image/png" href="assets/img/logo-dwts.png?v=202610181716">
+
+  <!-- Police Inter (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&amp;display=swap" rel="stylesheet">
+
+  <!-- Styles du site -->
+  <link rel="stylesheet" href="assets/css/style.css?v=202610181716">
+
+  <!-- Styles propres à cette page (formulaire de preuve de paiement) -->
+  <style>
+    .paiement { padding: 10px 0 90px; }
+    .paiement__grille { display: grid; gap: 28px; grid-template-columns: 1fr; max-width: 1040px; margin: 0 auto; }
+    @media (min-width: 900px) { .paiement__grille { grid-template-columns: 0.9fr 1.1fr; align-items: start; } }
+    .bloc { background: var(--surface); border: 1px solid var(--ligne); border-radius: var(--rayon); padding: clamp(22px, 4vw, 36px); }
+    .bloc h2 { font-size: 1.3rem; margin: 0 0 16px; }
+    .bloc p { color: var(--gris); margin: 0 0 14px; line-height: 1.55; }
+    .etapes-paiement { list-style: none; counter-reset: e; margin: 0 0 22px; padding: 0; display: grid; gap: 12px; }
+    .etapes-paiement li { counter-increment: e; display: flex; gap: 14px; align-items: flex-start; color: var(--blanc); line-height: 1.45; }
+    .etapes-paiement li::before { content: counter(e); flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: .9rem; }
+    .numero { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--surface-2); border: 1px solid var(--ligne); border-radius: 16px; padding: 14px 16px; margin-bottom: 12px; }
+    .numero b { display: block; font-size: 1.25rem; letter-spacing: .02em; }
+    .numero small { color: var(--gris); }
+    .numero button { flex: none; border: 1px solid var(--ligne); background: transparent; color: var(--blanc); border-radius: 999px; padding: 8px 14px; font: inherit; font-size: .85rem; cursor: pointer; }
+    .numero button:hover { border-color: var(--accent); }
+    .titulaire { font-size: .9rem; color: var(--gris); margin-top: 4px; }
+    .alerte { border-left: 3px solid var(--accent); padding: 10px 14px; background: rgba(255, 106, 0, .08); border-radius: 0 12px 12px 0; color: var(--blanc); font-size: .95rem; }
+    .champ { display: grid; gap: 6px; margin-bottom: 16px; }
+    .champ label { font-weight: 600; font-size: .95rem; }
+    .champ label small { color: var(--gris); font-weight: 400; }
+    .champ input, .champ select, .champ textarea { width: 100%; box-sizing: border-box; background: var(--surface-2); color: var(--blanc); border: 1px solid var(--ligne); border-radius: 12px; padding: 12px 14px; font: inherit; font-size: 1rem; }
+    .champ input:focus, .champ select:focus, .champ textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .champ textarea { min-height: 80px; resize: vertical; }
+    .duo { display: grid; gap: 0 14px; grid-template-columns: 1fr; }
+    @media (min-width: 560px) { .duo { grid-template-columns: 1fr 1fr; } }
+    .depot { border: 2px dashed var(--ligne); border-radius: 16px; padding: 18px; text-align: center; color: var(--gris); cursor: pointer; }
+    .depot:hover, .depot:focus-within { border-color: var(--accent); }
+    .depot input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    .depot img { display: block; max-width: 100%; max-height: 260px; margin: 12px auto 0; border-radius: 10px; }
+    .depot img[hidden] { display: none; }
+    .piege { position: absolute; left: -9999px; }
+    .formulaire .bouton { width: 100%; justify-content: center; border: 0; cursor: pointer; font: inherit; }
+    .formulaire .bouton[disabled] { opacity: .6; cursor: wait; }
+    .message { margin-top: 16px; padding: 14px 16px; border-radius: 14px; display: none; line-height: 1.5; }
+    .message--ok { display: block; background: rgba(34, 197, 94, .12); border: 1px solid rgba(34, 197, 94, .4); }
+    .message--erreur { display: block; background: rgba(229, 72, 77, .12); border: 1px solid rgba(229, 72, 77, .45); }
+  </style>
+
+  <!-- Indique que JavaScript est actif (sert aux animations d'apparition) -->
+  <script>document.documentElement.className += ' js';</script>
+</head>
+<body class="page-parrainage">
+
+  <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+  <!-- ===== Navigation fixe ===== -->
+  <header class="nav">
+    <div class="conteneur nav__inner">
+      <a class="marque" href="index.html" aria-label="DWTS, retour à l'accueil">
+        <span class="marque__sigle">DWTS</span>
+        <span class="marque__nom" aria-hidden="true">Digital World<br>Technology <b>Service</b></span>
+      </a>
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu">
+        <span></span><span></span>
+      </button>
+      <nav id="menu" class="nav__liens" aria-label="Navigation principale">
+      <a href="index.html">DWTS</a>
+      <a href="dex.html">DEX</a>
+      <a href="visuo.html">Visuo</a>
+      <a href="logia.html">Logia</a>
+      <a href="tarifs.html">Tarifs</a>
+      <a href="parrainage.html">Parrainage</a>
+        <a class="bouton bouton--petit" href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20j%27ai%20une%20question%20sur%20mon%20paiement." target="_blank" rel="noopener">Commander<span class="sr-only"> sur WhatsApp (nouvel onglet)</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+
+    <!-- ===== En-tête ===== -->
+    <header class="parrain-hero">
+      <div class="conteneur">
+        <p class="surtitre intro">[ Paiement ]</p>
+        <h1 class="titre-section hero__titre intro"><span class="ligne"><span>Vous avez validé</span></span><span class="ligne"><span>votre <span class="degrade-anime">aperçu ?</span></span></span></h1>
+        <p class="intro-section intro">Payez par Airtel Money ou Mobicash, envoyez la capture ici, et recevez votre fichier final sur WhatsApp.</p>
+      </div>
+    </header>
+
+    <section class="paiement">
+      <div class="conteneur paiement__grille">
+
+        <!-- Comment payer -->
+        <div class="bloc">
+          <h2>Comment payer</h2>
+          <ol class="etapes-paiement">
+            <li>Vous voyez l'aperçu de votre travail et vous le validez.</li>
+            <li>Vous payez le montant convenu sur l'un des numéros ci-dessous.</li>
+            <li>Vous envoyez la capture de votre paiement avec ce formulaire.</li>
+            <li>Nous vérifions la réception et vous envoyons le fichier final sur WhatsApp.</li>
+          </ol>
+
+          <div class="numero">
+            <div><small>Airtel Money</small><b data-numero="074741303">074 74 13 03</b></div>
+            <button type="button" data-copier="074741303">Copier</button>
+          </div>
+          <div class="numero">
+            <div><small>Mobicash</small><b data-numero="062671445">062 67 14 45</b></div>
+            <button type="button" data-copier="062671445">Copier</button>
+          </div>
+          <p class="titulaire">Nom affiché : MBWENDI MBADINGA Elie Ryan</p>
+
+          <p class="alerte">Ne payez qu'après avoir vu et validé l'aperçu de votre travail. Votre commande est livrée dès que le paiement est bien reçu sur notre compte.</p>
+        </div>
+
+        <!-- Formulaire de preuve -->
+        <div class="bloc">
+          <h2>Envoyer ma preuve de paiement</h2>
+          <form class="formulaire" id="form-paiement" novalidate>
+            <div class="duo">
+              <div class="champ">
+                <label for="nom">Nom et prénom</label>
+                <input id="nom" name="nom" autocomplete="name" required>
+              </div>
+              <div class="champ">
+                <label for="whatsapp">Numéro WhatsApp</label>
+                <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="06 ou 07…" required>
+              </div>
+            </div>
+
+            <div class="duo">
+              <div class="champ">
+                <label for="branche">Service</label>
+                <select id="branche" name="branche" required>
+                  <option value="">Choisir…</option>
+                  <option>DEX</option>
+                  <option>Visuo</option>
+                  <option>Logia</option>
+                </select>
+              </div>
+              <div class="champ">
+                <label for="montant">Montant payé (XAF)</label>
+                <input id="montant" name="montant" type="number" inputmode="numeric" min="100" step="1" required>
+              </div>
+            </div>
+
+            <div class="champ">
+              <label for="commande">Votre commande <small>(ex. : exposé de français, 6 pages)</small></label>
+              <input id="commande" name="commande" required>
+            </div>
+
+            <div class="duo">
+              <div class="champ">
+                <label for="moyen">Moyen de paiement</label>
+                <select id="moyen" name="moyen" required>
+                  <option value="">Choisir…</option>
+                  <option>Airtel Money (envoi)</option>
+                  <option>Mobicash (envoi)</option>
+                  <option>Dépôt chez un agent</option>
+                </select>
+              </div>
+              <div class="champ">
+                <label for="tid">Numéro de transaction <small>(TID, facultatif)</small></label>
+                <input id="tid" name="tid" placeholder="ex. PP261022.1137.A11819" autocapitalize="characters">
+              </div>
+            </div>
+
+            <div class="champ">
+              <label for="parrain">Code parrain <small>(facultatif)</small></label>
+              <input id="parrain" name="parrain" placeholder="ex. PARRAIN-024" autocapitalize="characters">
+            </div>
+
+            <div class="champ">
+              <span style="font-weight:600;font-size:.95rem">Capture du paiement</span>
+              <label class="depot" for="capture">
+                <span id="depot-texte">Touchez ici pour choisir la capture (SMS ou reçu)</span>
+                <input id="capture" name="capture" type="file" accept="image/*" required>
+                <img id="apercu" alt="Aperçu de la capture" hidden>
+              </label>
+            </div>
+
+            <!-- Champ piège contre les robots : doit rester vide -->
+            <div class="piege" aria-hidden="true"><label for="site">Site</label><input id="site" name="site" tabindex="-1" autocomplete="off"></div>
+
+            <button class="bouton" type="submit">Envoyer ma preuve</button>
+            <div class="message" id="message" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="pied">
+    <div class="conteneur">
+      <div class="pied__grille">
+        <div class="pied__logo">
+          <img src="assets/img/logo-dwts-clair.png?v=202610181716" alt="Logo Digital World Technology Service" width="900" height="715" loading="lazy">
+          <p>Services numériques au Gabon : documents, conception graphique, sites web, logiciels et automatisation.</p>
+        </div>
+        <div>
+          <h2>Nos branches</h2>
+          <ul>
+            <li><a href="dex.html">DEX — DocuExpress</a></li>
+            <li><a href="visuo.html">Visuo — Conception</a></li>
+            <li><a href="logia.html">Logia — Logiciels</a></li>
+            <li><a href="tarifs.html">Tarifs</a></li>
+            <li><a href="parrainage.html">Parrainage</a></li>
+            <li><a href="paiement.html">Paiement</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Nous contacter</h2>
+          <ul class="pied__contact">
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg>
+              <a href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20j%27ai%20une%20question%20sur%20mon%20paiement." target="_blank" rel="noopener">+241 62 67 14 45 (WhatsApp)</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              <a href="mailto:digitalwtservice@gmail.com">digitalwtservice@gmail.com</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="pied__bas">
+        <span>© <span data-annee>2026</span> DWTS — Digital World Technology Service. Gabon.</span>
+        <a href="#contenu">Retour en haut ↑</a>
+      </div>
+    </div>
+    <div class="pied__geant" aria-hidden="true">DWTS</div>
+  </footer>
+
+  <script>
+    // Adresse du script Google (Apps Script) qui reçoit les preuves de paiement.
+    // À remplir après le déploiement décrit dans outils-paiement/README.md.
+    // Tant qu'elle est vide, la preuve est envoyée par WhatsApp à la place.
+    const URL_SCRIPT = '';
+    const WHATSAPP = '24162671445';
+
+    // Boutons « Copier » des numéros de paiement
+    document.querySelectorAll('[data-copier]').forEach(function (bouton) {
+      bouton.addEventListener('click', function () {
+        const numero = bouton.dataset.copier;
+        const fini = function () { bouton.textContent = 'Copié ✓'; setTimeout(function () { bouton.textContent = 'Copier'; }, 1800); };
+        if (navigator.clipboard) navigator.clipboard.writeText(numero).then(fini, fini); else fini();
+      });
+    });
+
+    // Aperçu de la capture choisie
+    const champCapture = document.getElementById('capture');
+    const apercu = document.getElementById('apercu');
+    champCapture.addEventListener('change', function () {
+      const fichier = champCapture.files[0];
+      if (!fichier) return;
+      apercu.src = URL.createObjectURL(fichier);
+      apercu.hidden = false;
+      document.getElementById('depot-texte').textContent = fichier.name;
+    });
+
+    // Réduit la capture (1600 px maximum, JPEG) pour un envoi rapide en 3G
+    function reduireImage(fichier) {
+      return new Promise(function (resolve, reject) {
+        const img = new Image();
+        img.onload = function () {
+          const echelle = Math.min(1, 1600 / Math.max(img.width, img.height));
+          const toile = document.createElement('canvas');
+          toile.width = Math.round(img.width * echelle);
+          toile.height = Math.round(img.height * echelle);
+          toile.getContext('2d').drawImage(img, 0, 0, toile.width, toile.height);
+          resolve(toile.toDataURL('image/jpeg', 0.8).split(',')[1]);
+        };
+        img.onerror = reject;
+        img.src = URL.createObjectURL(fichier);
+      });
+    }
+
+    function afficherMessage(texte, type) {
+      const boite = document.getElementById('message');
+      boite.className = 'message message--' + type;
+      boite.innerHTML = texte;
+    }
+
+    document.getElementById('form-paiement').addEventListener('submit', async function (evenement) {
+      evenement.preventDefault();
+      const form = evenement.target;
+      if (form.site.value) return; // robot
+      if (!form.checkValidity()) {
+        afficherMessage('Merci de remplir tous les champs obligatoires et de joindre la capture.', 'erreur');
+        form.reportValidity();
+        return;
+      }
+
+      const donnees = {
+        nom: form.nom.value.trim(),
+        whatsapp: form.whatsapp.value.trim(),
+        branche: form.branche.value,
+        montant: Number(form.montant.value),
+        commande: form.commande.value.trim(),
+        moyen: form.moyen.value,
+        tid: form.tid.value.trim().toUpperCase(),
+        parrain: form.parrain.value.trim().toUpperCase()
+      };
+
+      // Formulaire pas encore relié au tableau : on bascule sur WhatsApp
+      if (!URL_SCRIPT) {
+        const texte = 'Bonjour DWTS, voici ma preuve de paiement.\n' +
+          'Nom : ' + donnees.nom + '\nService : ' + donnees.branche + '\nCommande : ' + donnees.commande +
+          '\nMontant : ' + donnees.montant + ' XAF\nMoyen : ' + donnees.moyen +
+          (donnees.tid ? '\nTID : ' + donnees.tid : '') + (donnees.parrain ? '\nCode parrain : ' + donnees.parrain : '') +
+          '\n(Je joins la capture juste après ce message.)';
+        window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(texte), '_blank', 'noopener');
+        afficherMessage('WhatsApp s\'ouvre avec votre message. Envoyez-le, puis joignez la capture dans la discussion.', 'ok');
+        return;
+      }
+
+      const bouton = form.querySelector('button[type="submit"]');
+      bouton.disabled = true;
+      bouton.textContent = 'Envoi en cours…';
+      try {
+        donnees.capture = await reduireImage(form.capture.files[0]);
+        await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(donnees) });
+        form.reset();
+        apercu.hidden = true;
+        document.getElementById('depot-texte').textContent = 'Touchez ici pour choisir la capture (SMS ou reçu)';
+        afficherMessage('<b>Preuve bien envoyée, merci !</b><br>Nous vérifions la réception de votre paiement et vous envoyons votre fichier final sur WhatsApp.', 'ok');
+      } catch (erreur) {
+        afficherMessage('L\'envoi n\'a pas abouti. Vérifiez votre connexion, ou <a href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">envoyez la capture sur WhatsApp</a>.', 'erreur');
+      } finally {
+        bouton.disabled = false;
+        bouton.textContent = 'Envoyer ma preuve';
+      }
+    });
+  </script>
+
+  <!-- Bibliothèques (CDN) puis script du site -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="assets/js/main.js?v=202610181716"></script>
+</body>
+</html>
