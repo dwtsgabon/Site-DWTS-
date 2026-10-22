@@ -62,27 +62,15 @@
       <div class="conteneur paiement__grille">
 
         <div class="bloc">
-          <h2>1. Composez votre devis</h2>
+          <h2>1. Cochez ce que vous voulez</h2>
           <div class="champ">
             <label for="branche">Branche</label>
             <select id="branche"><option value="Visuo">Visuo — conception graphique, sites, réseaux</option><option value="Logia">Logia — logiciels et automatisation</option></select>
           </div>
-          <div class="champ">
-            <label for="prestation">Prestation</label>
-            <select id="prestation"></select>
-          </div>
-          <div class="champ">
-            <label for="formule">Formule</label>
-            <select id="formule"></select>
-          </div>
-          <div class="champ">
-            <label for="quantite">Quantité</label>
-            <input id="quantite" type="number" min="1" max="50" value="1" inputmode="numeric">
-          </div>
-          <button class="bouton" type="button" id="ajouter" style="width:100%;justify-content:center;border:0;cursor:pointer;font:inherit">Ajouter au devis</button>
+          <div id="catalogue"></div>
 
-          <h2 style="margin-top:28px">Votre devis</h2>
-          <div id="lignes"><p>Aucune ligne pour l'instant.</p></div>
+          <h2 style="margin-top:28px">Votre sélection</h2>
+          <div id="lignes"><p>Rien de coché pour l'instant.</p></div>
           <p id="totaux" style="color:var(--blanc);font-weight:600"></p>
         </div>
 
@@ -90,7 +78,11 @@
           <h2>2. Où l'envoyer ?</h2>
           <form class="formulaire" id="form-devis" novalidate>
             <div class="champ">
-              <label for="nom">Nom et prénom</label>
+              <label for="entreprise">Nom de l'entreprise <small>(facultatif, il apparaît sur le devis)</small></label>
+              <input id="entreprise" name="entreprise" autocomplete="organization" maxlength="80">
+            </div>
+            <div class="champ">
+              <label for="nom">Votre nom et prénom</label>
               <input id="nom" name="nom" autocomplete="name" required>
             </div>
             <div class="champ">
@@ -166,54 +158,70 @@
     const URL_SCRIPT = window.DWTS_URL_SCRIPT || '';
     const WHATSAPP = '24162671445';
     const CAT = window.DWTS_CATALOGUE || [];
-    const lignes = [];
     const el = function (id) { return document.getElementById(id); };
     function xaf(n) { return Number(n).toLocaleString('fr-FR') + ' XAF'; }
     function echapper(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
     function afficherMessage(texte, type) { const b = el('message'); b.className = 'message message--' + type; b.innerHTML = texte; }
 
-    function remplirPrestations() {
-      const prestations = [];
-      CAT.forEach(function (c) { if (c[0] === el('branche').value && prestations.indexOf(c[1]) === -1) prestations.push(c[1]); });
-      el('prestation').innerHTML = prestations.map(function (p) { return '<option>' + echapper(p) + '</option>'; }).join('');
-      remplirFormules();
+    const choix = {}; // clé "prestation|formule" -> quantité
+    const cle = function (c) { return c[1] + '|' + c[2]; };
+
+    function dessinerCatalogue() {
+      const branche = el('branche').value;
+      Object.keys(choix).forEach(function (k) { delete choix[k]; });
+      let html = '', derniere = '';
+      CAT.filter(function (c) { return c[0] === branche; }).forEach(function (c, i) {
+        if (c[1] !== derniere) { html += '<h3 style="margin:18px 0 6px;font-size:1.02rem">' + echapper(c[1]) + '</h3>'; derniere = c[1]; }
+        html += '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--ligne)">' +
+          '<label style="flex:1;display:flex;gap:10px;align-items:center;cursor:pointer"><input type="checkbox" data-i="' + i + '" style="width:20px;height:20px">' +
+          '<span>' + echapper(c[2]) + ' <small style="color:var(--gris)">' + xaf(c[3]) + (c[4] === 'Mensuel' ? ' / mois' : '') + '</small></span></label>' +
+          '<input type="number" min="1" max="50" value="1" data-q="' + i + '" inputmode="numeric" aria-label="Quantité" style="width:64px;padding:6px;border-radius:8px;border:1px solid var(--ligne);background:var(--surface-2);color:var(--blanc)" hidden></div>';
+      });
+      el('catalogue').innerHTML = html;
+      el('catalogue').dataset.branche = branche;
+      dessiner();
     }
-    function remplirFormules() {
-      el('formule').innerHTML = CAT.filter(function (c) { return c[0] === el('branche').value && c[1] === el('prestation').value; })
-        .map(function (c) { return '<option value="' + echapper(c[2]) + '">' + echapper(c[2]) + ' : ' + xaf(c[3]) + (c[4] === 'Mensuel' ? ' / mois' : '') + '</option>'; }).join('');
+    function lignesChoisies() {
+      const branche = el('branche').value;
+      const liste = CAT.filter(function (c) { return c[0] === branche; });
+      const res = [];
+      el('catalogue').querySelectorAll('input[type=checkbox]:checked').forEach(function (boite) {
+        const i = Number(boite.dataset.i);
+        const q = Math.max(1, Math.min(50, parseInt(el('catalogue').querySelector('[data-q="' + i + '"]').value, 10) || 1));
+        const c = liste[i];
+        res.push({ p: c[1], f: c[2], q: q, prix: c[3], type: c[4] });
+      });
+      return res;
     }
     function dessiner() {
+      const lignes = lignesChoisies();
       let unique = 0, mensuel = 0;
-      el('lignes').innerHTML = lignes.length ? lignes.map(function (l, i) {
+      el('lignes').innerHTML = lignes.length ? lignes.map(function (l) {
         const total = l.prix * l.q;
         if (l.type === 'Mensuel') mensuel += total; else unique += total;
-        return '<p>' + l.q + ' × ' + echapper(l.p) + ' (' + echapper(l.f) + ') : <b>' + xaf(total) + (l.type === 'Mensuel' ? ' / mois' : '') + '</b> ' +
-          '<button type="button" data-retirer="' + i + '" style="background:none;border:0;color:var(--accent);cursor:pointer;font:inherit">Retirer</button></p>';
-      }).join('') : '<p>Aucune ligne pour l\'instant.</p>';
+        return '<p>' + l.q + ' × ' + echapper(l.p) + ' (' + echapper(l.f) + ') : <b>' + xaf(total) + (l.type === 'Mensuel' ? ' / mois' : '') + '</b></p>';
+      }).join('') : '<p>Rien de coché pour l\'instant.</p>';
       el('totaux').innerHTML = lignes.length ? 'Total unique : ' + xaf(unique) + '<br>Total mensuel : ' + xaf(mensuel) + '<br>À payer au démarrage : ' + xaf(unique + mensuel) : '';
     }
-    el('branche').addEventListener('change', function () { lignes.length = 0; dessiner(); remplirPrestations(); });
-    el('prestation').addEventListener('change', remplirFormules);
-    el('ajouter').addEventListener('click', function () {
-      const c = CAT.filter(function (x) { return x[0] === el('branche').value && x[1] === el('prestation').value && x[2] === el('formule').value; })[0];
-      const q = Math.max(1, Math.min(50, parseInt(el('quantite').value, 10) || 1));
-      if (!c || lignes.length >= 20) return;
-      lignes.push({ p: c[1], f: c[2], q: q, prix: c[3], type: c[4] });
-      el('quantite').value = 1;
+    el('branche').addEventListener('change', dessinerCatalogue);
+    el('catalogue').addEventListener('change', function (e) {
+      if (e.target.matches('input[type=checkbox]')) {
+        const champ = el('catalogue').querySelector('[data-q="' + e.target.dataset.i + '"]');
+        champ.hidden = !e.target.checked;
+        if (!e.target.checked) champ.value = 1;
+      }
       dessiner();
     });
-    el('lignes').addEventListener('click', function (e) {
-      const i = e.target.getAttribute && e.target.getAttribute('data-retirer');
-      if (i !== null && i !== undefined) { lignes.splice(Number(i), 1); dessiner(); }
-    });
+    el('catalogue').addEventListener('input', dessiner);
 
     el('form-devis').addEventListener('submit', async function (evenement) {
       evenement.preventDefault();
       const form = evenement.target;
       if (form.site.value) return;
-      if (!lignes.length) { afficherMessage('Ajoutez au moins une prestation à votre devis.', 'erreur'); return; }
+      const lignes = lignesChoisies();
+      if (!lignes.length) { afficherMessage('Cochez au moins une prestation.', 'erreur'); return; }
       if (!form.checkValidity()) { afficherMessage('Merci d\'indiquer votre nom, votre WhatsApp et votre e-mail.', 'erreur'); form.reportValidity(); return; }
-      const donnees = { type: 'devis', branche: el('branche').value, nom: form.nom.value.trim(), whatsapp: form.whatsapp.value.trim(),
+      const donnees = { type: 'devis', branche: el('branche').value, entreprise: form.entreprise.value.trim(), nom: form.nom.value.trim(), whatsapp: form.whatsapp.value.trim(),
         email: form.email.value.trim(), precisions: form.precisions.value.trim(),
         lignes: lignes.map(function (l) { return { p: l.p, f: l.f, q: l.q }; }) };
 
@@ -229,7 +237,7 @@
       try {
         await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(donnees) });
         afficherMessage('<b>Demande envoyée !</b><br>Votre devis arrive en PDF à <b>' + echapper(donnees.email) + '</b> dans quelques instants (pensez à regarder les courriers indésirables).', 'ok');
-        lignes.length = 0; dessiner(); form.reset();
+        form.reset(); dessinerCatalogue();
       } catch (erreur) {
         afficherMessage('L\'envoi n\'a pas abouti. Vérifiez votre connexion, ou <a href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">écrivez-nous sur WhatsApp</a>.', 'erreur');
       } finally {
@@ -237,8 +245,7 @@
         bouton.textContent = 'Recevoir mon devis';
       }
     });
-    remplirPrestations();
-    dessiner();
+    dessinerCatalogue();
   </script>
 
   <!-- Bibliothèques (CDN) puis script du site -->
