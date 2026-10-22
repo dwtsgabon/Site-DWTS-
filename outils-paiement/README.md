@@ -12,7 +12,7 @@ sa commission reste chez DWTS et s'affiche dans un tableau à part, **Commission
 pour voir combien de ventes viennent de ta propre pub, et combien des parrains.
 À chaque statut **Validé**, une **facture PDF au logo de la branche** (DEX, Visuo ou Logia, avec le logo DWTS)
 est créée dans Drive (dossier **DWTS - Factures**), son lien est noté dans la colonne **Facture**,
-et elle t'est envoyée par e-mail, prête à transférer au client sur WhatsApp.
+et elle est envoyée **directement par e-mail au client** (adresse donnée à l'inscription). Sans e-mail connu, elle te revient pour transfert sur WhatsApp.
 
 Le même script fait aussi tourner l'**espace client**, sans serveur :
 - `inscription.html` : le client s'inscrit une fois (nom, WhatsApp, code de son parrain s'il en a un). Il reçoit **son propre code parrain** (PARRAIN-001, PARRAIN-002…) et un **code d'accès** à 4 chiffres.
