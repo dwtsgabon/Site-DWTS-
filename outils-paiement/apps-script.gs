@@ -32,6 +32,7 @@ const CONFIG = {
 const FEUILLE_PAIEMENTS = 'Paiements';
 const FEUILLE_CLIENTS = 'Clients';
 const FEUILLE_COMMISSIONS = 'Commissions';
+const FEUILLE_VERSEMENTS = 'Versements';
 
 // Paiements : A Reçu le | B WhatsApp | C Service | D Montant | E TID | F SMS collé | G Capture
 //             H Code parrain | I Statut | J Commission | K Mois | L Alerte | M Désignation | N Facture
@@ -39,7 +40,9 @@ const ENTETES_PAIEMENTS = ['Reçu le', 'WhatsApp', 'Service', 'Montant (XAF)', '
   'Code parrain', 'Statut', 'Commission (FCFA)', 'Mois', 'Alerte', 'Désignation (facture)', 'Facture'];
 const COL = { WHATSAPP: 2, SERVICE: 3, MONTANT: 4, TID: 5, PARRAIN: 8, STATUT: 9, COMMISSION: 10,
   DESIGNATION: 13, FACTURE: 14 };
-const ENTETES_CLIENTS = ['WhatsApp', 'Nom', 'Code parrain', 'Inscrit le'];
+// Clients : A WhatsApp | B Nom | C Code de son parrain | D Inscrit le | E Son code parrain | F Code d'accès
+const ENTETES_CLIENTS = ['WhatsApp', 'Nom', 'Code de son parrain', 'Inscrit le', 'Son code parrain', 'Code d\'accès'];
+const ENTETES_VERSEMENTS = ['Code parrain', 'Date', 'Montant versé (FCFA)', 'Note'];
 const STATUTS = ['À vérifier', 'Validé', 'Refusé'];
 const SERVICES = ['DEX', 'Visuo', 'Logia'];
 
@@ -59,6 +62,11 @@ function installer() {
   clients.getRange(1, 1, 1, ENTETES_CLIENTS.length).setValues([ENTETES_CLIENTS]).setFontWeight('bold');
   clients.setFrozenRows(1);
   clients.getRange('A:A').setNumberFormat('@'); // garder le 0 devant les numéros
+  clients.getRange('F:F').setNumberFormat('@');
+
+  const versements = classeur.getSheetByName(FEUILLE_VERSEMENTS) || classeur.insertSheet(FEUILLE_VERSEMENTS);
+  versements.getRange(1, 1, 1, ENTETES_VERSEMENTS.length).setValues([ENTETES_VERSEMENTS]).setFontWeight('bold');
+  versements.setFrozenRows(1);
 
   const synthese = classeur.getSheetByName(FEUILLE_COMMISSIONS) || classeur.insertSheet(FEUILLE_COMMISSIONS);
   synthese.clear();
@@ -76,6 +84,113 @@ function installer() {
     .filter(function (d) { return d.getHandlerFunction() === 'surModification'; })
     .forEach(function (d) { ScriptApp.deleteTrigger(d); });
   ScriptApp.newTrigger('surModification').forSpreadsheet(classeur).onEdit().create();
+}
+
+/**
+ * Pages Inscription et Mon espace (lecture JSON) :
+ *   ?action=inscription&nom=…&whatsapp=…&parrain=…  -> { ok, code, pin }
+ *   ?action=espace&whatsapp=…&pin=…                 -> { ok, nom, code, paiements, filleuls, commissions, … }
+ */
+function doGet(e) {
+  const p = e.parameter || {};
+  try {
+    if (p.action === 'inscription') return reponse_(inscrire_(p));
+    if (p.action === 'espace') return reponse_(espace_(p));
+    return reponse_({ ok: false, erreur: 'Action inconnue' });
+  } catch (erreur) {
+    return reponse_({ ok: false, erreur: 'Une erreur est survenue, réessayez plus tard.' });
+  }
+}
+
+/** Inscription unique : code parrain personnel + code d'accès, et code du parrain enregistré une fois. */
+function inscrire_(p) {
+  const numero = normaliserNumero_(p.whatsapp);
+  const nom = String(p.nom || '').trim().slice(0, 80);
+  if (!nom || !numero) return { ok: false, erreur: 'Indiquez votre nom et un numéro WhatsApp valide.' };
+
+  const verrou = LockService.getScriptLock();
+  verrou.waitLock(10000);
+  try {
+    const clients = SpreadsheetApp.getActive().getSheetByName(FEUILLE_CLIENTS);
+    const lignes = clients.getLastRow() > 1 ? clients.getRange(2, 1, clients.getLastRow() - 1, 6).getValues() : [];
+    if (lignes.some(function (l) { return normaliserNumero_(l[0]) === numero; })) {
+      return { ok: false, erreur: 'Ce numéro est déjà inscrit. Ouvrez Mon espace, ou écrivez-nous si vous avez oublié votre code.' };
+    }
+    const parrain = String(p.parrain || '').trim().toUpperCase();
+    if (parrain && !lignes.some(function (l) { return String(l[4]).toUpperCase() === parrain; })) {
+      return { ok: false, erreur: 'Code parrain introuvable. Vérifiez-le, ou laissez la case vide.' };
+    }
+    const proprietes = PropertiesService.getScriptProperties();
+    const suivant = Number(proprietes.getProperty('compteur_parrain') || 0) + 1;
+    proprietes.setProperty('compteur_parrain', String(suivant));
+    const code = 'PARRAIN-' + ('00' + suivant).slice(-3);
+    const pin = String(Math.floor(1000 + Math.random() * 9000));
+    clients.appendRow(["'" + numero, nom, parrain, new Date(), code, "'" + pin]);
+    MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : nouvelle inscription (' + nom + ')',
+      nom + ' (' + numero + ') s\'est inscrit. Son code parrain : ' + code + (parrain ? '. Parrainé par ' + parrain + '.' : '.'));
+    return { ok: true, code: code, pin: pin };
+  } finally {
+    verrou.releaseLock();
+  }
+}
+
+/** Mon espace : paiements et factures du client ; filleuls, gains et solde s'il est parrain. */
+function espace_(p) {
+  const numero = normaliserNumero_(p.whatsapp);
+  const cache = CacheService.getScriptCache();
+  const cleEssais = 'essais_' + numero;
+  const essais = Number(cache.get(cleEssais) || 0);
+  if (!numero) return { ok: false, erreur: 'Numéro WhatsApp invalide.' };
+  if (essais >= 5) return { ok: false, erreur: 'Trop d\'essais. Réessayez dans une heure ou écrivez-nous.' };
+
+  const classeur = SpreadsheetApp.getActive();
+  const clients = classeur.getSheetByName(FEUILLE_CLIENTS);
+  const lignes = clients.getLastRow() > 1 ? clients.getRange(2, 1, clients.getLastRow() - 1, 6).getValues() : [];
+  const client = lignes.filter(function (l) { return normaliserNumero_(l[0]) === numero; })[0];
+  if (!client || String(client[5]).replace(/^'/, '') !== String(p.pin || '').trim()) {
+    cache.put(cleEssais, String(essais + 1), 3600);
+    return { ok: false, erreur: 'Numéro ou code d\'accès incorrect.' };
+  }
+  cache.remove(cleEssais);
+  const code = String(client[4]).toUpperCase();
+  const fuseau = Session.getScriptTimeZone();
+
+  const feuille = classeur.getSheetByName(FEUILLE_PAIEMENTS);
+  const donnees = feuille.getLastRow() > 1 ? feuille.getRange(2, 1, feuille.getLastRow() - 1, ENTETES_PAIEMENTS.length).getValues() : [];
+  const paiements = [];
+  const parMois = {};
+  let gainsTotal = 0;
+  donnees.forEach(function (l) {
+    if (normaliserNumero_(l[COL.WHATSAPP - 1]) === numero) {
+      paiements.push({
+        date: l[0] instanceof Date ? Utilities.formatDate(l[0], fuseau, 'dd/MM/yyyy') : String(l[0]),
+        service: l[COL.SERVICE - 1], montant: Number(l[COL.MONTANT - 1]) || 0,
+        statut: l[COL.STATUT - 1], facture: l[COL.STATUT - 1] === 'Validé' ? l[COL.FACTURE - 1] : ''
+      });
+    }
+    if (code && String(l[COL.PARRAIN - 1]).toUpperCase() === code && l[COL.STATUT - 1] === 'Validé') {
+      const gain = Number(l[COL.COMMISSION - 1]) || 0;
+      const mois = l[10] || '';
+      parMois[mois] = parMois[mois] || { mois: mois, commandes: 0, gains: 0 };
+      parMois[mois].commandes += 1;
+      parMois[mois].gains += gain;
+      gainsTotal += gain;
+    }
+  });
+
+  const versements = classeur.getSheetByName(FEUILLE_VERSEMENTS);
+  const verse = versements && versements.getLastRow() > 1 ?
+    versements.getRange(2, 1, versements.getLastRow() - 1, 3).getValues()
+      .filter(function (l) { return String(l[0]).toUpperCase() === code; })
+      .reduce(function (total, l) { return total + (Number(l[2]) || 0); }, 0) : 0;
+
+  return {
+    ok: true, nom: client[1], code: code,
+    paiements: paiements.reverse(),
+    filleuls: lignes.filter(function (l) { return String(l[2]).toUpperCase() === code; }).length,
+    commissions: Object.keys(parMois).sort().reverse().map(function (m) { return parMois[m]; }),
+    gainsTotal: gainsTotal, verse: verse, solde: gainsTotal - verse
+  };
 }
 
 /** Reçoit une preuve envoyée depuis paiement.html : { whatsapp, sms?, capture? (base64 JPEG) }. */
@@ -187,6 +302,7 @@ function creerFacture_(v) {
 
   const pdf = HtmlService.createHtmlOutput(html).getBlob().getAs('application/pdf').setName(numero + '.pdf');
   const fichier = dossier_(CONFIG.DOSSIER_FACTURES).createFile(pdf);
+  fichier.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); // lisible depuis Mon espace
   MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : facture ' + numero + ' (' + montantTexte + ')',
     'Facture prête pour ' + (client || telephone) + '.\nTransférez le PDF joint au client sur WhatsApp (' + telephone + ').\n' +
     fichier.getUrl(), { attachments: [pdf] });

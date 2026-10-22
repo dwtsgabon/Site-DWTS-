@@ -1,0 +1,46 @@
+/* Pages Paiement, Inscription et Mon espace : blocs, formulaires, messages. */
+.paiement { padding: 10px 0 90px; }
+.paiement__grille { display: grid; gap: 28px; grid-template-columns: 1fr; max-width: 1040px; margin: 0 auto; }
+@media (min-width: 900px) { .paiement__grille { grid-template-columns: 0.9fr 1.1fr; align-items: start; } }
+.bloc { background: var(--surface); border: 1px solid var(--ligne); border-radius: var(--rayon); padding: clamp(22px, 4vw, 36px); }
+.bloc h2 { font-size: 1.3rem; margin: 0 0 16px; }
+.bloc p { color: var(--gris); margin: 0 0 14px; line-height: 1.55; }
+.etapes-paiement { list-style: none; counter-reset: e; margin: 0 0 22px; padding: 0; display: grid; gap: 12px; }
+.etapes-paiement li { counter-increment: e; display: flex; gap: 14px; align-items: flex-start; color: var(--blanc); line-height: 1.45; }
+.etapes-paiement li::before { content: counter(e); flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: .9rem; }
+.numero { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--surface-2); border: 1px solid var(--ligne); border-radius: 16px; padding: 14px 16px; margin-bottom: 12px; }
+.numero b { display: block; font-size: 1.25rem; letter-spacing: .02em; }
+.numero small { color: var(--gris); }
+.numero button { flex: none; border: 1px solid var(--ligne); background: transparent; color: var(--blanc); border-radius: 999px; padding: 8px 14px; font: inherit; font-size: .85rem; cursor: pointer; }
+.numero button:hover { border-color: var(--accent); }
+.titulaire { font-size: .9rem; color: var(--gris); margin-top: 4px; }
+.alerte { border-left: 3px solid var(--accent); padding: 10px 14px; background: rgba(255, 106, 0, .08); border-radius: 0 12px 12px 0; color: var(--blanc); font-size: .95rem; }
+.champ { display: grid; gap: 6px; margin-bottom: 16px; }
+.champ label { font-weight: 600; font-size: .95rem; }
+.champ label small { color: var(--gris); font-weight: 400; }
+.champ input, .champ select, .champ textarea { width: 100%; box-sizing: border-box; background: var(--surface-2); color: var(--blanc); border: 1px solid var(--ligne); border-radius: 12px; padding: 12px 14px; font: inherit; font-size: 1rem; }
+.champ input:focus, .champ select:focus, .champ textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.champ textarea { min-height: 80px; resize: vertical; }
+.depot { border: 2px dashed var(--ligne); border-radius: 16px; padding: 18px; text-align: center; color: var(--gris); cursor: pointer; }
+.depot:hover, .depot:focus-within { border-color: var(--accent); }
+.depot input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.depot img { display: block; max-width: 100%; max-height: 260px; margin: 12px auto 0; border-radius: 10px; }
+.depot img[hidden] { display: none; }
+.piege { position: absolute; left: -9999px; }
+.formulaire .bouton { width: 100%; justify-content: center; border: 0; cursor: pointer; font: inherit; }
+.formulaire .bouton[disabled] { opacity: .6; cursor: wait; }
+.message { margin-top: 16px; padding: 14px 16px; border-radius: 14px; display: none; line-height: 1.5; }
+.message--ok { display: block; background: rgba(34, 197, 94, .12); border: 1px solid rgba(34, 197, 94, .4); }
+.message--erreur { display: block; background: rgba(229, 72, 77, .12); border: 1px solid rgba(229, 72, 77, .45); }
+.resultat { margin-top: 18px; }
+.code-perso { white-space: nowrap; font-size: 1.6rem; font-weight: 800; letter-spacing: .04em; color: var(--accent); }
+.tableau { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.tableau th, .tableau td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--ligne); }
+.tableau th { color: var(--gris); font-weight: 600; }
+.tableau td.nombre, .tableau th.nombre { text-align: right; white-space: nowrap; }
+.chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.chiffre { background: var(--surface-2); border: 1px solid var(--ligne); border-radius: 16px; padding: 14px 16px; }
+.chiffre small { display: block; color: var(--gris); }
+.chiffre b { font-size: 1.35rem; }
+.statut { white-space: nowrap; display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .8rem; background: var(--surface-2); border: 1px solid var(--ligne); }
+.statut--valide { border-color: rgba(34, 197, 94, .5); color: #4ade80; }

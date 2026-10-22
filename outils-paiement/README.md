@@ -11,6 +11,10 @@ et la feuille **Commissions** donne le total à verser par parrain et par mois.
 est créée dans Drive (dossier **DWTS - Factures**), son lien est noté dans la colonne **Facture**,
 et elle t'est envoyée par e-mail, prête à transférer au client sur WhatsApp.
 
+Le même script fait aussi tourner l'**espace client**, sans serveur :
+- `inscription.html` : le client s'inscrit une fois (nom, WhatsApp, code de son parrain s'il en a un). Il reçoit **son propre code parrain** (PARRAIN-001, PARRAIN-002…) et un **code d'accès** à 4 chiffres.
+- `espace.html` (« Mon espace ») : avec son numéro et son code d'accès, il voit ses paiements, ses factures, et, s'il est parrain, ses filleuls, ses gains par mois et son solde (gains moins versements). Après 5 mauvais codes, l'accès est bloqué une heure.
+
 Tout est gratuit (Google Sheets, Drive et Apps Script).
 
 ## 1. Créer le tableau
@@ -23,22 +27,27 @@ Tout est gratuit (Google Sheets, Drive et Apps Script).
 
 `installer` crée aussi le déclencheur qui fabrique les factures : accepter les autorisations demandées (Drive, e-mail, accès aux logos).
 
-Le tableau contient maintenant les feuilles **Paiements**, **Clients** et **Commissions**, et un dossier Drive **DWTS - Preuves de paiement** est créé.
+Le tableau contient maintenant les feuilles **Paiements**, **Clients**, **Commissions** et **Versements**, et un dossier Drive **DWTS - Preuves de paiement** est créé.
 
 ## 2. Mettre le formulaire en ligne
 
 1. Dans Apps Script : **Déployer → Nouveau déploiement**, type **Application Web**.
 2. Exécuter en tant que : **Moi**. Qui a accès : **Tout le monde**.
 3. Cliquer **Déployer**, copier l'adresse qui finit par `/exec`.
-4. Dans `paiement.html`, remplacer `const URL_SCRIPT = '';` par `const URL_SCRIPT = 'https://script.google.com/macros/s/…/exec';`.
+4. Dans `assets/js/config-espace.js`, remplacer `window.DWTS_URL_SCRIPT = '';` par `window.DWTS_URL_SCRIPT = 'https://script.google.com/macros/s/…/exec';`
+   (une seule adresse pour les pages Paiement, Inscription et Mon espace).
 
-Tant que `URL_SCRIPT` est vide, le formulaire ouvre WhatsApp avec le message déjà écrit (le client joint la capture lui-même).
+Tant que l'adresse est vide : Paiement et Inscription ouvrent WhatsApp avec le message déjà écrit ; Mon espace affiche « bientôt disponible ».
 
 ## 3. Utilisation au quotidien
 
-**Inscription d'un client parrainé (une seule fois)** : quand un nouveau client donne un code parrain à sa première commande,
-ajoute une ligne dans **Clients** : son numéro WhatsApp, son nom, le code parrain, la date. C'est tout : ses paiements suivants
-seront reliés à son parrain automatiquement.
+**Inscriptions** : elles arrivent seules dans **Clients** (tu reçois un e-mail). Un client qui s'inscrit par WhatsApp :
+ajoute sa ligne toi-même (numéro, nom, code de son parrain, date, son code parrain, un code d'accès à 4 chiffres).
+Parrains déjà existants avant le site (ex. PARRAIN-024) : les ajouter dans **Clients** avec leur code, puis, dans Apps Script,
+**Paramètres du projet → Propriétés du script** : `compteur_parrain` = le plus grand numéro déjà donné (ex. 24), pour ne pas redonner un code existant.
+Code d'accès oublié : il est dans la colonne **Code d'accès** de **Clients**.
+
+**Versements aux parrains** : chaque versement fait, une ligne dans **Versements** (code parrain, date, montant). « Mon espace » affiche alors le solde à jour.
 
 **À chaque paiement :**
 
