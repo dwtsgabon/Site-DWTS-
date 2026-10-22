@@ -65,8 +65,8 @@
             <h2>Connexion</h2>
             <form class="formulaire" id="form-connexion" novalidate>
               <div class="champ">
-                <label for="c-whatsapp">Numéro WhatsApp</label>
-                <input id="c-whatsapp" name="username" type="tel" inputmode="tel" autocomplete="username" placeholder="06 ou 07…" required>
+                <label for="c-whatsapp">Numéro WhatsApp ou adresse e-mail</label>
+                <input id="c-whatsapp" name="username" type="text" inputmode="email" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="074… ou vous@exemple.com" required>
               </div>
               <div class="champ">
                 <label for="c-pin">Code d'accès <small>(créé à l'inscription)</small></label>
@@ -467,11 +467,12 @@
       bouton.disabled = true;
       bouton.textContent = 'Connexion…';
       const pin = form.password.value.trim();
-      api('connexion', { whatsapp: form.username.value.trim(), pin: pin }).then(function (r) {
+      const identifiant = form.username.value.trim();
+      api('connexion', { identifiant: identifiant, pin: pin }).then(function (r) {
         if (!r.ok) { message('message-connexion', esc(r.erreur), 'erreur'); return; }
         S.ecrire(r.jeton, r.nom);
         effacerMessage('message-connexion');
-        window.dwtsEnregistrerIdentifiants(r.whatsapp, pin, r.nom);
+        window.dwtsEnregistrerIdentifiants(identifiant, pin, r.nom);
         afficher(r);
         ouvrirOnglet(location.hash.slice(1), true);
         majMenu();

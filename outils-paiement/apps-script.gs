@@ -281,6 +281,9 @@ function inscrire_(p) {
     if (c.lignes.some(function (l) { return normaliserNumero_(l[0]) === numero; })) {
       return { ok: false, erreur: 'Ce numéro est déjà inscrit. Connectez-vous, ou écrivez-nous si vous avez oublié votre code.' };
     }
+    if (c.lignes.some(function (l) { return String(l[CL.EMAIL - 1]).trim().toLowerCase() === email; })) {
+      return { ok: false, erreur: 'Cette adresse e-mail est déjà utilisée. Connectez-vous, ou indiquez une autre adresse.' };
+    }
     // Sans code parrain : le code maison DWTS est mis automatiquement
     const parrain = String(p.parrain || '').trim().toUpperCase() || CONFIG.CODE_DWTS;
     if (parrain !== CONFIG.CODE_DWTS && !c.lignes.some(function (l) { return String(l[CL.CODE - 1]).toUpperCase() === parrain; })) {
@@ -302,16 +305,33 @@ function inscrire_(p) {
   return donnees;
 }
 
-/** Connexion avec numéro + code d'accès : renvoie un jeton valable CONFIG.DUREE_SESSION_JOURS jours. */
+/** Client trouvé par son adresse e-mail (colonne E-mail de Clients), ou null. */
+function trouverClientParEmail_(email) {
+  const c = lireClients_();
+  for (let i = 0; i < c.lignes.length; i++) {
+    if (String(c.lignes[i][CL.EMAIL - 1]).trim().toLowerCase() === email) return { feuille: c.feuille, ligne: i + 2, v: c.lignes[i], tous: c.lignes };
+  }
+  return null;
+}
+
+/**
+ * Connexion avec le numéro WhatsApp OU l'adresse e-mail, + code d'accès.
+ * Renvoie un jeton valable CONFIG.DUREE_SESSION_JOURS jours.
+ */
 function connecter_(p) {
-  const numero = normaliserNumero_(p.whatsapp);
-  if (!numero) return { ok: false, erreur: 'Numéro WhatsApp invalide.' };
+  const identifiant = String(p.identifiant || p.whatsapp || '').trim();
+  const parEmail = identifiant.indexOf('@') !== -1;
+  const email = identifiant.toLowerCase();
+  if (parEmail ? !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) : !normaliserNumero_(identifiant)) {
+    return { ok: false, erreur: 'Indiquez votre numéro WhatsApp ou votre adresse e-mail.' };
+  }
   const cache = CacheService.getScriptCache();
-  const cleEssais = 'essais_' + numero;
+  const cleEssais = 'essais_' + (parEmail ? email : normaliserNumero_(identifiant));
   const essais = Number(cache.get(cleEssais) || 0);
   if (essais >= 5) return { ok: false, erreur: 'Trop d\'essais. Réessayez dans une heure ou écrivez-nous.' };
-  const client = trouverClient_(numero);
-  if (!client) return { ok: false, erreur: 'Ce numéro n\'est pas inscrit. Créez votre espace sur la page Inscription.' };
+  const client = parEmail ? trouverClientParEmail_(email) : trouverClient_(normaliserNumero_(identifiant));
+  if (!client) return { ok: false, erreur: (parEmail ? 'Cette adresse e-mail' : 'Ce numéro') + ' n\'est pas inscrit. Créez votre espace sur la page Inscription.' };
+  const numero = normaliserNumero_(client.v[CL.WHATSAPP - 1]);
   if (pinDe_(client) !== String(p.pin || '').trim()) {
     cache.put(cleEssais, String(essais + 1), 3600);
     return { ok: false, erreur: 'Code d\'accès incorrect.' };
@@ -472,6 +492,8 @@ function changerProfil_(p) {
   if (!client) return SESSION_EXPIREE;
   const email = String(p.email || '').trim().toLowerCase().slice(0, 120);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, erreur: 'Adresse e-mail invalide.' };
+  const autre = trouverClientParEmail_(email);
+  if (autre && autre.ligne !== client.ligne) return { ok: false, erreur: 'Cette adresse e-mail est déjà utilisée par un autre compte.' };
   client.feuille.getRange(client.ligne, CL.EMAIL).setValue(email);
   return { ok: true, email: email };
 }
