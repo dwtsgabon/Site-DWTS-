@@ -143,3 +143,19 @@
 .champ textarea.sms-verrouille { background: rgba(34, 197, 94, .06); border-color: rgba(34, 197, 94, .4); cursor: default; }
 .sms-effacer { justify-self: start; border: 1px solid var(--ligne); background: transparent; color: var(--blanc); border-radius: 999px; padding: 7px 14px; font: inherit; font-size: .85rem; cursor: pointer; }
 .sms-effacer[hidden] { display: none; }
+
+/* Capture : consigne et recadrage */
+.aide-capture { font-size: .88rem; color: var(--gris); margin: 0 0 8px !important; }
+.depot input[type=file] { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.recadrage { margin-top: 12px; }
+.recadrage[hidden] { display: none; }
+.recadrage p { margin: 8px 0 !important; }
+.recadrage__scene { position: relative; display: inline-block; max-width: 100%; line-height: 0; user-select: none; -webkit-user-select: none; }
+.recadrage__scene img { display: block; max-width: 100%; max-height: 420px; border-radius: 8px; }
+.recadrage__cadre { position: absolute; border: 2px solid var(--accent); box-shadow: 0 0 0 9999px rgba(0, 0, 0, .55); cursor: move; touch-action: none; border-radius: 2px; }
+.recadrage__scene { overflow: hidden; border-radius: 8px; }
+.recadrage__cadre i { position: absolute; width: 22px; height: 22px; background: var(--accent); border: 2px solid #fff; border-radius: 50%; touch-action: none; }
+.recadrage__cadre i[data-poignee="no"] { left: -11px; top: -11px; cursor: nwse-resize; }
+.recadrage__cadre i[data-poignee="ne"] { right: -11px; top: -11px; cursor: nesw-resize; }
+.recadrage__cadre i[data-poignee="so"] { left: -11px; bottom: -11px; cursor: nesw-resize; }
+.recadrage__cadre i[data-poignee="se"] { right: -11px; bottom: -11px; cursor: nwse-resize; }
