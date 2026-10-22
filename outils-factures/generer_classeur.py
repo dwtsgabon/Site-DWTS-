@@ -37,33 +37,34 @@ def ajouter(branche, prestation, formules, type_="Unique"):
 
 B_S_P = ("Basique", "Standard", "Premium")
 # --- DEX (prix de tarifs.html) ---
-for palier, desc, m1, m2 in [
-    (1, "4 pages ou moins", 2500, 4000), (2, "5 à 9 pages ou images", 4000, 5500),
-    (3, "10 pages ou plus", 5500, 7000), (4, "tableaux, 10 à 14 pages", 7000, 8500),
-    (5, "tableaux, 15 pages ou plus", 8500, 10000)]:
-    ajouter("DEX", f"Exposé palier {palier} ({desc})", [("Mode 1", m1), ("Mode 2", m2)])
-for prestation, m1, m2 in [("CV + lettre de motivation", 1500, 3000), ("Rapport de stage", 7500, 10500),
-                           ("Mémoire Bac+1 à Bac+3", 10500, 13500), ("Document professionnel", 10500, 15500),
-                           ("Master et thèse", 15500, 18500)]:
-    ajouter("DEX", prestation, [("Mode 1", m1), ("Mode 2", m2)])
+# Mode 1 : saisie + mise en forme + correction ; Mode 2 : + amélioration du texte ;
+# Mode 3 : + fiche de synthèse et PowerPoint (soutenance pour rapport, mémoire, master)
+for palier, desc, m1, m2, m3 in [
+    (1, "4 pages ou moins", 2500, 4000, 7000), (2, "5 à 9 pages ou images", 4000, 5500, 8500),
+    (3, "10 pages ou plus", 5500, 7000, 10000), (4, "tableaux, 10 à 14 pages", 7000, 8500, 11500),
+    (5, "tableaux, 15 pages ou plus", 8500, 10000, 13000)]:
+    ajouter("DEX", f"Exposé palier {palier} ({desc})", [("Mode 1", m1), ("Mode 2", m2), ("Mode 3", m3)])
+for prestation, m1, m2, m3 in [("CV + lettre de motivation", 1500, 3000, 4500), ("Rapport de stage", 7500, 10500, 14500),
+                               ("Mémoire Bac+1 à Bac+3", 10500, 13500, 18500), ("Document professionnel", 10500, 15500, 19500),
+                               ("Master et thèse", 15500, 18500, 25000)]:
+    ajouter("DEX", prestation, [("Mode 1", m1), ("Mode 2", m2), ("Mode 3", m3)])
 ajouter("DEX", "Impression page couleur", [("Par page", 500)])
 ajouter("DEX", "Impression page noir et blanc", [("Par page", 200)])
 # --- Visuo ---
 for prestation, prix, type_ in [
     ("Logo", (6500, 10000, 15000), "Unique"), ("Affiche ou flyer", (2500, 4000, 6000), "Unique"),
     ("Carte d'invitation", (2000, 3000, 5000), "Unique"), ("Carte de visite", (2000, 3000, 5000), "Unique"),
-    ("Modèle de facture ou devis", (2500, 3500, 5000), "Unique"),
-    ("Vidéo publicitaire 15 à 30 s", (7500, 9500, 15000), "Unique"),
+    ("Vidéo publicitaire (à partir de 15 s, prix de départ)", (7500, 9500, 15000), "Unique"),
     ("Site vitrine", (12500, 25000, 45000), "Unique"), ("Maintenance du site", (2500, 5000, 10000), "Mensuel"),
-    ("Gestion des pages", (7000, 12500, 22000), "Mensuel")]:
+    ("Gestion de la page Facebook", (7000, 12500, 22000), "Mensuel"),
+    ("Gestion du compte Instagram", (8000, 14000, 24500), "Mensuel"),
+    ("Gestion du compte WhatsApp Business", (6500, 11500, 20500), "Mensuel")]:
     ajouter("Visuo", prestation, list(zip(B_S_P, prix)), type_)
-ajouter("Visuo", "Gestion du compte WhatsApp", [("Toutes formules", 10000)], "Mensuel")
-ajouter("Visuo", "Publication réseaux", [("À l'unité", 1000)])
-ajouter("Visuo", "Pack Starter (1 affiche, 4 publications)", [("Pack", 6000)], "Mensuel")
-ajouter("Visuo", "Pack Basique (2 affiches, 8 publications, 1 vidéo)", [("Pack", 18000)], "Mensuel")
-ajouter("Visuo", "Pack Standard (4 affiches, 12 publications, 2 vidéos, maintenance)", [("Pack", 50000)], "Mensuel")
-ajouter("Visuo", "Pack Premium (6 affiches, 20 publications, 4 vidéos, maintenance)", [("Pack", 115000)], "Mensuel")
-ajouter("Visuo", "Site + facture avec un pack", list(zip(B_S_P, (15000, 28000, 50000))))
+ajouter("Visuo", "Pack Starter (Facebook ; 1 affiche, 4 publications)", [("Pack", 6000)], "Mensuel")
+ajouter("Visuo", "Pack Basique (Facebook + WhatsApp Business ; 2 affiches, 8 publications, 1 vidéo)", [("Pack", 18000)], "Mensuel")
+ajouter("Visuo", "Pack Standard (Facebook + Instagram + WhatsApp Business ; 4 affiches, 12 publications, 2 vidéos, maintenance du site)", [("Pack", 50000)], "Mensuel")
+ajouter("Visuo", "Pack Premium (Facebook + Instagram + WhatsApp Business ; 6 affiches, 20 publications, 4 vidéos, maintenance du site)", [("Pack", 115000)], "Mensuel")
+ajouter("Visuo", "Pack Vitrine (site vitrine Basique + 1er mois du Pack Basique, puis 18 000 / mois)", [("Pack", 28000)])
 # --- Logia ---
 for prestation, prix in [("Automatisation", (7500, 15000, 30000)), ("Bot WhatsApp", (15000, 30000, 60000)),
                          ("Logiciel de gestion", (45000, 90000, 180000))]:

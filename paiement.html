@@ -14,7 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&amp;display=swap" rel="stylesheet">
 
   <!-- Styles du site -->
-  <link rel="stylesheet" href="assets/css/style.css?v=202610181716">
+  <link rel="stylesheet" href="assets/css/style.css?v=202610231">
 
   <!-- Styles des pages Paiement, Inscription et Mon espace -->
   <link rel="stylesheet" href="assets/css/espace.css?v=202610221">
@@ -64,25 +64,22 @@
         <div class="bloc" id="simulateur-prix">
           <h2>Combien je paie ?</h2>
           <div class="champ">
-            <label for="sp-prestation">Prestation DEX</label>
-            <select id="sp-prestation"></select>
+            <label for="sp-recherche">Cherchez votre prestation</label>
+            <input id="sp-recherche" list="sp-liste" placeholder="Ex. exposé, rapport, logo, Facebook…" autocomplete="off">
+            <datalist id="sp-liste"></datalist>
           </div>
-          <div class="champ">
-            <label for="sp-mode">Mode</label>
-            <select id="sp-mode"></select>
+          <div class="champ" id="sp-bloc-formule" hidden style="display:none">
+            <label for="sp-formule">Mode ou formule</label>
+            <select id="sp-formule"></select>
           </div>
-          <div class="champ">
+          <button class="bouton" type="button" id="sp-ajouter" style="width:100%;justify-content:center;border:0;cursor:pointer;font:inherit" disabled>Ajouter</button>
+          <div id="sp-lignes" style="margin-top:16px"></div>
+          <div class="champ" style="margin-top:12px">
             <label style="display:flex;gap:10px;align-items:center;cursor:pointer"><input id="sp-impression" type="checkbox" style="width:20px;height:20px"> Je veux aussi l'impression <small>(Port-Gentil uniquement)</small></label>
           </div>
-          <div id="sp-options" hidden>
-            <div class="champ">
-              <label for="sp-pages">Nombre de pages à imprimer</label>
-              <input id="sp-pages" type="number" min="1" max="500" value="10" inputmode="numeric">
-            </div>
-            <div class="champ">
-              <label for="sp-couleur">Type d'impression</label>
-              <select id="sp-couleur"><option value="noirblanc">Noir et blanc</option><option value="couleur">Couleur</option></select>
-            </div>
+          <div id="sp-options" hidden style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="champ"><label for="sp-couleur">Pages en couleur</label><input id="sp-couleur" type="number" min="0" max="500" value="0" inputmode="numeric"></div>
+            <div class="champ"><label for="sp-nb">Pages en noir et blanc</label><input id="sp-nb" type="number" min="0" max="500" value="0" inputmode="numeric"></div>
           </div>
           <p id="sp-total" style="color:var(--blanc);font-weight:600;margin:0"></p>
           <p style="margin-top:8px"><small>Prix indicatif : le montant exact vous est confirmé avant le paiement. L'impression n'est proposée qu'à Port-Gentil ; ailleurs, vous recevez le PDF prêt à imprimer.</small></p>
@@ -196,44 +193,75 @@
   </footer>
 
   <script src="assets/js/config-espace.js"></script>
-  <script src="assets/js/catalogue-dex.js"></script>
+  <script src="assets/js/catalogue-complet.js"></script>
   <script>
     // Adresse du script Google : assets/js/config-espace.js (vide = envoi par WhatsApp à la place)
     const URL_SCRIPT = window.DWTS_URL_SCRIPT || '';
     const WHATSAPP = '24162671445';
 
-    // Simulateur « Combien je paie ? » (prestation DEX + impression facultative)
+    // Simulateur « Combien je paie ? » : recherche dans toutes les prestations + impression couleur / noir et blanc
     (function () {
-      const DEX = window.DWTS_DEX || [];
+      const TOUT = window.DWTS_TOUT || [];
       const IMP = window.DWTS_IMPRESSION || { couleur: 500, noirblanc: 200 };
       const g = function (id) { return document.getElementById(id); };
       const xaf = function (n) { return Number(n).toLocaleString('fr-FR') + ' XAF'; };
-      const prestations = [];
-      DEX.forEach(function (c) { if (prestations.indexOf(c[0]) === -1) prestations.push(c[0]); });
-      g('sp-prestation').innerHTML = prestations.map(function (p) { return '<option>' + p.replace(/&/g, '&amp;') + '</option>'; }).join('');
-      function modes() {
-        g('sp-mode').innerHTML = DEX.filter(function (c) { return c[0] === g('sp-prestation').value; })
-          .map(function (c) { return '<option value="' + c[1] + '">' + c[1] + ' : ' + xaf(c[2]) + '</option>'; }).join('');
-        calculer();
+      const esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      const libelle = function (c) { return c[0] + ' · ' + c[1]; };
+      const libelles = [];
+      TOUT.forEach(function (c) { if (libelles.indexOf(libelle(c)) === -1) libelles.push(libelle(c)); });
+      g('sp-liste').innerHTML = libelles.map(function (l) { return '<option value="' + esc(l) + '">'; }).join('');
+      const lignes = [];
+
+      let dernier = null;
+      function choisir() {
+        if (g('sp-recherche').value === dernier) return; // même prestation : on garde le mode choisi
+        dernier = g('sp-recherche').value;
+        const choix = TOUT.filter(function (c) { return libelle(c) === g('sp-recherche').value; });
+        g('sp-bloc-formule').hidden = !choix.length;
+        g('sp-bloc-formule').style.display = choix.length ? '' : 'none';
+        g('sp-ajouter').disabled = !choix.length;
+        g('sp-formule').innerHTML = choix.map(function (c, i) {
+          return '<option value="' + i + '">' + esc(c[2]) + ' : ' + xaf(c[3]) + (c[4] === 'Mensuel' ? ' / mois' : '') + '</option>';
+        }).join('');
       }
       function calculer() {
-        const ligne = DEX.filter(function (c) { return c[0] === g('sp-prestation').value && c[1] === g('sp-mode').value; })[0];
-        if (!ligne) return;
+        let total = 0;
+        const texte = lignes.map(function (l, i) {
+          total += l[3];
+          return esc(l[1]) + ' (' + esc(l[2]) + ') : ' + xaf(l[3]) + (l[4] === 'Mensuel' ? ' / mois' : '') +
+            ' <button type="button" data-retirer="' + i + '" style="background:none;border:0;color:var(--accent);cursor:pointer;font:inherit">Retirer</button>';
+        });
+        g('sp-lignes').innerHTML = texte.length ? '<p>' + texte.join('<br>') + '</p>' : '';
         const impression = g('sp-impression').checked;
         g('sp-options').hidden = !impression;
-        let texte = g('sp-prestation').value + ' (' + ligne[1] + ') : ' + xaf(ligne[2]);
-        let total = ligne[2];
+        g('sp-options').style.display = impression ? 'grid' : 'none';
+        let detail = '';
         if (impression) {
-          const pages = Math.max(1, Math.min(500, parseInt(g('sp-pages').value, 10) || 1));
-          const prix = pages * IMP[g('sp-couleur').value];
+          const coul = Math.max(0, Math.min(500, parseInt(g('sp-couleur').value, 10) || 0));
+          const nb = Math.max(0, Math.min(500, parseInt(g('sp-nb').value, 10) || 0));
+          const prix = coul * IMP.couleur + nb * IMP.noirblanc;
           total += prix;
-          texte += '<br>Impression ' + pages + ' page' + (pages > 1 ? 's' : '') + ' (' + (g('sp-couleur').value === 'couleur' ? 'couleur ' + IMP.couleur : 'noir et blanc ' + IMP.noirblanc) + ' F la page) : ' + xaf(prix);
+          detail = 'Impression : ' + coul + ' page(s) couleur × ' + IMP.couleur + ' F + ' + nb + ' page(s) noir et blanc × ' + IMP.noirblanc + ' F = ' + xaf(prix) + '<br>';
         }
-        g('sp-total').innerHTML = texte + '<br><span style="font-size:1.2rem">Total à payer : ' + xaf(total) + '</span>';
+        g('sp-total').innerHTML = (lignes.length || impression) ? detail + '<span style="font-size:1.2rem">Total à payer : ' + xaf(total) + '</span>' : '';
       }
-      g('sp-prestation').addEventListener('change', modes);
-      ['sp-mode', 'sp-impression', 'sp-pages', 'sp-couleur'].forEach(function (id) { g(id).addEventListener('input', calculer); g(id).addEventListener('change', calculer); });
-      modes();
+      g('sp-recherche').addEventListener('input', choisir);
+      g('sp-recherche').addEventListener('change', choisir);
+      g('sp-ajouter').addEventListener('click', function () {
+        const choix = TOUT.filter(function (c) { return libelle(c) === g('sp-recherche').value; });
+        const c = choix[Number(g('sp-formule').value)];
+        if (!c || lignes.length >= 15) return;
+        lignes.push(c);
+        g('sp-recherche').value = '';
+        choisir();
+        calculer();
+      });
+      g('sp-lignes').addEventListener('click', function (e) {
+        const i = e.target.getAttribute && e.target.getAttribute('data-retirer');
+        if (i !== null && i !== undefined) { lignes.splice(Number(i), 1); calculer(); }
+      });
+      ['sp-impression', 'sp-couleur', 'sp-nb'].forEach(function (id) { g(id).addEventListener('input', calculer); g(id).addEventListener('change', calculer); });
+      calculer();
     })();
 
     // Boutons « Copier » des numéros de paiement

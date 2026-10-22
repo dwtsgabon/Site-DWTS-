@@ -1577,7 +1577,7 @@ body::after {
 ol { list-style: none; }
 
 /* DEX : 2 modes, grille des exposés par paliers, règles */
-.cartes-modes { grid-template-columns: repeat(2, 1fr); max-width: 900px; }
+.cartes-modes { grid-template-columns: repeat(3, 1fr); }
 .vignettes--deux { grid-template-columns: repeat(2, 1fr); }
 .carte-paliers { grid-column: 1 / -1; }
 .paliers { display: grid; gap: 10px; transform: translateZ(30px); }
