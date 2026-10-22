@@ -104,6 +104,10 @@ function installer() {
   dossierCaptures_();
   dossier_(CONFIG.DOSSIER_FACTURES);
 
+  // Mise en forme des feuilles et tableau de bord (couleurs, graphiques)
+  styliserFeuilles_(classeur, synthese);
+  creerTableauDeBord_(classeur, sep);
+
   // Déclencheur « à la modification » autorisé (nécessaire pour créer les factures PDF)
   ScriptApp.getProjectTriggers()
     .filter(function (d) { return d.getHandlerFunction() === 'surModification'; })
@@ -254,7 +258,7 @@ function doPost(e) {
 
     feuille.appendRow([
       maintenant, "'" + numero, 'DEX', lu.montant || '', lu.tid, sms, lienCapture,
-      parrain, 'À vérifier', '', Utilities.formatDate(maintenant, fuseau, 'yyyy-MM'), alerte, '', ''
+      parrain, 'À vérifier', '', "'" + Utilities.formatDate(maintenant, fuseau, 'yyyy-MM'), alerte, '', ''
     ]);
 
     MailApp.sendEmail(CONFIG.EMAIL_ALERTE,
@@ -303,6 +307,216 @@ function traiterLigne_(feuille, ligne, statutModifie) {
     const lien = creerFacture_(valeurs);
     feuille.getRange(ligne, COL.FACTURE).setValue(lien);
   }
+}
+
+// ---------- Mise en forme et tableau de bord ----------
+
+const THEME = {
+  marine: '#0F2A4A',   // bandeaux et en-têtes
+  bleu: '#1E6FD9',     // DWTS / DEX
+  orange: '#F46524',   // titres de section
+  texte: '#334960',
+  gris: '#576475',
+  carte: '#F3F6FA',
+  ligne: '#DCE3EC',
+  police: 'Lato'
+};
+
+/** En-têtes marine, lignes alternées, statuts colorés, formats XAF sur les feuilles de données. */
+function styliserFeuilles_(classeur, synthese) {
+  const feuilles = [
+    [FEUILLE_PAIEMENTS, ENTETES_PAIEMENTS.length], [FEUILLE_CLIENTS, ENTETES_CLIENTS.length],
+    [FEUILLE_VERSEMENTS, ENTETES_VERSEMENTS.length], [FEUILLE_DEVIS, ENTETES_DEVIS.length]
+  ];
+  feuilles.forEach(function (f) {
+    const feuille = classeur.getSheetByName(f[0]);
+    if (!feuille) return;
+    feuille.getBandings().forEach(function (b) { b.remove(); });
+    const plage = feuille.getRange(1, 1, Math.max(feuille.getMaxRows(), 2), f[1]);
+    plage.setFontFamily(THEME.police).setFontSize(10).setVerticalAlignment('middle');
+    plage.applyRowBanding(SpreadsheetApp.BandingTheme.BLUE, true, false)
+      .setHeaderRowColor(THEME.marine).setFirstRowColor('#FFFFFF').setSecondRowColor(THEME.carte);
+    feuille.getRange(1, 1, 1, f[1]).setFontColor('#FFFFFF').setFontWeight('bold').setWrap(true);
+    feuille.setRowHeight(1, 36);
+    feuille.setTabColor(THEME.marine);
+  });
+
+  const paiements = classeur.getSheetByName(FEUILLE_PAIEMENTS);
+  paiements.getRange('D:D').setNumberFormat('#,##0 "XAF"');
+  paiements.getRange('J:J').setNumberFormat('#,##0 "XAF"');
+  paiements.getRange('A:A').setNumberFormat('dd/MM/yyyy HH:mm');
+  const statut = paiements.getRange(2, COL.STATUT, paiements.getMaxRows() - 1, 1);
+  const regle = function (texte, fond, encre) {
+    return SpreadsheetApp.newConditionalFormatRule().whenTextEqualTo(texte).setBackground(fond).setFontColor(encre).setBold(true).setRanges([statut]).build();
+  };
+  paiements.setConditionalFormatRules([
+    regle('Validé', '#D9F2E3', '#1A7F37'), regle('À vérifier', '#FFF2CC', '#9A6700'), regle('Refusé', '#FDE2E1', '#C0392B')]);
+  paiements.setTabColor(THEME.bleu);
+
+  const devis = classeur.getSheetByName(FEUILLE_DEVIS);
+  if (devis) devis.getRange('I:J').setNumberFormat('#,##0 "XAF"');
+  const versements = classeur.getSheetByName(FEUILLE_VERSEMENTS);
+  if (versements) versements.getRange('C:C').setNumberFormat('#,##0 "XAF"');
+
+  synthese.getRange('A1:K1').setFontFamily(THEME.police).setFontColor(THEME.orange).setFontSize(12);
+  synthese.getRange('A2:K40').setFontFamily(THEME.police);
+  synthese.setTabColor(THEME.orange);
+}
+
+/** Onglet « Tableau de bord » : indicateurs clés, évolution mensuelle, branches, statuts, top parrains et graphiques. */
+function creerTableauDeBord_(classeur, sep) {
+  const f = function (formule) { return sep === ';' ? formule : formule.replace(/;/g, ','); }; // formules écrites avec « ; »
+  const nom = 'Tableau de bord';
+  const tb = classeur.getSheetByName(nom) || classeur.insertSheet(nom, 0);
+  tb.getCharts().forEach(function (g) { tb.removeChart(g); });
+  tb.clear();
+  tb.getRange(1, 1, tb.getMaxRows(), tb.getMaxColumns()).breakApart();
+  tb.setHiddenGridlines(true);
+  tb.setTabColor(THEME.orange);
+  if (tb.getMaxColumns() < 16) tb.insertColumnsAfter(tb.getMaxColumns(), 16 - tb.getMaxColumns());
+  if (tb.getMaxRows() < 80) tb.insertRowsAfter(tb.getMaxRows(), 80 - tb.getMaxRows());
+  tb.getRange(1, 1, 80, 16).setFontFamily(THEME.police).setFontColor(THEME.gris).setVerticalAlignment('middle');
+  tb.setColumnWidth(1, 24);
+  tb.setColumnWidth(2, 190);
+  tb.setColumnWidths(3, 12, 88);
+  tb.setColumnWidths(15, 2, 100);
+
+  const P = FEUILLE_PAIEMENTS, C = FEUILLE_CLIENTS, D = FEUILLE_DEVIS, DW = CONFIG.CODE_DWTS;
+  const xaf = '#,##0 "XAF"';
+
+  // Bandeau
+  tb.getRange('A1:P2').setBackground(THEME.marine);
+  tb.setRowHeight(1, 46);
+  tb.getRange('B1').setValue('DWTS · Tableau de bord').setFontColor('#FFFFFF').setFontSize(18).setFontWeight('bold').setFontFamily('Raleway');
+  tb.getRange('B2').setValue('Digital World Technology Service · données en direct (Paiements, Clients, Devis, Versements)').setFontColor('#B7C4D6').setFontSize(9);
+  tb.getRange('O1').setFormula(f('="Mis à jour : "&TEXT(NOW();"dd/mm/yyyy hh:mm")')).setFontColor('#B7C4D6').setFontSize(9).setHorizontalAlignment('right');
+  tb.getRange('O1:P1').merge();
+
+  // Cartes d'indicateurs : [ligne, colonne, titre, formule, format, couleur]
+  const debutMois = 'DATE(YEAR(TODAY());MONTH(TODAY());1)';
+  const cartes = [
+    [4, 3, 'CHIFFRE D\'AFFAIRES', '=SUMIFS(' + P + '!D:D;' + P + '!I:I;"Validé")', xaf, THEME.bleu],
+    [4, 5, 'CA DU MOIS', '=SUMIFS(' + P + '!D:D;' + P + '!I:I;"Validé";' + P + '!A:A;">="&' + debutMois + ')', xaf, THEME.bleu],
+    [4, 7, 'PAIEMENTS VALIDÉS', '=COUNTIF(' + P + '!I:I;"Validé")', '0', THEME.texte],
+    [4, 9, 'PANIER MOYEN', '=IFERROR(C5/G5;0)', xaf, THEME.texte],
+    [4, 11, 'À VÉRIFIER', '=COUNTIF(' + P + '!I:I;"À vérifier")', '0', '#9A6700'],
+    [4, 13, 'DEVIS ENVOYÉS', '=COUNTA(' + D + '!B2:B)', '0', THEME.orange],
+    [7, 3, 'CLIENTS INSCRITS', '=COUNTA(' + C + '!A2:A)', '0', THEME.texte],
+    [7, 5, 'NOUVEAUX CE MOIS', '=COUNTIFS(' + C + '!D:D;">="&' + debutMois + ')', '0', THEME.texte],
+    [7, 7, 'PARRAINS ACTIFS', '=IFERROR(COUNTUNIQUE(FILTER(' + C + '!C2:C;' + C + '!C2:C<>"";' + C + '!C2:C<>"' + DW + '"));0)', '0', THEME.texte],
+    [7, 9, 'COMMISSIONS À VERSER', '=SUMIFS(' + P + '!J:J;' + P + '!I:I;"Validé";' + P + '!H:H;"<>' + DW + '")-SUM(' + FEUILLE_VERSEMENTS + '!C2:C)', xaf, '#C0392B'],
+    [7, 11, 'COMMISSIONS DWTS', '=SUMIFS(' + P + '!J:J;' + P + '!I:I;"Validé";' + P + '!H:H;"' + DW + '")', xaf, '#1A7F37'],
+    [7, 13, 'MONTANT DES DEVIS', '=SUM(' + D + '!I2:J)', xaf, THEME.orange]
+  ];
+  tb.getRange('B4').setValue('VENTES');
+  tb.getRange('B7').setValue('CLIENTS & PARRAINAGE');
+  tb.getRange('B4:B8').setFontColor(THEME.orange).setFontWeight('bold').setFontSize(10);
+  cartes.forEach(function (c) {
+    const titre = tb.getRange(c[0], c[1], 1, 2).merge();
+    const valeur = tb.getRange(c[0] + 1, c[1], 1, 2).merge();
+    titre.setValue(c[2]).setFontSize(8).setFontWeight('bold').setFontColor('#6C7687');
+    valeur.setFormula(f(c[3])).setNumberFormat(c[4]).setFontSize(16).setFontWeight('bold').setFontColor(c[5]);
+    tb.getRange(c[0], c[1], 2, 2).setBackground(THEME.carte).setHorizontalAlignment('center')
+      .setBorder(true, true, true, true, null, null, THEME.ligne, SpreadsheetApp.BorderStyle.SOLID);
+  });
+  [4, 7].forEach(function (l) { tb.setRowHeight(l, 24); tb.setRowHeight(l + 1, 40); });
+
+  // Évolution mensuelle (année en cours)
+  const titreSection = function (cellule, texte) {
+    tb.getRange(cellule).setValue(texte).setFontFamily('Raleway').setFontSize(18).setFontWeight('bold').setFontColor(THEME.orange);
+  };
+  titreSection('B10', 'Évolution mensuelle');
+  const ligneMois = [];
+  for (let m = 1; m <= 12; m++) ligneMois.push(f('=DATE(YEAR(TODAY());' + m + ';1)'));
+  tb.getRange('C11:N11').setFormulas([ligneMois]).setNumberFormat('mmm yyyy');
+  tb.getRange('O11').setValue('Total');
+  tb.getRange('P11').setValue('Moyenne');
+  tb.getRange('B11:P11').setFontWeight('bold').setFontColor(THEME.texte).setHorizontalAlignment('center')
+    .setBorder(null, null, true, null, null, null, THEME.marine, SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
+  const dans = function (feuille, col) {
+    return feuille + '!$' + col + ':$' + col + ';">="&C$11;' + feuille + '!$' + col + ':$' + col + ';"<"&EDATE(C$11;1)';
+  };
+  const lignes = [
+    ['Chiffre d\'affaires', '=SUMIFS(' + P + '!$D:$D;' + P + '!$I:$I;"Validé";' + dans(P, 'A') + ')', xaf, 'sum'],
+    ['Paiements validés', '=COUNTIFS(' + P + '!$I:$I;"Validé";' + dans(P, 'A') + ')', '0', 'sum'],
+    ['Panier moyen', '=IFERROR(C12/C13;0)', xaf, 'ratio'],
+    ['Nouveaux clients', '=COUNTIFS(' + dans(C, 'D') + ')', '0', 'sum'],
+    ['Devis envoyés', '=COUNTIFS(' + dans(D, 'A') + ')', '0', 'sum'],
+    ['Montant des devis', '=SUMIFS(' + D + '!$I:$I;' + dans(D, 'A') + ')+SUMIFS(' + D + '!$J:$J;' + dans(D, 'A') + ')', xaf, 'sum'],
+    ['Commissions parrains', '=SUMIFS(' + P + '!$J:$J;' + P + '!$I:$I;"Validé";' + P + '!$H:$H;"<>' + DW + '";' + dans(P, 'A') + ')', xaf, 'sum'],
+    ['Commissions DWTS', '=SUMIFS(' + P + '!$J:$J;' + P + '!$I:$I;"Validé";' + P + '!$H:$H;"' + DW + '";' + dans(P, 'A') + ')', xaf, 'sum']
+  ];
+  lignes.forEach(function (l, i) {
+    const r = 12 + i;
+    tb.getRange(r, 2).setValue(l[0]).setFontWeight('bold').setFontColor(THEME.texte);
+    const formules = [];
+    for (let c = 0; c < 12; c++) {
+      const col = String.fromCharCode(67 + c); // C..N
+      formules.push(f(l[1].replace(/C\$11/g, col + '$11').replace(/C12\/C13/g, col + '12/' + col + '13')));
+    }
+    tb.getRange(r, 3, 1, 12).setFormulas([formules]).setNumberFormat(l[2]).setFontColor(THEME.gris);
+    tb.getRange(r, 15).setFormula(l[3] === 'ratio' ? f('=IFERROR(O12/O13;0)') : '=SUM(C' + r + ':N' + r + ')');
+    tb.getRange(r, 16).setFormula(l[3] === 'ratio' ? f('=IFERROR(O12/O13;0)') : f('=IFERROR(AVERAGE(C' + r + ':N' + r + ');0)'));
+    tb.getRange(r, 15, 1, 2).setNumberFormat(l[2]).setFontWeight('bold').setFontColor('#6C7687');
+    tb.getRange(r, 2, 1, 15).setBorder(null, null, true, null, null, null, THEME.ligne, SpreadsheetApp.BorderStyle.SOLID);
+  });
+  tb.getRange('C12:P19').setHorizontalAlignment('right');
+
+  tb.insertChart(tb.newChart().setChartType(Charts.ChartType.COMBO)
+    .addRange(tb.getRange('B11:N13')).setTransposeRowsAndColumns(true).setNumHeaders(1)
+    .setOption('title', 'Chiffre d\'affaires et paiements par mois').setOption('legend', { position: 'top' })
+    .setOption('colors', [THEME.bleu, THEME.orange])
+    .setOption('seriesType', 'bars').setOption('series', { 1: { type: 'line', targetAxisIndex: 1, pointSize: 5 } })
+    .setOption('vAxes', { 0: { title: 'XAF', minValue: 0 }, 1: { title: 'Paiements', minValue: 0 } })
+    .setOption('fontName', THEME.police).setOption('width', 1250).setOption('height', 320)
+    .setPosition(21, 2, 0, 0).build());
+
+  // Par branche
+  titreSection('B39', 'Par branche');
+  tb.getRange('B40:E40').setValues([['Branche', 'Chiffre d\'affaires', 'Paiements', 'Part du CA']]);
+  SERVICES.forEach(function (branche, i) {
+    const r = 41 + i;
+    tb.getRange(r, 2).setValue(branche).setFontWeight('bold').setFontColor(CONFIG.COULEURS[branche]);
+    tb.getRange(r, 3).setFormula(f('=SUMIFS(' + P + '!D:D;' + P + '!I:I;"Validé";' + P + '!C:C;B' + r + ')')).setNumberFormat(xaf);
+    tb.getRange(r, 4).setFormula(f('=COUNTIFS(' + P + '!I:I;"Validé";' + P + '!C:C;B' + r + ')'));
+    tb.getRange(r, 5).setFormula(f('=IFERROR(C' + r + '/SUM(C$41:C$43);0)')).setNumberFormat('0%');
+  });
+  tb.getRange('B40:E40').setFontWeight('bold').setFontColor('#FFFFFF').setBackground(THEME.marine);
+  tb.getRange('B41:E43').setBorder(null, null, true, null, null, true, THEME.ligne, SpreadsheetApp.BorderStyle.SOLID);
+
+  // Statut des paiements
+  titreSection('B46', 'Statut des paiements');
+  tb.getRange('B47:C47').setValues([['Statut', 'Nombre']]).setFontWeight('bold').setFontColor('#FFFFFF').setBackground(THEME.marine);
+  STATUTS.forEach(function (s, i) {
+    tb.getRange(48 + i, 2).setValue(s).setFontWeight('bold');
+    tb.getRange(48 + i, 3).setFormula(f('=COUNTIF(' + P + '!I:I;B' + (48 + i) + ')'));
+  });
+
+  // Top 5 parrains
+  titreSection('B53', 'Top 5 parrains');
+  tb.getRange('B54').setFormula(f('=IFERROR(QUERY(' + P + '!A2:N;"select H, count(J), sum(J) where I = \'Validé\' and H <> \'\' and H <> \'' + DW +
+    '\' and J > 0 group by H order by sum(J) desc limit 5 label H \'Parrain\', count(J) \'Commandes\', sum(J) \'Gains (XAF)\'";0);"Aucun parrain actif pour l\'instant")'));
+  tb.getRange('B54:D54').setFontWeight('bold').setFontColor('#FFFFFF').setBackground(THEME.marine);
+  tb.getRange('D55:D59').setNumberFormat(xaf);
+
+  // Graphiques circulaires
+  tb.insertChart(tb.newChart().setChartType(Charts.ChartType.PIE).addRange(tb.getRange('B40:C43'))
+    .setNumHeaders(1).setOption('title', 'Chiffre d\'affaires par branche').setOption('pieHole', 0.5)
+    .setOption('colors', [CONFIG.COULEURS.DEX, CONFIG.COULEURS.Visuo, '#22B07D']).setOption('fontName', THEME.police)
+    .setOption('width', 430).setOption('height', 260).setPosition(39, 7, 0, 0).build());
+  tb.insertChart(tb.newChart().setChartType(Charts.ChartType.PIE).addRange(tb.getRange('B47:C50'))
+    .setNumHeaders(1).setOption('title', 'Statut des paiements').setOption('pieHole', 0.5)
+    .setOption('colors', ['#1A7F37', '#E3A008', '#C0392B']).setOption('fontName', THEME.police)
+    .setOption('width', 430).setOption('height', 260).setPosition(39, 12, 10, 0).build());
+  tb.insertChart(tb.newChart().setChartType(Charts.ChartType.LINE)
+    .addRange(tb.getRange('B11:N11')).addRange(tb.getRange('B15:N16')).setTransposeRowsAndColumns(true).setNumHeaders(1)
+    .setOption('title', 'Nouveaux clients et devis par mois').setOption('legend', { position: 'top' })
+    .setOption('colors', ['#22B07D', THEME.orange]).setOption('pointSize', 5).setOption('fontName', THEME.police)
+    .setOption('vAxis', { minValue: 0 }).setOption('width', 1000).setOption('height', 280).setPosition(53, 7, 0, 0).build());
+
+  tb.setFrozenRows(2);
+  classeur.setActiveSheet(tb);
+  classeur.moveActiveSheet(1);
 }
 
 // ---------- Validation en un clic (liens de l'e-mail) ----------

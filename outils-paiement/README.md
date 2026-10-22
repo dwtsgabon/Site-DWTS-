@@ -69,6 +69,14 @@ Code d'accès oublié : il est dans la colonne **Code d'accès** de **Clients**.
 
 Visuo et Logia : la commission du parrain dépend du pack mensuel ; la saisir à la main dans la colonne **Commission**.
 
+## Tableau de bord
+
+`installer` crée aussi l'onglet **Tableau de bord** (en premier) : chiffre d'affaires, CA du mois, paiements validés et à vérifier,
+panier moyen, clients et nouveaux clients, parrains actifs, commissions à verser et commissions DWTS, devis ; évolution mois par mois,
+répartition par branche, statut des paiements, top 5 des parrains, avec graphiques. Tout se met à jour seul.
+Les feuilles de données ont des en-têtes marine, des lignes alternées et des statuts en couleur.
+Pour reconstruire le tableau de bord après une mise à jour du script : exécuter à nouveau `installer`.
+
 ## Devis en ligne
 
 `devis.html` : le client choisit sa branche (Visuo ou Logia), ses prestations et formules, laisse nom, WhatsApp et e-mail.
