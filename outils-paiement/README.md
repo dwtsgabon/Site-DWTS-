@@ -1,9 +1,12 @@
 # Preuves de paiement DWTS : installation (15 minutes, une seule fois)
 
-Le client paie **après avoir validé l'aperçu** de son travail, puis envoie la capture de son paiement depuis `paiement.html`.
-La preuve arrive dans un Google Sheets à ton nom, la capture est rangée dans Google Drive, et tu reçois un e-mail.
-Tu vérifies la réception (SMS Airtel Money ou Mobicash, même montant, même TID), puis tu passes le statut à **Validé** :
-la commission parrain DEX (500 FCFA) s'ajoute toute seule et la feuille **Commissions** donne le total à verser par parrain et par mois.
+Le client paie **après avoir validé l'aperçu** de son travail, puis, sur `paiement.html`, il donne seulement
+**son numéro WhatsApp + la capture OU le SMS de paiement collé**.
+La preuve arrive dans un Google Sheets à ton nom (le montant et le TID sont lus automatiquement dans le SMS collé),
+la capture est rangée dans Google Drive, et tu reçois un e-mail.
+Le **code parrain** s'enregistre **une seule fois**, à l'inscription du client, dans la feuille **Clients** :
+ensuite chaque paiement validé de ce client crédite son parrain tout seul (500 FCFA pour DEX),
+et la feuille **Commissions** donne le total à verser par parrain et par mois.
 
 Tout est gratuit (Google Sheets, Drive et Apps Script).
 
@@ -15,7 +18,7 @@ Tout est gratuit (Google Sheets, Drive et Apps Script).
 4. En haut, choisir la fonction **installer**, cliquer **Exécuter**, puis accepter les autorisations
    (Google affiche « application non validée » : **Paramètres avancés → Accéder au projet**, c'est ton propre script).
 
-Le tableau contient maintenant les feuilles **Paiements** et **Commissions**, et un dossier Drive **DWTS - Preuves de paiement** est créé.
+Le tableau contient maintenant les feuilles **Paiements**, **Clients** et **Commissions**, et un dossier Drive **DWTS - Preuves de paiement** est créé.
 
 ## 2. Mettre le formulaire en ligne
 
@@ -28,12 +31,19 @@ Tant que `URL_SCRIPT` est vide, le formulaire ouvre WhatsApp avec le message dé
 
 ## 3. Utilisation au quotidien
 
+**Inscription d'un client parrainé (une seule fois)** : quand un nouveau client donne un code parrain à sa première commande,
+ajoute une ligne dans **Clients** : son numéro WhatsApp, son nom, le code parrain, la date. C'est tout : ses paiements suivants
+seront reliés à son parrain automatiquement.
+
+**À chaque paiement :**
+
 1. Un e-mail « nouvelle preuve de paiement » arrive.
 2. Ouvrir la capture, retrouver **le même TID et le même montant** dans tes SMS de réception.
    Dépôt chez un agent : comparer montant, heure et code agent (`A7793`…).
    Une **Alerte** « TID déjà envoyé » signale une capture réutilisée.
-3. Passer la colonne **Statut** à **Validé** (ou **Refusé**), puis envoyer le fichier final au client sur WhatsApp.
-4. Fin du mois : feuille **Commissions**, verser à chaque parrain dont le total atteint 5 000 FCFA.
+3. Si la preuve est une capture, compléter **Montant** et **TID** ; si ce n'est pas du DEX, changer **Service**.
+4. Passer la colonne **Statut** à **Validé** (ou **Refusé**), puis envoyer le fichier final au client sur WhatsApp.
+5. Fin du mois : feuille **Commissions**, verser à chaque parrain dont le total atteint 5 000 FCFA.
 
 Visuo et Logia : la commission du parrain dépend du pack mensuel ; la saisir à la main dans la colonne **Commission**.
 

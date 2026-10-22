@@ -40,8 +40,6 @@
     .champ input, .champ select, .champ textarea { width: 100%; box-sizing: border-box; background: var(--surface-2); color: var(--blanc); border: 1px solid var(--ligne); border-radius: 12px; padding: 12px 14px; font: inherit; font-size: 1rem; }
     .champ input:focus, .champ select:focus, .champ textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
     .champ textarea { min-height: 80px; resize: vertical; }
-    .duo { display: grid; gap: 0 14px; grid-template-columns: 1fr; }
-    @media (min-width: 560px) { .duo { grid-template-columns: 1fr 1fr; } }
     .depot { border: 2px dashed var(--ligne); border-radius: 16px; padding: 18px; text-align: center; color: var(--gris); cursor: pointer; }
     .depot:hover, .depot:focus-within { border-color: var(--accent); }
     .depot input { position: absolute; width: 1px; height: 1px; opacity: 0; }
@@ -104,7 +102,7 @@
           <ol class="etapes-paiement">
             <li>Vous voyez l'aperçu de votre travail et vous le validez.</li>
             <li>Vous payez le montant convenu sur l'un des numéros ci-dessous.</li>
-            <li>Vous envoyez la capture de votre paiement avec ce formulaire.</li>
+            <li>Vous envoyez ici la capture ou le SMS de votre paiement.</li>
             <li>Nous vérifions la réception et vous envoyons le fichier final sur WhatsApp.</li>
           </ol>
 
@@ -125,66 +123,23 @@
         <div class="bloc">
           <h2>Envoyer ma preuve de paiement</h2>
           <form class="formulaire" id="form-paiement" novalidate>
-            <div class="duo">
-              <div class="champ">
-                <label for="nom">Nom et prénom</label>
-                <input id="nom" name="nom" autocomplete="name" required>
-              </div>
-              <div class="champ">
-                <label for="whatsapp">Numéro WhatsApp</label>
-                <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="06 ou 07…" required>
-              </div>
-            </div>
-
-            <div class="duo">
-              <div class="champ">
-                <label for="branche">Service</label>
-                <select id="branche" name="branche" required>
-                  <option value="">Choisir…</option>
-                  <option>DEX</option>
-                  <option>Visuo</option>
-                  <option>Logia</option>
-                </select>
-              </div>
-              <div class="champ">
-                <label for="montant">Montant payé (XAF)</label>
-                <input id="montant" name="montant" type="number" inputmode="numeric" min="100" step="1" required>
-              </div>
+            <div class="champ">
+              <label for="whatsapp">Votre numéro WhatsApp</label>
+              <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="06 ou 07…" required>
             </div>
 
             <div class="champ">
-              <label for="commande">Votre commande <small>(ex. : exposé de français, 6 pages)</small></label>
-              <input id="commande" name="commande" required>
-            </div>
-
-            <div class="duo">
-              <div class="champ">
-                <label for="moyen">Moyen de paiement</label>
-                <select id="moyen" name="moyen" required>
-                  <option value="">Choisir…</option>
-                  <option>Airtel Money (envoi)</option>
-                  <option>Mobicash (envoi)</option>
-                  <option>Dépôt chez un agent</option>
-                </select>
-              </div>
-              <div class="champ">
-                <label for="tid">Numéro de transaction <small>(TID, facultatif)</small></label>
-                <input id="tid" name="tid" placeholder="ex. PP261022.1137.A11819" autocapitalize="characters">
-              </div>
-            </div>
-
-            <div class="champ">
-              <label for="parrain">Code parrain <small>(facultatif)</small></label>
-              <input id="parrain" name="parrain" placeholder="ex. PARRAIN-024" autocapitalize="characters">
-            </div>
-
-            <div class="champ">
-              <span style="font-weight:600;font-size:.95rem">Capture du paiement</span>
+              <span style="font-weight:600;font-size:.95rem">La capture du paiement…</span>
               <label class="depot" for="capture">
-                <span id="depot-texte">Touchez ici pour choisir la capture (SMS ou reçu)</span>
-                <input id="capture" name="capture" type="file" accept="image/*" required>
+                <span id="depot-texte">Touchez ici pour choisir la capture</span>
+                <input id="capture" name="capture" type="file" accept="image/*">
                 <img id="apercu" alt="Aperçu de la capture" hidden>
               </label>
+            </div>
+
+            <div class="champ">
+              <label for="sms">… ou collez le SMS de paiement</label>
+              <textarea id="sms" name="sms" placeholder="Vous avez envoyé 2500F au 074741303… TID: PP…"></textarea>
             </div>
 
             <!-- Champ piège contre les robots : doit rester vide -->
@@ -300,26 +255,19 @@
         return;
       }
 
-      const donnees = {
-        nom: form.nom.value.trim(),
-        whatsapp: form.whatsapp.value.trim(),
-        branche: form.branche.value,
-        montant: Number(form.montant.value),
-        commande: form.commande.value.trim(),
-        moyen: form.moyen.value,
-        tid: form.tid.value.trim().toUpperCase(),
-        parrain: form.parrain.value.trim().toUpperCase()
-      };
+      const fichier = form.capture.files[0];
+      const sms = form.sms.value.trim();
+      if (!fichier && !sms) {
+        afficherMessage('Joignez la capture ou collez le SMS de votre paiement.', 'erreur');
+        return;
+      }
+      const donnees = { whatsapp: form.whatsapp.value.trim(), sms: sms };
 
       // Formulaire pas encore relié au tableau : on bascule sur WhatsApp
       if (!URL_SCRIPT) {
-        const texte = 'Bonjour DWTS, voici ma preuve de paiement.\n' +
-          'Nom : ' + donnees.nom + '\nService : ' + donnees.branche + '\nCommande : ' + donnees.commande +
-          '\nMontant : ' + donnees.montant + ' XAF\nMoyen : ' + donnees.moyen +
-          (donnees.tid ? '\nTID : ' + donnees.tid : '') + (donnees.parrain ? '\nCode parrain : ' + donnees.parrain : '') +
-          '\n(Je joins la capture juste après ce message.)';
+        const texte = 'Bonjour DWTS, voici ma preuve de paiement.' + (sms ? '\n' + sms : '\n(Je joins la capture juste après ce message.)');
         window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(texte), '_blank', 'noopener');
-        afficherMessage('WhatsApp s\'ouvre avec votre message. Envoyez-le, puis joignez la capture dans la discussion.', 'ok');
+        afficherMessage('WhatsApp s\'ouvre avec votre message. Envoyez-le' + (fichier ? ', puis joignez la capture dans la discussion.' : '.'), 'ok');
         return;
       }
 
@@ -327,11 +275,11 @@
       bouton.disabled = true;
       bouton.textContent = 'Envoi en cours…';
       try {
-        donnees.capture = await reduireImage(form.capture.files[0]);
+        if (fichier) donnees.capture = await reduireImage(fichier);
         await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(donnees) });
         form.reset();
         apercu.hidden = true;
-        document.getElementById('depot-texte').textContent = 'Touchez ici pour choisir la capture (SMS ou reçu)';
+        document.getElementById('depot-texte').textContent = 'Touchez ici pour choisir la capture';
         afficherMessage('<b>Preuve bien envoyée, merci !</b><br>Nous vérifions la réception de votre paiement et vous envoyons votre fichier final sur WhatsApp.', 'ok');
       } catch (erreur) {
         afficherMessage('L\'envoi n\'a pas abouti. Vérifiez votre connexion, ou <a href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">envoyez la capture sur WhatsApp</a>.', 'erreur');
