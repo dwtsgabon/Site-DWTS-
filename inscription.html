@@ -82,6 +82,10 @@
               <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="06 ou 07…" required>
             </div>
             <div class="champ">
+              <label for="email">Adresse e-mail</label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="vous@exemple.com" required>
+            </div>
+            <div class="champ">
               <label for="parrain">Code de la personne qui vous a recommandé <small>(laissez vide si personne ne vous a recommandé)</small></label>
               <input id="parrain" name="parrain" placeholder="ex. PARRAIN-024" autocapitalize="characters">
             </div>
@@ -161,16 +165,16 @@
       const form = evenement.target;
       if (form.site.value) return;
       if (!form.checkValidity()) {
-        afficherMessage('Merci d\'indiquer votre nom et votre numéro WhatsApp.', 'erreur');
+        afficherMessage('Merci d\'indiquer votre nom, votre numéro WhatsApp et votre e-mail.', 'erreur');
         form.reportValidity();
         return;
       }
-      const donnees = { nom: form.nom.value.trim(), whatsapp: form.whatsapp.value.trim(), parrain: form.parrain.value.trim().toUpperCase(), pin: form.pin.value.trim() };
+      const donnees = { nom: form.nom.value.trim(), whatsapp: form.whatsapp.value.trim(), email: form.email.value.trim(), parrain: form.parrain.value.trim().toUpperCase(), pin: form.pin.value.trim() };
       if (!/^[0-9]{4,6}$/.test(donnees.pin)) { afficherMessage('Votre code d\'accès doit avoir 4 à 6 chiffres.', 'erreur'); return; }
 
       // Script pas encore relié : demande d'inscription par WhatsApp
       if (!URL_SCRIPT) {
-        const texte = 'Bonjour DWTS, je souhaite m\'inscrire.\nNom : ' + donnees.nom + '\nWhatsApp : ' + donnees.whatsapp +
+        const texte = 'Bonjour DWTS, je souhaite m\'inscrire.\nNom : ' + donnees.nom + '\nWhatsApp : ' + donnees.whatsapp + '\nE-mail : ' + donnees.email +
           (donnees.parrain ? '\nCode parrain : ' + donnees.parrain : '');
         window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(texte), '_blank', 'noopener');
         afficherMessage('WhatsApp s\'ouvre avec votre demande. Envoyez-la : vous recevrez votre code parrain et votre code d\'accès.', 'ok');
@@ -184,7 +188,8 @@
         if (!r.ok) { afficherMessage(echapper(r.erreur), 'erreur'); return; }
         form.reset();
         afficherMessage('<b>Bienvenue ' + echapper(donnees.nom) + ' !</b><br>Votre code parrain : <span class="code-perso">' + echapper(r.code) + '</span><br>' +
-          '<small>Votre code d\'accès est celui que vous venez de créer. Il vous sera demandé pour ouvrir <a href="espace.html">Mon espace</a>.</small>', 'ok');
+          'Votre code d\'accès : <span class="code-perso">' + echapper(r.pin) + '</span><br>' +
+          '<small>Notez-le : il vous sera demandé pour ouvrir <a href="espace.html">Mon espace</a>.</small>', 'ok');
       }).catch(function () {
         afficherMessage('L\'inscription n\'a pas abouti. Vérifiez votre connexion ou <a href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">écrivez-nous sur WhatsApp</a>.', 'erreur');
       }).finally(function () {

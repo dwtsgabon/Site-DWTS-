@@ -41,8 +41,8 @@ const ENTETES_PAIEMENTS = ['Reçu le', 'WhatsApp', 'Service', 'Montant (XAF)', '
   'Code parrain', 'Statut', 'Commission (FCFA)', 'Mois', 'Alerte', 'Désignation (facture)', 'Facture'];
 const COL = { WHATSAPP: 2, SERVICE: 3, MONTANT: 4, TID: 5, PARRAIN: 8, STATUT: 9, COMMISSION: 10,
   DESIGNATION: 13, FACTURE: 14 };
-// Clients : A WhatsApp | B Nom | C Code de son parrain | D Inscrit le | E Son code parrain | F Code d'accès
-const ENTETES_CLIENTS = ['WhatsApp', 'Nom', 'Code de son parrain', 'Inscrit le', 'Son code parrain', 'Code d\'accès'];
+// Clients : A WhatsApp | B Nom | C Code de son parrain | D Inscrit le | E Son code parrain | F Code d'accès | G E-mail
+const ENTETES_CLIENTS = ['WhatsApp', 'Nom', 'Code de son parrain', 'Inscrit le', 'Son code parrain', 'Code d\'accès', 'E-mail'];
 const ENTETES_VERSEMENTS = ['Code parrain', 'Date', 'Montant versé (FCFA)', 'Note'];
 const STATUTS = ['À vérifier', 'Validé', 'Refusé'];
 const SERVICES = ['DEX', 'Visuo', 'Logia'];
@@ -118,6 +118,8 @@ function inscrire_(p) {
   const numero = normaliserNumero_(p.whatsapp);
   const nom = String(p.nom || '').trim().slice(0, 80);
   if (!nom || !numero) return { ok: false, erreur: 'Indiquez votre nom et un numéro WhatsApp valide.' };
+  const email = String(p.email || '').trim().toLowerCase().slice(0, 120);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, erreur: 'Indiquez une adresse e-mail valide.' };
 
   const verrou = LockService.getScriptLock();
   verrou.waitLock(10000);
@@ -140,9 +142,9 @@ function inscrire_(p) {
     const pinChoisi = String(p.pin || '').trim();
     if (pinChoisi && !/^[0-9]{4,6}$/.test(pinChoisi)) return { ok: false, erreur: 'Le code d\'accès doit avoir 4 à 6 chiffres.' };
     const pin = pinChoisi || String(Math.floor(1000 + Math.random() * 9000));
-    clients.appendRow(["'" + numero, nom, parrain, new Date(), code, "'" + pin]);
+    clients.appendRow(["'" + numero, nom, parrain, new Date(), code, "'" + pin, email]);
     MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : nouvelle inscription (' + nom + ')',
-      nom + ' (' + numero + ') s\'est inscrit. Son code parrain : ' + code + (parrain === CONFIG.CODE_DWTS ? '. Sans parrain (code DWTS).' : '. Parrainé par ' + parrain + '.'));
+      nom + ' (' + numero + ', ' + email + ') s\'est inscrit. Son code parrain : ' + code + (parrain === CONFIG.CODE_DWTS ? '. Sans parrain (code DWTS).' : '. Parrainé par ' + parrain + '.'));
     return { ok: true, code: code, pin: pin };
   } finally {
     verrou.releaseLock();
@@ -162,9 +164,12 @@ function espace_(p) {
   const clients = classeur.getSheetByName(FEUILLE_CLIENTS);
   const lignes = clients.getLastRow() > 1 ? clients.getRange(2, 1, clients.getLastRow() - 1, 6).getValues() : [];
   const client = lignes.filter(function (l) { return normaliserNumero_(l[0]) === numero; })[0];
-  if (!client || String(client[5]).replace(/^'/, '') !== String(p.pin || '').trim()) {
+  if (!client) {
+    return { ok: false, erreur: 'Ce numéro n\'est pas inscrit. Créez votre espace sur la page Inscription.' };
+  }
+  if (String(client[5]).replace(/^'/, '') !== String(p.pin || '').trim()) {
     cache.put(cleEssais, String(essais + 1), 3600);
-    return { ok: false, erreur: 'Numéro ou code d\'accès incorrect.' };
+    return { ok: false, erreur: 'Code d\'accès incorrect.' };
   }
   cache.remove(cleEssais);
   const code = String(client[4]).toUpperCase();
