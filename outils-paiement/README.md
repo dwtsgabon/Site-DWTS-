@@ -54,7 +54,9 @@ Code d'accès oublié : il est dans la colonne **Code d'accès** de **Clients**.
 
 **À chaque paiement :**
 
-1. Un e-mail « nouvelle preuve de paiement » arrive.
+1. Un e-mail « nouvelle preuve de paiement » arrive, avec deux liens : **✅ Valider** et **❌ Refuser**.
+   Après avoir comparé avec ton SMS de réception, un clic sur le lien (même sur téléphone), puis le bouton de confirmation :
+   le statut, la commission et la facture se font tout seuls. Pas besoin d'ouvrir le tableau.
 2. Ouvrir la capture, retrouver **le même TID et le même montant** dans tes SMS de réception.
    Dépôt chez un agent : comparer montant, heure et code agent (`A7793`…).
    Une **Alerte** « TID déjà envoyé » signale une capture réutilisée.
