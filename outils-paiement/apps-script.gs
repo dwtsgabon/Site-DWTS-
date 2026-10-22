@@ -39,7 +39,7 @@ const FEUILLE_VERSEMENTS = 'Versements';
 //             H Code parrain | I Statut | J Commission | K Mois | L Alerte | M Désignation | N Facture
 const ENTETES_PAIEMENTS = ['Reçu le', 'WhatsApp', 'Service', 'Montant (XAF)', 'TID', 'SMS collé', 'Capture',
   'Code parrain', 'Statut', 'Commission (FCFA)', 'Mois', 'Alerte', 'Désignation (facture)', 'Facture'];
-const COL = { WHATSAPP: 2, SERVICE: 3, MONTANT: 4, TID: 5, PARRAIN: 8, STATUT: 9, COMMISSION: 10,
+const COL = { WHATSAPP: 2, SERVICE: 3, MONTANT: 4, TID: 5, SMS: 6, CAPTURE: 7, PARRAIN: 8, STATUT: 9, COMMISSION: 10,
   DESIGNATION: 13, FACTURE: 14 };
 // Clients : A WhatsApp | B Nom | C Code de son parrain | D Inscrit le | E Son code parrain | F Code d'accès | G E-mail
 const ENTETES_CLIENTS = ['WhatsApp', 'Nom', 'Code de son parrain', 'Inscrit le', 'Son code parrain', 'Code d\'accès', 'E-mail'];
@@ -107,6 +107,7 @@ function doGet(e) {
   try {
     if (p.action === 'inscription') return reponse_(inscrire_(p));
     if (p.action === 'espace') return reponse_(espace_(p));
+    if (p.action === 'valider' || p.action === 'refuser') return pageValidation_(p);
     return reponse_({ ok: false, erreur: 'Action inconnue' });
   } catch (erreur) {
     return reponse_({ ok: false, erreur: 'Une erreur est survenue, réessayez plus tard.' });
@@ -247,8 +248,10 @@ function doPost(e) {
       (sms ? 'SMS collé : ' + sms + '\n' : '') +
       (lienCapture ? 'Capture : ' + lienCapture + '\n' : '') +
       (alerte ? '⚠️ ' + alerte + '\n' : '') +
-      '\nVérifiez le SMS de réception (même montant, même TID), ajustez le Service si ce n\'est pas DEX, ' +
-      'puis passez le statut à « Validé » dans le tableau.');
+      '\nVérifiez le SMS de réception (même montant, même TID), puis un clic suffit :\n' +
+      '✅ Valider : ' + lienAction_('valider', feuille.getLastRow(), cleLigne_(numero, sms, lienCapture)) + '\n' +
+      '❌ Refuser : ' + lienAction_('refuser', feuille.getLastRow(), cleLigne_(numero, sms, lienCapture)) + '\n' +
+      '\n(Si ce n\'est pas du DEX, changez d\'abord le Service dans le tableau.)');
 
     return reponse_({ ok: true });
   } catch (erreur) {
@@ -268,8 +271,11 @@ function surModification(e) {
   const colonne = e.range.getColumn();
   if (feuille.getName() !== FEUILLE_PAIEMENTS || e.range.getRow() < 2) return;
   if ([COL.STATUT, COL.SERVICE, COL.PARRAIN].indexOf(colonne) === -1) return;
+  traiterLigne_(feuille, e.range.getRow(), colonne === COL.STATUT);
+}
 
-  const ligne = e.range.getRow();
+/** Commission (DEX parrainé) et facture d'une ligne dont le statut vient d'être « Validé ». */
+function traiterLigne_(feuille, ligne, statutModifie) {
   const valeurs = feuille.getRange(ligne, 1, 1, ENTETES_PAIEMENTS.length).getValues()[0];
   const service = valeurs[COL.SERVICE - 1];
   const valide = valeurs[COL.STATUT - 1] === 'Validé';
@@ -278,9 +284,94 @@ function surModification(e) {
     const cellule = feuille.getRange(ligne, COL.COMMISSION);
     if (valide && valeurs[COL.PARRAIN - 1]) cellule.setValue(CONFIG.COMMISSION_DEX); else cellule.clearContent();
   }
-  if (valide && colonne === COL.STATUT && !valeurs[COL.FACTURE - 1]) {
+  if (valide && statutModifie && !valeurs[COL.FACTURE - 1]) {
     const lien = creerFacture_(valeurs);
     feuille.getRange(ligne, COL.FACTURE).setValue(lien);
+  }
+}
+
+// ---------- Validation en un clic (liens de l'e-mail) ----------
+
+function secretLiens_() {
+  const proprietes = PropertiesService.getScriptProperties();
+  let secret = proprietes.getProperty('secret_liens');
+  if (!secret) {
+    secret = Utilities.getUuid() + Utilities.getUuid();
+    proprietes.setProperty('secret_liens', secret);
+  }
+  return secret;
+}
+
+/** Empreinte de la preuve (numéro + SMS + capture) : un lien ne marche que pour sa propre ligne. */
+function cleLigne_(numero, sms, capture) {
+  return normaliserNumero_(numero) + '|' + String(sms || '').trim() + '|' + String(capture || '');
+}
+
+/** Signature d'un lien : action + numéro de ligne + empreinte de la preuve. */
+function signature_(action, ligne, cle) {
+  const octets = Utilities.computeHmacSha256Signature(action + '|' + ligne + '|' + cle, secretLiens_());
+  return octets.map(function (b) { return ('0' + (b & 0xff).toString(16)).slice(-2); }).join('');
+}
+
+function lienAction_(action, ligne, cle) {
+  return ScriptApp.getService().getUrl() + '?action=' + action + '&l=' + ligne + '&s=' + signature_(action, ligne, cle);
+}
+
+function echapperHtml_(t) {
+  return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+}
+
+function pageHtml_(titre, corps) {
+  return HtmlService.createHtmlOutput(
+    '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<body style="font-family:Arial,sans-serif;max-width:480px;margin:24px auto;padding:0 16px;color:#111">' +
+    '<h2>' + echapperHtml_(titre) + '</h2>' + corps + '</body>').setTitle('DWTS');
+}
+
+/** Retrouve la ligne d'un lien signé, ou null si le lien est faux ou la ligne a changé. */
+function ligneDuLien_(p) {
+  const feuille = SpreadsheetApp.getActive().getSheetByName(FEUILLE_PAIEMENTS);
+  const ligne = Number(p.l);
+  if (!ligne || ligne < 2 || ligne > feuille.getLastRow()) return null;
+  const valeurs = feuille.getRange(ligne, 1, 1, ENTETES_PAIEMENTS.length).getValues()[0];
+  const cle = cleLigne_(valeurs[COL.WHATSAPP - 1], valeurs[COL.SMS - 1], valeurs[COL.CAPTURE - 1]);
+  if (signature_(p.action, ligne, cle) !== p.s) return null;
+  return { feuille: feuille, ligne: ligne, valeurs: valeurs };
+}
+
+/** Page de confirmation affichée par le lien de l'e-mail (rien n'est modifié avant le bouton). */
+function pageValidation_(p) {
+  const cible = ligneDuLien_(p);
+  if (!cible) return pageHtml_('Lien invalide', '<p>Ce lien n\'est pas valide ou la ligne a changé. Utilisez le tableau.</p>');
+  const v = cible.valeurs;
+  const statut = v[COL.STATUT - 1];
+  const resume = '<p><b>' + (Number(v[COL.MONTANT - 1]) || '?') + ' XAF</b> · ' + echapperHtml_(v[COL.SERVICE - 1]) +
+    '<br>Client : ' + echapperHtml_(String(v[COL.WHATSAPP - 1]).replace(/^\'/, '')) +
+    '<br>TID : ' + echapperHtml_(v[COL.TID - 1] || '—') +
+    '<br>Parrain : ' + echapperHtml_(v[COL.PARRAIN - 1] || '—') + '</p>';
+  if (statut !== 'À vérifier') return pageHtml_('Déjà traité', resume + '<p>Statut actuel : <b>' + echapperHtml_(statut) + '</b>.</p>');
+  const mot = p.action === 'valider' ? 'Valider' : 'Refuser';
+  return pageHtml_(mot + ' ce paiement ?', resume +
+    '<p>Vérifiez que le montant et le TID sont les mêmes que dans votre SMS de réception.</p>' +
+    '<button id="b" style="font-size:18px;padding:14px 22px;border:0;border-radius:8px;background:' + (p.action === 'valider' ? '#1a7f37' : '#c0392b') + ';color:#fff"' +
+    ' onclick="this.disabled=true;this.textContent=\'…\';google.script.run.withSuccessHandler(function(t){document.body.innerHTML=t}).confirmerLien_(' +
+    JSON.stringify(p.action) + ',' + Number(p.l) + ',' + JSON.stringify(String(p.s)) + ')">' + mot + '</button>');
+}
+
+/** Appelée par le bouton de la page de confirmation. */
+function confirmerLien_(action, ligne, sig) {
+  const verrou = LockService.getScriptLock();
+  verrou.waitLock(15000);
+  try {
+    const cible = ligneDuLien_({ action: action, l: ligne, s: sig });
+    if (!cible) return '<h2>Lien invalide</h2>';
+    if (cible.valeurs[COL.STATUT - 1] !== 'À vérifier') return '<h2>Déjà traité</h2>';
+    const statut = action === 'valider' ? 'Validé' : 'Refusé';
+    cible.feuille.getRange(cible.ligne, COL.STATUT).setValue(statut);
+    if (statut === 'Validé') traiterLigne_(cible.feuille, cible.ligne, true);
+    return '<h2>' + statut + ' ✓</h2>' + (statut === 'Validé' ? '<p>La facture a été créée et envoyée par e-mail.</p>' : '');
+  } finally {
+    verrou.releaseLock();
   }
 }
 
