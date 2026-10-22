@@ -12,3 +12,10 @@ Cases jaunes = à remplir. Un article absent de la liste peut être tapé à la 
 Les factures des paiements validés sont aussi créées automatiquement en PDF par le tableau des paiements (voir `outils-paiement/README.md`).
 
 Recréer le classeur après une modification du script : `python3 outils-factures/generer_classeur.py`.
+
+## Changer un prix
+
+1. Modifier la grille dans `generer_classeur.py` (bloc `CATALOGUE`).
+2. Lancer `python3 outils-factures/generer_classeur.py` (classeur Excel) puis `python3 outils-factures/generer_catalogues.py`
+   (pages Devis et Paiement du site, et liste `CATALOGUE_DEVIS` du script Google).
+3. Mettre aussi à jour l'affichage de `tarifs.html`, puis recoller `apps-script.gs` dans Apps Script et publier une nouvelle version.

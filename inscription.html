@@ -14,7 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&amp;display=swap" rel="stylesheet">
 
   <!-- Styles du site -->
-  <link rel="stylesheet" href="assets/css/style.css?v=202610181716">
+  <link rel="stylesheet" href="assets/css/style.css?v=202610231">
 
   <!-- Styles des pages Paiement, Inscription et Mon espace -->
   <link rel="stylesheet" href="assets/css/espace.css?v=202610221">
@@ -64,7 +64,7 @@
           <h2>Pourquoi s'inscrire ?</h2>
           <ol class="etapes-paiement">
             <li>Vous suivez vos commandes et retrouvez vos factures dans « Mon espace ».</li>
-            <li>Vous recevez votre propre code parrain : 500 FCFA à chaque commande DEX de vos filleuls.</li>
+            <li>Vous recevez votre propre code parrain : 500 FCFA à chaque commande DEX de vos filleuls, et une commission chaque mois sur leurs packs Visuo et Logia.</li>
             <li>Si quelqu'un vous a recommandé, son code est enregistré une bonne fois : rien à redonner ensuite.</li>
           </ol>
           <p class="alerte">Déjà inscrit ? Allez directement sur <a href="espace.html">Mon espace</a>.</p>
@@ -189,8 +189,7 @@
         if (!r.ok) { afficherMessage(echapper(r.erreur), 'erreur'); return; }
         form.reset();
         afficherMessage('<b>Bienvenue ' + echapper(donnees.nom) + ' !</b><br>Votre code parrain : <span class="code-perso">' + echapper(r.code) + '</span><br>' +
-          'Votre code d\'accès : <span class="code-perso">' + echapper(r.pin) + '</span><br>' +
-          '<small>Notez-le : il vous sera demandé pour ouvrir <a href="espace.html">Mon espace</a>.</small>', 'ok');
+          '<small>Votre code d\'accès est celui que vous venez de choisir : il vous sera demandé pour ouvrir <a href="espace.html">Mon espace</a>.</small>', 'ok');
       }).catch(function () {
         afficherMessage('L\'inscription n\'a pas abouti. Vérifiez votre connexion ou <a href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">écrivez-nous sur WhatsApp</a>.', 'erreur');
       }).finally(function () {

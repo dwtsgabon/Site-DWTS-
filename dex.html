@@ -14,7 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&amp;display=swap" rel="stylesheet">
 
   <!-- Styles du site -->
-  <link rel="stylesheet" href="assets/css/style.css?v=202610181716">
+  <link rel="stylesheet" href="assets/css/style.css?v=202610231">
 
   <!-- Indique que JavaScript est actif (sert aux animations d'apparition) -->
   <script>document.documentElement.className += ' js';</script>
@@ -107,20 +107,20 @@
     <section class="section" aria-labelledby="titre-modes">
       <div class="conteneur">
         <div class="entete-section apparait">
-          <p class="surtitre">Deux modes</p>
-          <h2 class="titre-section" id="titre-modes">Deux façons de travailler.</h2>
+          <p class="surtitre">Trois modes</p>
+          <h2 class="titre-section" id="titre-modes">Trois façons de travailler.</h2>
           <p class="intro-section">Survolez ou touchez une fiche pour la retourner.</p>
         </div>
         <div class="cartes-modes">
           <div class="carte-mode apparait" style="--delai:0.0s">
-            <div class="carte-mode__bouton" role="button" tabindex="0" aria-pressed="false" aria-label="Mode 1 : Saisie et mise en forme pure. Retourner la fiche pour voir le détail.">
+            <div class="carte-mode__bouton" role="button" tabindex="0" aria-pressed="false" aria-label="Mode 1 : Saisie, mise en forme et correction. Retourner la fiche pour voir le détail.">
               <div class="carte-mode__interieur">
                 <div class="carte-mode__face carte-mode__face--avant">
                   <span class="carte-mode__onglet" aria-hidden="true">MODE 1</span>
                   <span class="carte-mode__etiquette">Fiche n° 1</span>
                   <span class="carte-mode__num" aria-hidden="true">01</span>
                   <div>
-                    <p class="carte-mode__titre">Saisie et mise en forme pure</p>
+                    <p class="carte-mode__titre">Saisie, mise en forme et correction</p>
                     <p class="carte-mode__indice"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2M18 3v3h-3M6 21v-3h3"/></svg>Retourner la fiche</p>
                   </div>
                 </div>
@@ -128,21 +128,21 @@
                   <span class="carte-mode__etiquette">Mode 1</span>
                   <div>
                     <p class="carte-mode__titre">Vous fournissez le contenu, on le met en forme.</p>
-                    <p style="margin-top:14px">Votre texte est déjà rédigé : nous le saisissons, le structurons et le mettons en page.</p>
+                    <p style="margin-top:14px">Votre texte est gardé tel quel : nous le saisissons, corrigeons les fautes, le structurons et le mettons en page.</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="carte-mode apparait" style="--delai:0.1s">
-            <div class="carte-mode__bouton" role="button" tabindex="0" aria-pressed="false" aria-label="Mode 2 : Saisie et amélioration des idées. Retourner la fiche pour voir le détail.">
+            <div class="carte-mode__bouton" role="button" tabindex="0" aria-pressed="false" aria-label="Mode 2 : Mode 1 et amélioration du texte. Retourner la fiche pour voir le détail.">
               <div class="carte-mode__interieur">
                 <div class="carte-mode__face carte-mode__face--avant">
                   <span class="carte-mode__onglet" aria-hidden="true">MODE 2</span>
                   <span class="carte-mode__etiquette">Fiche n° 2</span>
                   <span class="carte-mode__num" aria-hidden="true">02</span>
                   <div>
-                    <p class="carte-mode__titre">Saisie et amélioration des idées</p>
+                    <p class="carte-mode__titre">Mode 1 + amélioration du texte</p>
                     <p class="carte-mode__indice"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2M18 3v3h-3M6 21v-3h3"/></svg>Retourner la fiche</p>
                   </div>
                 </div>
@@ -150,13 +150,35 @@
                   <span class="carte-mode__etiquette">Mode 2</span>
                   <div>
                     <p class="carte-mode__titre">Votre contenu, développé et renforcé.</p>
-                    <p style="margin-top:14px">Nous saisissons votre texte et améliorons vos idées pour un document plus solide. Le travail part toujours de votre contenu.</p>
+                    <p style="margin-top:14px">En plus du Mode 1, nous reformulons et enrichissons vos idées pour un document plus solide. Le travail part toujours de votre contenu.</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        <div class="carte-mode apparait" style="--delai:0.2s">
+            <div class="carte-mode__bouton" role="button" tabindex="0" aria-pressed="false" aria-label="Mode 3 : Mode 2, fiche de synthèse et PowerPoint. Retourner la fiche pour voir le détail.">
+              <div class="carte-mode__interieur">
+                <div class="carte-mode__face carte-mode__face--avant">
+                  <span class="carte-mode__onglet" aria-hidden="true">MODE 3</span>
+                  <span class="carte-mode__etiquette">Fiche n° 3</span>
+                  <span class="carte-mode__num" aria-hidden="true">03</span>
+                  <div>
+                    <p class="carte-mode__titre">Mode 2 + synthèse et PowerPoint</p>
+                    <p class="carte-mode__indice"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2M18 3v3h-3M6 21v-3h3"/></svg>Retourner la fiche</p>
+                  </div>
+                </div>
+                <div class="carte-mode__face carte-mode__face--arriere">
+                  <span class="carte-mode__etiquette">Mode 3</span>
+                  <div>
+                    <p class="carte-mode__titre">Le dossier complet, prêt à présenter.</p>
+                    <p style="margin-top:14px">Tout le Mode 2, plus une fiche de synthèse d'une page et un PowerPoint de présentation (8 à 10 diapositives). Pour un rapport ou un mémoire : le PowerPoint de soutenance.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
       </div>
     </section>
 
