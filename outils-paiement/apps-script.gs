@@ -71,19 +71,21 @@ function installer() {
 
   const synthese = classeur.getSheetByName(FEUILLE_COMMISSIONS) || classeur.insertSheet(FEUILLE_COMMISSIONS);
   synthese.clear();
+  // Séparateur d'arguments : « ; » si le tableau est en français (ou autre langue à virgule décimale), « , » sinon
+  const sep = /^en/i.test(classeur.getSpreadsheetLocale()) ? ',' : ';';
   synthese.getRange('A1').setValue('Commissions à verser par mois et par parrain (paiements validés)').setFontWeight('bold');
   synthese.getRange('A2').setFormula(
-    "=IFERROR(QUERY(Paiements!A2:L, \"select K, H, sum(J) where I = 'Validé' and H <> '' and H <> '" + CONFIG.CODE_DWTS + "' and J > 0 " +
-    "group by K, H label K 'Mois', H 'Code parrain', sum(J) 'Total (FCFA)'\", 0), \"Aucune commission pour l'instant\")");
+    '=IFERROR(QUERY(Paiements!A2:L' + sep + ' "select K, H, sum(J) where I = \'Validé\' and H <> \'\' and H <> \'' + CONFIG.CODE_DWTS + '\' and J > 0 ' +
+    'group by K, H label K \'Mois\', H \'Code parrain\', sum(J) \'Total (FCFA)\'"' + sep + ' 0)' + sep + ' "Aucune commission pour l\'instant")');
   synthese.getRange('E1').setValue('Versement dès ' + CONFIG.SEUIL_VERSEMENT + ' FCFA').setFontWeight('bold');
   // Tableau DWTS : commissions des clients venus sans parrain (gardées par DWTS, rien à verser)
   synthese.getRange('G1').setValue('Commissions DWTS (code ' + CONFIG.CODE_DWTS + ', gardées)').setFontWeight('bold');
   synthese.getRange('G2').setFormula(
-    "=IFERROR(QUERY(Paiements!A2:L, \"select K, count(J), sum(J) where I = 'Validé' and H = '" + CONFIG.CODE_DWTS + "' and J > 0 " +
-    "group by K label K 'Mois', count(J) 'Commandes', sum(J) 'Total (FCFA)'\", 0), \"Aucune commission pour l'instant\")");
+    '=IFERROR(QUERY(Paiements!A2:L' + sep + ' "select K, count(J), sum(J) where I = \'Validé\' and H = \'' + CONFIG.CODE_DWTS + '\' and J > 0 ' +
+    'group by K label K \'Mois\', count(J) \'Commandes\', sum(J) \'Total (FCFA)\'"' + sep + ' 0)' + sep + ' "Aucune commission pour l\'instant")');
   synthese.getRange('K1').setValue('Total DWTS (FCFA)').setFontWeight('bold');
   synthese.getRange('K2').setFormula(
-    "=SUMIFS(Paiements!J2:J, Paiements!I2:I, \"Validé\", Paiements!H2:H, \"" + CONFIG.CODE_DWTS + "\")");
+    '=SUMIFS(Paiements!J2:J' + sep + ' Paiements!I2:I' + sep + ' "Validé"' + sep + ' Paiements!H2:H' + sep + ' "' + CONFIG.CODE_DWTS + '")');
 
   dossierCaptures_();
   dossier_(CONFIG.DOSSIER_FACTURES);
