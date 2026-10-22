@@ -36,7 +36,7 @@ const FEUILLE_CLIENTS = 'Clients';
 const FEUILLE_COMMISSIONS = 'Commissions';
 const FEUILLE_VERSEMENTS = 'Versements';
 const FEUILLE_DEVIS = 'Devis';
-const ENTETES_DEVIS = ['Reçu le', 'N° devis', 'Branche', 'WhatsApp', 'Nom', 'E-mail', 'Lignes', 'Total unique (XAF)', 'Total mensuel (XAF)', 'Précisions', 'PDF'];
+const ENTETES_DEVIS = ['Reçu le', 'N° devis', 'Branche', 'WhatsApp', 'Nom', 'Entreprise', 'E-mail', 'Lignes', 'Total unique (XAF)', 'Total mensuel (XAF)', 'Précisions', 'PDF'];
 
 // Paiements : A Reçu le | B WhatsApp | C Service | D Montant | E TID | F SMS collé | G Capture
 //             H Code parrain | I Statut | J Commission | K Mois | L Alerte | M Désignation | N Facture
@@ -470,6 +470,7 @@ function formaterXaf_(n) {
 function recevoirDevis_(d) {
   const branche = String(d.branche || '');
   const nom = String(d.nom || '').trim().slice(0, 80);
+  const entreprise = String(d.entreprise || '').trim().slice(0, 80);
   const numero = normaliserNumero_(d.whatsapp);
   const email = String(d.email || '').trim().toLowerCase().slice(0, 120);
   const precisions = String(d.precisions || '').trim().slice(0, 500);
@@ -528,7 +529,7 @@ function recevoirDevis_(d) {
     '<table style="width:100%"><tr><td>' + imageLogo_(branche, 64) + '</td><td style="text-align:right">' + imageLogo_('DWTS', 48) + '</td></tr></table>' +
     '<div style="font-weight:bold;margin-top:8px">DWTS · Digital World Technology Service</div>' +
     '<div style="color:#6b7280;font-size:10px;border-bottom:2px solid ' + couleur + ';padding-bottom:6px">Port-Gentil, Gabon · WhatsApp 062 67 14 45 · digitalwtservice@gmail.com</div>' +
-    '<table style="width:100%;margin-top:14px"><tr><td><div style="color:' + couleur + ';font-weight:bold;font-size:10px">PRÉPARÉ POUR</div><b>' + echapperHtml_(nom) + '</b><br>' +
+    '<table style="width:100%;margin-top:14px"><tr><td><div style="color:' + couleur + ';font-weight:bold;font-size:10px">PRÉPARÉ POUR</div>' + (entreprise ? '<b style="font-size:14px">' + echapperHtml_(entreprise) + '</b><br>' + echapperHtml_(nom) : '<b>' + echapperHtml_(nom) + '</b>') + '<br>' +
     echapperHtml_(numero) + '<br>' + echapperHtml_(email) + '</td>' +
     '<td style="text-align:right"><b>DEVIS N° <span style="color:' + couleur + '">' + reference + '</span></b><br>Date : ' + date + '<br>Valable jusqu\'au : ' + validite + '</td></tr></table>' +
     '<table style="width:100%;border-collapse:collapse;margin-top:14px"><tr style="background:#111827;color:#fff"><td style="padding:6px">Prestation</td><td style="padding:6px">Formule</td>' +
@@ -544,14 +545,14 @@ function recevoirDevis_(d) {
 
   const resume = lignes.map(function (l) { return l.quantite + ' × ' + l.prestation + ' (' + l.formule + ')'; }).join(' ; ');
   SpreadsheetApp.getActive().getSheetByName(FEUILLE_DEVIS).appendRow([
-    maintenant, reference, branche, "'" + numero, nom, email, resume, unique, mensuel, precisions, fichier.getUrl()]);
+    maintenant, reference, branche, "'" + numero, nom, entreprise, email, resume, unique, mensuel, precisions, fichier.getUrl()]);
 
   MailApp.sendEmail(email, 'DWTS : votre devis ' + reference + ' (' + formaterXaf_(unique + mensuel) + ')',
     'Bonjour ' + nom + ',\n\nMerci pour votre demande. Votre devis ' + reference + ' est joint à ce message (valable 15 jours, jusqu\'au ' + validite + ').\n' +
     'Pour le valider ou le modifier, répondez à cet e-mail ou écrivez-nous sur WhatsApp au 062 67 14 45.\n\nDWTS - Digital World Technology Service',
     { attachments: [pdf], name: 'DWTS', replyTo: CONFIG.EMAIL_ALERTE });
-  MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : devis ' + reference + ' envoyé à ' + nom + ' (' + formaterXaf_(unique + mensuel) + ')',
-    branche + ' · ' + nom + ' · ' + numero + ' · ' + email + '\n' + resume + (precisions ? '\nPrécisions : ' + precisions : '') + '\n' + fichier.getUrl());
+  MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : devis ' + reference + ' envoyé à ' + (entreprise || nom) + ' (' + formaterXaf_(unique + mensuel) + ')',
+    branche + ' · ' + (entreprise ? entreprise + ' · ' : '') + nom + ' · ' + numero + ' · ' + email + '\n' + resume + (precisions ? '\nPrécisions : ' + precisions : '') + '\n' + fichier.getUrl());
   return { ok: true, reference: reference };
 }
 
