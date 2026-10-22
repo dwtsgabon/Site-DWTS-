@@ -369,7 +369,9 @@ function confirmerLien_(action, ligne, sig) {
     const statut = action === 'valider' ? 'Validé' : 'Refusé';
     cible.feuille.getRange(cible.ligne, COL.STATUT).setValue(statut);
     if (statut === 'Validé') traiterLigne_(cible.feuille, cible.ligne, true);
-    return '<h2>' + statut + ' ✓</h2>' + (statut === 'Validé' ? '<p>La facture a été créée et envoyée par e-mail.</p>' : '');
+    return '<h2>' + statut + ' ✓</h2>' + (statut === 'Validé' ? (emailDuClient_(cible.valeurs[COL.WHATSAPP - 1]) ?
+      '<p>La facture a été envoyée par e-mail au client.</p>' :
+      '<p>Ce client n\'a pas d\'e-mail enregistré : la facture vous est envoyée, à transférer sur WhatsApp.</p>') : '');
   } finally {
     verrou.releaseLock();
   }
@@ -414,9 +416,19 @@ function creerFacture_(v) {
   const pdf = HtmlService.createHtmlOutput(html).getBlob().getAs('application/pdf').setName(numero + '.pdf');
   const fichier = dossier_(CONFIG.DOSSIER_FACTURES).createFile(pdf);
   fichier.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); // lisible depuis Mon espace
-  MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : facture ' + numero + ' (' + montantTexte + ')',
-    'Facture prête pour ' + (client || telephone) + '.\nTransférez le PDF joint au client sur WhatsApp (' + telephone + ').\n' +
-    fichier.getUrl(), { attachments: [pdf] });
+  const emailClient = emailDuClient_(telephone);
+  if (emailClient) {
+    // Facture envoyée directement au client (adresse donnée à l'inscription)
+    MailApp.sendEmail(emailClient, 'DWTS : votre facture ' + numero + ' (' + montantTexte + ')',
+      'Bonjour' + (client ? ' ' + client : '') + ',\n\nMerci pour votre paiement. Votre facture ' + numero + ' (' + montantTexte + ') est jointe à ce message.\n' +
+      'Vous la retrouvez aussi dans votre espace client : ' + fichier.getUrl() + '\n\nDWTS - Digital World Technology Service',
+      { attachments: [pdf], name: 'DWTS', replyTo: CONFIG.EMAIL_ALERTE });
+  } else {
+    // Client sans adresse e-mail connue : la facture vous revient, à transférer sur WhatsApp
+    MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : facture ' + numero + ' (' + montantTexte + ') : pas d\'e-mail client',
+      'Ce client n\'a pas d\'adresse e-mail enregistrée. Transférez le PDF joint sur WhatsApp (' + telephone + ').\n' +
+      fichier.getUrl(), { attachments: [pdf] });
+  }
   return fichier.getUrl();
 }
 
@@ -438,6 +450,21 @@ function imageLogo_(nom, hauteur) {
   } catch (erreur) {
     return '<b style="font-size:22px">' + nom + '</b>';
   }
+}
+
+/** Adresse e-mail donnée à l'inscription (colonne G de Clients), ou '' si inconnue. */
+function emailDuClient_(telephone) {
+  const clients = SpreadsheetApp.getActive().getSheetByName(FEUILLE_CLIENTS);
+  const numero = normaliserNumero_(telephone);
+  if (!clients || clients.getLastRow() < 2 || !numero) return '';
+  const lignes = clients.getRange(2, 1, clients.getLastRow() - 1, 7).getValues();
+  for (let i = 0; i < lignes.length; i++) {
+    if (normaliserNumero_(lignes[i][0]) === numero) {
+      const email = String(lignes[i][6] || '').trim();
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '';
+    }
+  }
+  return '';
 }
 
 function nomDuClient_(telephone) {
