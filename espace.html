@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mon espace | DWTS</title>
-  <meta name="description" content="Mon espace DWTS : vos paiements, vos factures, vos filleuls et vos commissions de parrain.">
+  <meta name="description" content="Mon espace DWTS : vos paiements, vos factures, vos filleuls, vos commissions et vos retraits.">
+  <meta name="robots" content="noindex">
   <meta name="theme-color" content="#0a0a0b">
   <link rel="icon" type="image/png" href="assets/img/logo-dwts.png?v=202610181716">
 
@@ -14,10 +15,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&amp;display=swap" rel="stylesheet">
 
   <!-- Styles du site -->
-  <link rel="stylesheet" href="assets/css/style.css?v=202610231">
+  <link rel="stylesheet" href="assets/css/style.css?v=202610222">
 
   <!-- Styles des pages Paiement, Inscription et Mon espace -->
-  <link rel="stylesheet" href="assets/css/espace.css?v=202610221">
+  <link rel="stylesheet" href="assets/css/espace.css?v=202610222">
 
   <!-- Indique que JavaScript est actif (sert aux animations d'apparition) -->
   <script>document.documentElement.className += ' js';</script>
@@ -43,6 +44,8 @@
       <a href="logia.html">Logia</a>
       <a href="tarifs.html">Tarifs</a>
       <a href="parrainage.html">Parrainage</a>
+      <a class="nav__inscription" href="inscription.html">Inscription</a>
+        <a class="bouton bouton--petit bouton--contour nav__connexion" href="espace.html" aria-current="page">Connexion</a>
         <a class="bouton bouton--petit" href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20j%27ai%20une%20question%20sur%20mon%20espace." target="_blank" rel="noopener">Commander<span class="sr-only"> sur WhatsApp (nouvel onglet)</span></a>
       </nav>
     </div>
@@ -50,50 +53,198 @@
 
   <main id="contenu">
 
-    <header class="parrain-hero">
-      <div class="conteneur">
-        <p class="surtitre intro">[ Mon espace ]</p>
-        <h1 class="titre-section hero__titre intro"><span class="ligne"><span>Vos commandes,</span></span><span class="ligne"><span>vos <span class="degrade-anime">gains.</span></span></span></h1>
-        <p class="intro-section intro">Vos paiements, vos factures et, si vous êtes parrain, vos filleuls et vos commissions.</p>
-      </div>
-    </header>
+    <!-- ===== Connexion (visiteur non connecté) ===== -->
+    <div id="vue-connexion" hidden>
+      <header class="parrain-hero">
+        <div class="conteneur">
+          <p class="surtitre intro">[ Mon espace ]</p>
+          <h1 class="titre-section hero__titre intro"><span class="ligne"><span>Vos commandes,</span></span><span class="ligne"><span>vos <span class="degrade-anime">gains.</span></span></span></h1>
+          <p class="intro-section intro">Vos paiements, vos factures, vos filleuls, vos commissions et vos retraits, au même endroit.</p>
+        </div>
+      </header>
+      <section class="paiement">
+        <div class="conteneur" style="max-width:560px">
+          <div class="bloc">
+            <h2>Connexion</h2>
+            <form class="formulaire" id="form-connexion" novalidate>
+              <div class="champ">
+                <label for="c-whatsapp">Numéro WhatsApp</label>
+                <input id="c-whatsapp" name="username" type="tel" inputmode="tel" autocomplete="username" placeholder="06 ou 07…" required>
+              </div>
+              <div class="champ">
+                <label for="c-pin">Code d'accès <small>(créé à l'inscription)</small></label>
+                <input id="c-pin" name="password" type="password" inputmode="numeric" autocomplete="current-password" maxlength="6" required>
+              </div>
+              <button class="bouton" type="submit">Se connecter</button>
+              <p style="margin:12px 0 0"><small>Vous restez connecté sur cet appareil pendant 30 jours.</small></p>
+              <div class="message" id="message-connexion" role="status" aria-live="polite"></div>
+            </form>
+            <p style="margin-top:16px">Pas encore inscrit ? <a href="inscription.html">Créer mon espace</a>. Code oublié ? <a href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20j%27ai%20oubli%C3%A9%20mon%20code%20d%27acc%C3%A8s." target="_blank" rel="noopener">Écrivez-nous</a>.</p>
+          </div>
+        </div>
+      </section>
+    </div>
 
-    <section class="paiement">
-      <div class="conteneur" style="max-width:1040px">
-        <div class="bloc" id="bloc-connexion">
-          <h2>Ouvrir mon espace</h2>
-          <form class="formulaire" id="form-espace" novalidate>
-            <div class="champ">
-              <label for="whatsapp">Numéro WhatsApp</label>
-              <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="06 ou 07…" required>
+    <!-- ===== Chargement ===== -->
+    <div id="vue-chargement" class="espace">
+      <div class="conteneur"><p class="espace__chargement">Chargement de votre espace…</p></div>
+    </div>
+
+    <!-- ===== Espace client (connecté) ===== -->
+    <div id="vue-espace" class="espace" hidden>
+      <div class="conteneur espace__conteneur">
+
+        <div class="profil-carte">
+          <div class="avatar" id="avatar">
+            <img id="avatar-img" alt="" hidden>
+            <span id="avatar-initiales" aria-hidden="true"></span>
+            <label class="avatar__bouton" title="Changer ma photo">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+              <span class="sr-only">Changer ma photo</span>
+              <input type="file" accept="image/*" data-photo>
+            </label>
+          </div>
+          <div class="profil-carte__texte">
+            <p class="surtitre">Mon espace</p>
+            <h1 id="bonjour">Bonjour</h1>
+            <p id="membre"></p>
+          </div>
+          <div class="profil-carte__code">
+            <small>Mon code parrain</small>
+            <b id="mon-code"></b>
+            <div class="profil-carte__actions">
+              <button type="button" class="mini-bouton" data-copier-code>Copier</button>
+              <a class="mini-bouton" id="partager-code" target="_blank" rel="noopener">Partager</a>
             </div>
-            <div class="champ">
-              <label for="pin">Code d'accès <small>(créé à l'inscription)</small></label>
-              <input id="pin" name="pin" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required>
-            </div>
-            <button class="bouton" type="submit">Ouvrir</button>
-            <div class="message" id="message" role="status" aria-live="polite"></div>
-          </form>
-          <p style="margin-top:16px">Pas encore inscrit ? <a href="inscription.html">Créer mon espace</a>. Code oublié ? <a href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20j%27ai%20oubli%C3%A9%20mon%20code%20d%27acc%C3%A8s." target="_blank" rel="noopener">Écrivez-nous</a>.</p>
+          </div>
         </div>
 
-        <div id="contenu-espace" hidden>
-          <div class="bloc" style="margin-bottom:24px">
-            <h2 id="bonjour">Bonjour</h2>
-            <div class="chiffres" id="chiffres"></div>
-            <p>Votre code parrain : <span class="code-perso" id="mon-code"></span></p>
-          </div>
-          <div class="bloc" style="margin-bottom:24px">
-            <h2>Mes paiements et factures</h2>
-            <div id="paiements"></div>
+        <div class="onglets-espace" role="tablist" aria-label="Rubriques de mon espace">
+          <button type="button" role="tab" data-onglet="accueil">Tableau de bord</button>
+          <button type="button" role="tab" data-onglet="commandes">Commandes et factures</button>
+          <button type="button" role="tab" data-onglet="parrainage">Parrainage</button>
+          <button type="button" role="tab" data-onglet="retraits">Retraits</button>
+          <button type="button" role="tab" data-onglet="profil">Profil</button>
+        </div>
+
+        <div class="message" id="message-espace" role="status" aria-live="polite"></div>
+
+        <!-- Tableau de bord -->
+        <section class="panneau" id="p-accueil" role="tabpanel">
+          <div class="kpis" id="kpis"></div>
+          <div class="grille-espace">
+            <div class="bloc">
+              <h2>Mon solde de parrain</h2>
+              <p class="solde-grand" id="solde-accueil"></p>
+              <div class="jauge" aria-hidden="true"><span id="jauge-accueil"></span></div>
+              <p id="jauge-texte"></p>
+              <button type="button" class="bouton bouton--petit" data-aller="retraits">Voir mes retraits</button>
+            </div>
+            <div class="bloc">
+              <h2>Actions rapides</h2>
+              <div class="actions-rapides">
+                <a href="paiement.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></svg>Payer une commande</a>
+                <a href="devis.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg>Demander un devis</a>
+                <a href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20je%20souhaite%20passer%20une%20commande." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg>Commander sur WhatsApp</a>
+                <a href="tarifs.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V3h9l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>Voir les tarifs</a>
+              </div>
+            </div>
           </div>
           <div class="bloc">
-            <h2>Mes commissions de parrain</h2>
+            <div class="bloc__entete"><h2>Mes dernières commandes</h2><button type="button" class="lien-bouton" data-aller="commandes">Tout voir →</button></div>
+            <div id="dernieres"></div>
+          </div>
+        </section>
+
+        <!-- Commandes et factures -->
+        <section class="panneau" id="p-commandes" role="tabpanel" hidden>
+          <div class="bloc">
+            <h2>Mes commandes et factures</h2>
+            <p>Chaque paiement validé a sa facture PDF : touchez « Télécharger », le fichier s'enregistre sur votre appareil.</p>
+            <div id="commandes"></div>
+          </div>
+        </section>
+
+        <!-- Parrainage -->
+        <section class="panneau" id="p-parrainage" role="tabpanel" hidden>
+          <div class="grille-espace">
+            <div class="bloc">
+              <h2>Invitez vos proches</h2>
+              <p>Partagez ce lien : votre code est déjà rempli à l'inscription de vos filleuls. Vous touchez 500 FCFA par commande DEX payée, et une commission chaque mois sur leurs packs Visuo et Logia.</p>
+              <div class="lien-invitation"><input id="lien-invitation" readonly aria-label="Mon lien d'invitation"><button type="button" class="mini-bouton" data-copier-lien>Copier</button></div>
+              <a class="bouton bouton--petit" id="partager-lien" target="_blank" rel="noopener" style="margin-top:14px">Partager sur WhatsApp</a>
+            </div>
+            <div class="bloc">
+              <h2>Mes filleuls <span class="pastille" id="nb-filleuls"></span></h2>
+              <div id="filleuls"></div>
+            </div>
+          </div>
+          <div class="bloc">
+            <h2>Mes gains par mois</h2>
             <div id="commissions"></div>
           </div>
-        </div>
+        </section>
+
+        <!-- Retraits -->
+        <section class="panneau" id="p-retraits" role="tabpanel" hidden>
+          <div class="grille-espace">
+            <div class="bloc">
+              <h2>Solde disponible</h2>
+              <p class="solde-grand" id="solde-retrait"></p>
+              <div class="jauge" aria-hidden="true"><span id="jauge-retrait"></span></div>
+              <div id="zone-retrait"></div>
+            </div>
+            <div class="bloc">
+              <h2>Comment ça marche</h2>
+              <ol class="etapes-paiement">
+                <li>Les retraits s'ouvrent le dernier week-end de chaque mois (samedi et dimanche).</li>
+                <li>Le montant est votre solde disponible, calculé automatiquement : il ne se modifie pas.</li>
+                <li>Moins de 5 000 FCFA : la demande est annulée. Sinon elle est approuvée et versée sous 48 h sur votre numéro WhatsApp (Airtel Money ou Mobicash).</li>
+              </ol>
+            </div>
+          </div>
+          <div class="bloc">
+            <h2>Historique de mes retraits</h2>
+            <div id="retraits"></div>
+          </div>
+        </section>
+
+        <!-- Profil -->
+        <section class="panneau" id="p-profil" role="tabpanel" hidden>
+          <div class="grille-espace">
+            <div class="bloc">
+              <h2>Mes informations</h2>
+              <dl class="infos" id="infos"></dl>
+              <form class="formulaire" id="form-email" novalidate style="margin-top:18px">
+                <div class="champ">
+                  <label for="p-email">Adresse e-mail <small>(vos factures y sont envoyées)</small></label>
+                  <input id="p-email" name="email" type="email" autocomplete="email" required>
+                </div>
+                <button class="bouton bouton--petit" type="submit">Enregistrer l'e-mail</button>
+              </form>
+            </div>
+            <div class="bloc">
+              <h2>Changer mon code d'accès</h2>
+              <form class="formulaire" id="form-pin" novalidate>
+                <input type="text" name="username" id="pin-utilisateur" autocomplete="username" hidden>
+                <div class="champ">
+                  <label for="pin-ancien">Code actuel</label>
+                  <input id="pin-ancien" type="password" inputmode="numeric" autocomplete="current-password" maxlength="6" required>
+                </div>
+                <div class="champ">
+                  <label for="pin-nouveau">Nouveau code <small>(4 à 6 chiffres)</small></label>
+                  <input id="pin-nouveau" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" pattern="[0-9]{4,6}" required>
+                </div>
+                <button class="bouton bouton--petit" type="submit">Changer le code</button>
+              </form>
+              <p style="margin-top:18px"><small>Vos autres appareils seront déconnectés.</small></p>
+              <button type="button" class="bouton bouton--petit bouton--contour" data-deconnexion style="margin-top:6px">Se déconnecter</button>
+            </div>
+          </div>
+        </section>
+
       </div>
-    </section>
+    </div>
 
   </main>
 
@@ -141,68 +292,335 @@
   </footer>
 
   <script src="assets/js/config-espace.js"></script>
+  <script src="assets/js/compte.js?v=202610222"></script>
   <script>
+  (function () {
     const URL_SCRIPT = window.DWTS_URL_SCRIPT || '';
-    const WHATSAPP = '24162671445';
-    function afficherMessage(texte, type) {
-      const boite = document.getElementById('message');
-      boite.className = 'message message--' + type;
-      boite.innerHTML = texte;
-    }
-    function echapper(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-    function appeler(parametres) {
-      return fetch(URL_SCRIPT + '?' + new URLSearchParams(parametres).toString()).then(function (r) { return r.json(); });
-    }
-    function xaf(n) { return Number(n || 0).toLocaleString('fr-FR') + ' XAF'; }
+    const S = window.dwtsSession, api = window.dwtsApi, esc = window.dwtsEchapper, xaf = window.dwtsXaf;
+    const g = function (id) { return document.getElementById(id); };
+    let d = null; // données du client
 
-    function tableau(entetes, lignes) {
-      if (!lignes.length) return '<p>Rien pour l\'instant.</p>';
-      return '<div style="overflow-x:auto"><table class="tableau"><thead><tr>' + entetes.map(function (e) {
-        return '<th class="' + (e.nombre ? 'nombre' : '') + '">' + e.titre + '</th>'; }).join('') + '</tr></thead><tbody>' +
-        lignes.join('') + '</tbody></table></div>';
+    function vue(nom) {
+      g('vue-connexion').hidden = nom !== 'connexion';
+      g('vue-chargement').hidden = nom !== 'chargement';
+      g('vue-espace').hidden = nom !== 'espace';
+    }
+    function message(id, texte, type) {
+      const b = g(id);
+      b.className = 'message message--' + type;
+      b.innerHTML = texte;
+      if (id === 'message-espace') b.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+    function effacerMessage(id) { g(id).className = 'message'; g(id).innerHTML = ''; }
+    function tableau(entetes, lignes, vide) {
+      if (!lignes.length) return '<p class="vide">' + (vide || 'Rien pour l\'instant.') + '</p>';
+      return '<div class="tableau-defile"><table class="tableau"><thead><tr>' + entetes.map(function (e) {
+        return '<th class="' + (e.nombre ? 'nombre' : '') + '">' + e.titre + '</th>'; }).join('') + '</tr></thead><tbody>' + lignes.join('') + '</tbody></table></div>';
+    }
+    function badge(statut, texte) {
+      const classe = { 'Validé': 'valide', 'Versé': 'valide', 'Approuvé': 'attente', 'À vérifier': 'attente', 'Refusé': 'refuse', 'Annulé': 'neutre' }[statut] || 'neutre';
+      return '<span class="statut statut--' + classe + '">' + esc(texte || statut) + '</span>';
+    }
+    function deconnecter(texte) {
+      S.effacer();
+      d = null;
+      vue('connexion');
+      if (texte) message('message-connexion', texte, 'erreur');
+    }
+    // Réponse du script : session expirée -> retour à la connexion
+    function verifier(r) {
+      if (r && r.session === false) { deconnecter(esc(r.erreur)); throw new Error('session'); }
+      return r;
     }
 
-    document.getElementById('form-espace').addEventListener('submit', function (evenement) {
-      evenement.preventDefault();
-      const form = evenement.target;
+    // ---------- Onglets ----------
+    const onglets = ['accueil', 'commandes', 'parrainage', 'retraits', 'profil'];
+    function ouvrirOnglet(nom, garderPosition) {
+      if (onglets.indexOf(nom) === -1) nom = 'accueil';
+      onglets.forEach(function (o) {
+        g('p-' + o).hidden = o !== nom;
+        const b = document.querySelector('[data-onglet="' + o + '"]');
+        b.setAttribute('aria-selected', o === nom ? 'true' : 'false');
+        b.classList.toggle('est-actif', o === nom);
+      });
+      if (history.replaceState) history.replaceState(null, '', '#' + nom);
+      if (!garderPosition) g('vue-espace').scrollIntoView({ block: 'start' });
+    }
+    document.querySelectorAll('[data-onglet]').forEach(function (b) {
+      b.addEventListener('click', function () { effacerMessage('message-espace'); ouvrirOnglet(b.dataset.onglet, true); });
+    });
+    document.addEventListener('click', function (e) {
+      const aller = e.target.closest('[data-aller]');
+      if (aller) ouvrirOnglet(aller.dataset.aller);
+    });
+
+    // ---------- Affichage ----------
+    function initiales(nom) {
+      return String(nom || '?').trim().split(/\s+/).slice(0, 2).map(function (m) { return m.charAt(0).toUpperCase(); }).join('');
+    }
+    function afficherPhoto(src) {
+      g('avatar-img').hidden = !src;
+      if (src) g('avatar-img').src = src;
+      g('avatar-initiales').hidden = !!src;
+    }
+    function lienInvitation() { return new URL('inscription.html?parrain=' + encodeURIComponent(d.code), location.href).href; }
+    function texteInvitation() {
+      return 'Je te recommande DWTS (exposés, CV, logos, affiches, sites web, logiciels). Inscris-toi avec mon code ' + d.code + ' : ' + lienInvitation();
+    }
+
+    function afficher(donnees) {
+      d = donnees;
+      vue('espace');
+      const prenom = String(d.nom || '').trim().split(/\s+/)[0];
+      g('bonjour').textContent = 'Bonjour ' + prenom;
+      g('membre').textContent = 'Membre depuis le ' + d.inscritLe + ' · ' + d.whatsapp;
+      g('avatar-initiales').textContent = initiales(d.nom);
+      afficherPhoto(d.photo);
+      g('mon-code').textContent = d.code;
+      g('partager-code').href = 'https://wa.me/?text=' + encodeURIComponent(texteInvitation());
+      g('partager-lien').href = g('partager-code').href;
+      g('lien-invitation').value = lienInvitation();
+
+      const valides = d.paiements.filter(function (p) { return p.statut === 'Validé'; }).length;
+      const kpi = function (titre, valeur, icone, accent) {
+        return '<div class="kpi' + (accent ? ' kpi--accent' : '') + '"><span class="kpi__icone" aria-hidden="true">' + icone + '</span><small>' + titre + '</small><b>' + valeur + '</b></div>';
+      };
+      const ic = {
+        depense: '<svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>',
+        commandes: '<svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 13h7M9 17h5"/></svg>',
+        filleuls: '<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg>',
+        gains: '<svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>',
+        solde: '<svg viewBox="0 0 24 24"><path d="M3 7h18v12H3zM3 10h18M16 15h2"/></svg>'
+      };
+      g('kpis').innerHTML = kpi('Total dépensé', xaf(d.totalDepense), ic.depense) + kpi('Commandes payées', valides, ic.commandes) +
+        kpi('Filleuls', d.filleuls.length, ic.filleuls) + kpi('Gains totaux', xaf(d.gainsTotal), ic.gains) + kpi('Solde disponible', xaf(d.solde), ic.solde, true);
+
+      // Solde et jauge vers le seuil de retrait
+      const seuil = d.retrait.seuil || 5000;
+      const pourcent = Math.min(100, Math.round(d.solde / seuil * 100));
+      ['accueil', 'retrait'].forEach(function (n) {
+        g('solde-' + n).textContent = xaf(d.solde);
+        g('jauge-' + n).style.width = pourcent + '%';
+      });
+      g('jauge-texte').innerHTML = d.enCours > 0 ? 'Retrait en cours : <b>' + xaf(d.enCours) + '</b>, versé sous 48 h.' :
+        d.solde >= seuil ? 'Vous pouvez retirer votre solde ' + (d.retrait.ouvert ? '<b>dès maintenant</b>.' : 'le ' + esc(d.retrait.prochaine) + '.') :
+        'Encore <b>' + xaf(seuil - d.solde) + '</b> avant le retrait minimum de ' + xaf(seuil) + '.';
+
+      // Commandes
+      const ligneCommande = function (p, court) {
+        const quoi = esc(p.service) + (p.designation ? '<br><small>' + esc(p.designation) + '</small>' : '');
+        const facture = p.facture ? '<button type="button" class="mini-bouton" data-facture="' + p.id + '">Télécharger</button>' : '<small>—</small>';
+        return '<tr><td>' + esc(p.date) + '</td><td>' + quoi + '</td><td class="nombre">' + (p.montant ? xaf(p.montant) : '—') + '</td><td>' +
+          badge(p.statut, p.statut === 'À vérifier' ? 'En vérification' : p.statut) + '</td>' + (court ? '' : '<td>' + facture + '</td>') + '</tr>';
+      };
+      g('dernieres').innerHTML = tableau([{ titre: 'Date' }, { titre: 'Prestation' }, { titre: 'Montant', nombre: true }, { titre: 'Statut' }],
+        d.paiements.slice(0, 3).map(function (p) { return ligneCommande(p, true); }), 'Aucune commande pour l\'instant. <a href="tarifs.html">Voir nos tarifs</a>.');
+      g('commandes').innerHTML = tableau([{ titre: 'Date' }, { titre: 'Prestation' }, { titre: 'Montant', nombre: true }, { titre: 'Statut' }, { titre: 'Facture' }],
+        d.paiements.map(function (p) { return ligneCommande(p, false); }), 'Aucune commande pour l\'instant.');
+
+      // Parrainage
+      g('nb-filleuls').textContent = d.filleuls.length;
+      g('filleuls').innerHTML = d.filleuls.length ? '<ul class="liste-filleuls">' + d.filleuls.map(function (f) {
+        return '<li><span class="mini-avatar">' + esc(initiales(f.nom)) + '</span><span>' + esc(f.nom) + '<br><small>Inscrit le ' + esc(f.date) + '</small></span></li>';
+      }).join('') + '</ul>' : '<p class="vide">Pas encore de filleul. Partagez votre lien pour commencer à gagner.</p>';
+      g('commissions').innerHTML = tableau([{ titre: 'Mois' }, { titre: 'Commandes de filleuls' }, { titre: 'Gains', nombre: true }],
+        d.commissions.map(function (c) {
+          return '<tr><td>' + esc(c.mois) + '</td><td>' + c.commandes + '</td><td class="nombre">' + xaf(c.gains) + '</td></tr>';
+        }), 'Aucun gain pour l\'instant.') +
+        '<p style="margin-top:12px">Gains totaux : <b>' + xaf(d.gainsTotal) + '</b> · Déjà versé : <b>' + xaf(d.verse) + '</b></p>';
+
+      // Retraits
+      let zone;
+      if (d.enCours > 0) zone = '<p class="alerte">Retrait de <b>' + xaf(d.enCours) + '</b> approuvé : versement sous 48 h sur le ' + esc(d.whatsapp) + '.</p>';
+      else if (!d.retrait.ouvert) zone = '<p class="alerte">Prochaine ouverture des retraits : <b>' + esc(d.retrait.prochaine) + '</b>.</p>' +
+        '<button type="button" class="bouton" disabled>Demander mon retrait</button>';
+      else zone = '<button type="button" class="bouton" data-retrait>Demander mon retrait (' + xaf(d.solde) + ')</button>' +
+        (d.solde < seuil ? '<p style="margin-top:10px"><small>Solde sous ' + xaf(seuil) + ' : la demande sera annulée.</small></p>' : '');
+      g('zone-retrait').innerHTML = zone;
+      g('retraits').innerHTML = tableau([{ titre: 'Date' }, { titre: 'N°' }, { titre: 'Montant', nombre: true }, { titre: 'Statut' }],
+        d.retraits.map(function (r) {
+          const texte = r.statut === 'Approuvé' ? 'Approuvé · versé sous 48 h' : r.statut;
+          return '<tr><td>' + esc(r.date) + '</td><td>' + esc(r.numero) + '</td><td class="nombre">' + xaf(r.montant) + '</td><td>' + badge(r.statut, texte) +
+            (r.statut === 'Annulé' && r.note ? '<br><small>' + esc(r.note) + '</small>' : '') + '</td></tr>';
+        }), 'Aucun retrait pour l\'instant.');
+
+      // Profil
+      g('infos').innerHTML = '<dt>Nom</dt><dd>' + esc(d.nom) + '</dd><dt>WhatsApp</dt><dd>' + esc(d.whatsapp) + '</dd>' +
+        '<dt>Code parrain</dt><dd>' + esc(d.code) + '</dd><dt>Inscrit le</dt><dd>' + esc(d.inscritLe) + '</dd>';
+      g('p-email').value = d.email || '';
+      g('pin-utilisateur').value = d.whatsapp;
+    }
+
+    function charger(onglet) {
+      const s = S.lire();
+      if (!s) { vue('connexion'); return; }
+      vue('chargement');
+      api('espace', { jeton: s.jeton }).then(verifier).then(function (r) {
+        if (!r.ok) { vue('connexion'); message('message-connexion', esc(r.erreur), 'erreur'); return; }
+        afficher(r);
+        ouvrirOnglet(onglet || location.hash.slice(1), true);
+      }).catch(function (e) {
+        if (e && e.message === 'session') return;
+        vue('connexion');
+        message('message-connexion', 'Connexion impossible pour le moment. Vérifiez votre connexion internet et réessayez.', 'erreur');
+      });
+    }
+
+    // ---------- Connexion ----------
+    g('form-connexion').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const form = e.target;
       if (!form.checkValidity()) { form.reportValidity(); return; }
-      if (!URL_SCRIPT) {
-        afficherMessage('Mon espace sera bientôt disponible. En attendant, <a href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">écrivez-nous sur WhatsApp</a>.', 'erreur');
-        return;
-      }
+      if (!URL_SCRIPT) { message('message-connexion', 'Mon espace sera bientôt disponible. En attendant, écrivez-nous sur WhatsApp.', 'erreur'); return; }
       const bouton = form.querySelector('button[type="submit"]');
       bouton.disabled = true;
-      appeler({ action: 'espace', whatsapp: form.whatsapp.value.trim(), pin: form.pin.value.trim() }).then(function (r) {
-        if (!r.ok) { afficherMessage(echapper(r.erreur), 'erreur'); return; }
-        document.getElementById('bloc-connexion').hidden = true;
-        document.getElementById('contenu-espace').hidden = false;
-        document.getElementById('bonjour').textContent = 'Bonjour ' + r.nom;
-        document.getElementById('mon-code').textContent = r.code;
-        document.getElementById('chiffres').innerHTML =
-          '<div class="chiffre"><small>Paiements validés</small><b>' + r.paiements.filter(function (p) { return p.statut === 'Validé'; }).length + '</b></div>' +
-          '<div class="chiffre"><small>Filleuls</small><b>' + r.filleuls + '</b></div>' +
-          '<div class="chiffre"><small>Gains totaux</small><b>' + xaf(r.gainsTotal) + '</b></div>' +
-          '<div class="chiffre"><small>Solde à recevoir</small><b>' + xaf(r.solde) + '</b></div>';
-        document.getElementById('paiements').innerHTML = tableau(
-          [{ titre: 'Date' }, { titre: 'Service' }, { titre: 'Montant', nombre: true }, { titre: 'Statut' }, { titre: 'Facture' }],
-          r.paiements.map(function (p) {
-            return '<tr><td>' + echapper(p.date) + '</td><td>' + echapper(p.service) + '</td><td class="nombre">' + (p.montant ? xaf(p.montant) : '—') +
-              '</td><td><span class="statut' + (p.statut === 'Validé' ? ' statut--valide' : '') + '">' + echapper(p.statut) + '</span></td><td>' +
-              (p.facture ? '<a href="' + encodeURI(p.facture) + '" target="_blank" rel="noopener">Voir</a>' : '—') + '</td></tr>';
-          }));
-        document.getElementById('commissions').innerHTML = tableau(
-          [{ titre: 'Mois' }, { titre: 'Commandes de filleuls' }, { titre: 'Gains', nombre: true }],
-          r.commissions.map(function (c) {
-            return '<tr><td>' + echapper(c.mois) + '</td><td>' + c.commandes + '</td><td class="nombre">' + xaf(c.gains) + '</td></tr>';
-          })) + '<p style="margin-top:12px">Versement en fin de mois par mobile money dès 5 000 FCFA de solde. Déjà versé : ' + xaf(r.verse) + '.</p>';
+      bouton.textContent = 'Connexion…';
+      const pin = form.password.value.trim();
+      api('connexion', { whatsapp: form.username.value.trim(), pin: pin }).then(function (r) {
+        if (!r.ok) { message('message-connexion', esc(r.erreur), 'erreur'); return; }
+        S.ecrire(r.jeton, r.nom);
+        effacerMessage('message-connexion');
+        window.dwtsEnregistrerIdentifiants(r.whatsapp, pin, r.nom);
+        afficher(r);
+        ouvrirOnglet(location.hash.slice(1), true);
+        majMenu();
       }).catch(function () {
-        afficherMessage('Connexion impossible pour le moment. Réessayez dans un instant.', 'erreur');
-      }).finally(function () { bouton.disabled = false; });
+        message('message-connexion', 'Connexion impossible pour le moment. Réessayez dans un instant.', 'erreur');
+      }).finally(function () { bouton.disabled = false; bouton.textContent = 'Se connecter'; });
     });
+
+    function majMenu() {
+      const lien = document.querySelector('.nav__connexion');
+      const insc = document.querySelector('.nav__inscription');
+      if (lien) lien.textContent = S.lire() ? 'Mon espace' : 'Connexion';
+      if (insc) insc.hidden = !!S.lire();
+    }
+
+    document.querySelector('[data-deconnexion]').addEventListener('click', function () {
+      deconnecter();
+      majMenu();
+      window.scrollTo(0, 0);
+    });
+
+    // ---------- Code et lien d'invitation ----------
+    function copier(texte, bouton) {
+      const fini = function () { const t = bouton.textContent; bouton.textContent = 'Copié ✓'; setTimeout(function () { bouton.textContent = t; }, 1600); };
+      if (navigator.clipboard) navigator.clipboard.writeText(texte).then(fini, fini); else fini();
+    }
+    document.querySelector('[data-copier-code]').addEventListener('click', function (e) { copier(d.code, e.currentTarget); });
+    document.querySelector('[data-copier-lien]').addEventListener('click', function (e) { copier(lienInvitation(), e.currentTarget); });
+
+    // ---------- Factures : téléchargement direct du PDF ----------
+    document.addEventListener('click', function (e) {
+      const b = e.target.closest('[data-facture]');
+      if (!b) return;
+      b.disabled = true;
+      const texte = b.textContent;
+      b.textContent = '…';
+      api('facture', { jeton: S.lire() && S.lire().jeton, id: b.dataset.facture }).then(verifier).then(function (r) {
+        if (!r.ok) { message('message-espace', esc(r.erreur), 'erreur'); return; }
+        const octets = Uint8Array.from(atob(r.pdf), function (c) { return c.charCodeAt(0); });
+        const url = URL.createObjectURL(new Blob([octets], { type: 'application/pdf' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = r.nom;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+      }).catch(function (err) {
+        if (!err || err.message !== 'session') message('message-espace', 'Téléchargement impossible pour le moment.', 'erreur');
+      }).finally(function () { b.disabled = false; b.textContent = texte; });
+    });
+
+    // ---------- Photo de profil (recadrée en carré 320 px) ----------
+    function photoCarree(fichier) {
+      return new Promise(function (resolve, reject) {
+        const img = new Image();
+        img.onload = function () {
+          const cote = Math.min(img.width, img.height);
+          const toile = document.createElement('canvas');
+          toile.width = toile.height = 320;
+          toile.getContext('2d').drawImage(img, (img.width - cote) / 2, (img.height - cote) / 2, cote, cote, 0, 0, 320, 320);
+          resolve(toile.toDataURL('image/jpeg', 0.85).split(',')[1]);
+        };
+        img.onerror = reject;
+        img.src = URL.createObjectURL(fichier);
+      });
+    }
+    document.querySelector('[data-photo]').addEventListener('change', function (e) {
+      const fichier = e.target.files[0];
+      e.target.value = '';
+      if (!fichier) return;
+      g('avatar').classList.add('est-envoi');
+      photoCarree(fichier).then(function (image) {
+        return api('photo', { jeton: S.lire().jeton, image: image });
+      }).then(verifier).then(function (r) {
+        if (!r.ok) { message('message-espace', esc(r.erreur), 'erreur'); return; }
+        afficherPhoto(r.photo);
+        message('message-espace', 'Photo mise à jour ✓', 'ok');
+      }).catch(function (err) {
+        if (!err || err.message !== 'session') message('message-espace', 'La photo n\'a pas pu être envoyée. Essayez une autre image.', 'erreur');
+      }).finally(function () { g('avatar').classList.remove('est-envoi'); });
+    });
+
+    // ---------- Retrait ----------
+    document.addEventListener('click', function (e) {
+      const b = e.target.closest('[data-retrait]');
+      if (!b || !d) return;
+      if (!confirm('Demander le retrait de ' + xaf(d.solde) + ' vers votre Mobile Money (' + d.whatsapp + ') ?')) return;
+      b.disabled = true;
+      b.textContent = 'Envoi de la demande…';
+      api('retrait', { jeton: S.lire().jeton }).then(verifier).then(function (r) {
+        if (!r.ok) { message('message-espace', esc(r.erreur), 'erreur'); b.disabled = false; b.textContent = 'Demander mon retrait'; return; }
+        const texte = r.statut === 'Approuvé' ?
+          '<b>Demande ' + esc(r.reference) + ' approuvée ✓</b><br>' + xaf(r.montant) + ' vous seront versés sous 48 h.' :
+          '<b>Demande ' + esc(r.reference) + ' annulée.</b><br>Votre solde (' + xaf(r.montant) + ') est sous le minimum de ' + xaf(d.retrait.seuil) + '.';
+        charger('retraits');
+        setTimeout(function () { message('message-espace', texte, r.statut === 'Approuvé' ? 'ok' : 'erreur'); }, 900);
+      }).catch(function (err) {
+        if (!err || err.message !== 'session') { message('message-espace', 'Demande impossible pour le moment. Réessayez.', 'erreur'); b.disabled = false; }
+      });
+    });
+
+    // ---------- Profil : e-mail et code d'accès ----------
+    g('form-email').addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!e.target.checkValidity()) { e.target.reportValidity(); return; }
+      api('profil', { jeton: S.lire().jeton, email: g('p-email').value.trim() }).then(verifier).then(function (r) {
+        message('message-espace', r.ok ? 'E-mail enregistré ✓ Vos prochaines factures y seront envoyées.' : esc(r.erreur), r.ok ? 'ok' : 'erreur');
+        if (r.ok) d.email = r.email;
+      }).catch(function () {});
+    });
+    g('form-pin').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const nouveau = g('pin-nouveau').value.trim();
+      if (!/^[0-9]{4,6}$/.test(nouveau)) { message('message-espace', 'Le nouveau code doit avoir 4 à 6 chiffres.', 'erreur'); return; }
+      api('pin', { jeton: S.lire().jeton, ancien: g('pin-ancien').value.trim(), nouveau: nouveau }).then(verifier).then(function (r) {
+        if (!r.ok) { message('message-espace', esc(r.erreur), 'erreur'); return; }
+        S.ecrire(r.jeton, d.nom);
+        e.target.reset();
+        g('pin-utilisateur').value = d.whatsapp;
+        window.dwtsEnregistrerIdentifiants(d.whatsapp, nouveau, d.nom);
+        message('message-espace', 'Code d\'accès changé ✓', 'ok');
+      }).catch(function () {});
+    });
+
+    // ---------- Démarrage ----------
+    const params = new URLSearchParams(location.search);
+    if (params.get('bienvenue') && history.replaceState) history.replaceState(null, '', location.pathname + location.hash);
+    charger();
+    if (params.get('bienvenue')) {
+      const attendre = setInterval(function () {
+        if (d) { clearInterval(attendre); message('message-espace', '<b>Bienvenue ' + esc(String(d.nom).split(' ')[0]) + ' !</b> Votre espace est prêt. Ajoutez votre photo et partagez votre code parrain.', 'ok'); }
+      }, 300);
+      setTimeout(function () { clearInterval(attendre); }, 20000);
+    }
+  })();
   </script>
   <!-- Bibliothèques (CDN) puis script du site -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="assets/js/main.js?v=202610181716"></script>
+  <script src="assets/js/main.js?v=202610222"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 /**
- * DWTS : réception des preuves de paiement et suivi des commissions parrain.
+ * DWTS : preuves de paiement, espace client (connexion durable, factures, photo, retraits) et commissions parrain.
  *
  * Le client envoie seulement son numéro WhatsApp + la capture OU le SMS de paiement collé.
  * Le code parrain est enregistré UNE fois, à l'inscription du client (feuille « Clients ») :
@@ -8,25 +8,30 @@
  * À coller dans un Google Sheets (Extensions > Apps Script), puis :
  *   1. exécuter la fonction installer() une fois ;
  *   2. déployer en « Application Web » (accès : Tout le monde) ;
- *   3. copier l'adresse obtenue dans URL_SCRIPT de paiement.html.
+ *   3. copier l'adresse obtenue dans assets/js/config-espace.js.
  * Le détail est dans outils-paiement/README.md.
  * Après chaque paiement validé, une facture PDF au logo de la branche est créée et envoyée par e-mail.
  */
 
 const CONFIG = {
-  EMAIL_ALERTE: 'digitalwtservice@gmail.com', // reçoit une alerte à chaque preuve
+  EMAIL_ALERTE: 'digitalwtservice@gmail.com', // reçoit les preuves de paiement et les demandes de retrait (rien d'autre)
+  URL_SITE: 'https://dwtsgabon.github.io/Site-DWTS-/', // les liens de validation des e-mails ouvrent cette adresse
   DOSSIER_CAPTURES: 'DWTS - Preuves de paiement', // dossier Google Drive des captures
   COMMISSION_DEX: 500, // FCFA par commande DEX payée par un client parrainé
-  SEUIL_VERSEMENT: 5000, // versement au parrain dès ce solde
+  SEUIL_VERSEMENT: 5000, // retrait possible dès ce solde
+  RETRAIT_DERNIER_WEEKEND: true, // true : retraits seulement le dernier week-end du mois ; false : tous les jours
+  DUREE_SESSION_JOURS: 30, // Mon espace reste connecté pendant cette durée
+  FUSEAU: 'Africa/Libreville',
   CODE_DWTS: 'DWTS', // code maison : client sans parrain = commission gardée par DWTS
   DOSSIER_FACTURES: 'DWTS - Factures',
-  DOSSIER_DEVIS: 'DWTS - Devis', // dossier Google Drive des factures PDF
+  DOSSIER_DEVIS: 'DWTS - Devis',
+  DOSSIER_PHOTOS: 'DWTS - Photos clients',
   // Logos imprimés sur les factures (publiés avec le site)
   LOGOS: {
-    DWTS: 'https://raw.githubusercontent.com/mbadingaryan-sketch/Site-DWTS-/main/assets/img/logo-dwts.png',
-    DEX: 'https://raw.githubusercontent.com/mbadingaryan-sketch/Site-DWTS-/main/assets/img/logo-dex-facture.png',
-    Visuo: 'https://raw.githubusercontent.com/mbadingaryan-sketch/Site-DWTS-/main/assets/img/logo-visuo.png',
-    Logia: 'https://raw.githubusercontent.com/mbadingaryan-sketch/Site-DWTS-/main/assets/img/logo-logia.png'
+    DWTS: 'https://raw.githubusercontent.com/dwtsgabon/Site-DWTS-/main/assets/img/logo-dwts.png',
+    DEX: 'https://raw.githubusercontent.com/dwtsgabon/Site-DWTS-/main/assets/img/logo-dex-facture.png',
+    Visuo: 'https://raw.githubusercontent.com/dwtsgabon/Site-DWTS-/main/assets/img/logo-visuo.png',
+    Logia: 'https://raw.githubusercontent.com/dwtsgabon/Site-DWTS-/main/assets/img/logo-logia.png'
   },
   COULEURS: { DEX: '#1E6FD9', Visuo: '#FF6A00', Logia: '#1E9FD9' }
 };
@@ -44,9 +49,15 @@ const ENTETES_PAIEMENTS = ['Reçu le', 'WhatsApp', 'Service', 'Montant (XAF)', '
   'Code parrain', 'Statut', 'Commission (FCFA)', 'Mois', 'Alerte', 'Désignation (facture)', 'Facture'];
 const COL = { WHATSAPP: 2, SERVICE: 3, MONTANT: 4, TID: 5, SMS: 6, CAPTURE: 7, PARRAIN: 8, STATUT: 9, COMMISSION: 10,
   DESIGNATION: 13, FACTURE: 14 };
-// Clients : A WhatsApp | B Nom | C Code de son parrain | D Inscrit le | E Son code parrain | F Code d'accès | G E-mail
-const ENTETES_CLIENTS = ['WhatsApp', 'Nom', 'Code de son parrain', 'Inscrit le', 'Son code parrain', 'Code d\'accès', 'E-mail'];
+// Clients : A WhatsApp | B Nom | C Code de son parrain | D Inscrit le | E Son code parrain | F Code d'accès | G E-mail | H Photo
+const ENTETES_CLIENTS = ['WhatsApp', 'Nom', 'Code de son parrain', 'Inscrit le', 'Son code parrain', 'Code d\'accès', 'E-mail', 'Photo (Drive)'];
+const CL = { WHATSAPP: 1, NOM: 2, PARRAIN: 3, INSCRIT: 4, CODE: 5, PIN: 6, EMAIL: 7, PHOTO: 8 };
 const ENTETES_VERSEMENTS = ['Code parrain', 'Date', 'Montant versé (FCFA)', 'Note'];
+// Retraits : demandés depuis Mon espace (montant = solde disponible, non modifiable)
+const FEUILLE_RETRAITS = 'Retraits';
+const ENTETES_RETRAITS = ['Demandé le', 'N° retrait', 'Code parrain', 'WhatsApp', 'Nom', 'Montant (XAF)', 'Statut', 'Traité le', 'Note'];
+const RT = { DATE: 1, NUMERO: 2, CODE: 3, WHATSAPP: 4, NOM: 5, MONTANT: 6, STATUT: 7, TRAITE: 8, NOTE: 9 };
+const STATUTS_RETRAIT = ['Approuvé', 'Versé', 'Annulé', 'Refusé'];
 const STATUTS = ['À vérifier', 'Validé', 'Refusé'];
 const SERVICES = ['DEX', 'Visuo', 'Logia'];
 
@@ -55,54 +66,34 @@ const CATALOGUE_DEVIS = [["Visuo","Logo","Basique",6500,"Unique"],["Visuo","Logo
 // FIN CATALOGUE
 
 
-/** Crée les feuilles, les listes et le dossier des captures. À lancer une seule fois. */
+/** Crée les feuilles, les listes, les dossiers et le tableau de bord. À relancer après chaque mise à jour du script. */
 function installer() {
   const classeur = SpreadsheetApp.getActive();
 
-  const paiements = classeur.getSheetByName(FEUILLE_PAIEMENTS) || classeur.insertSheet(FEUILLE_PAIEMENTS);
-  paiements.getRange(1, 1, 1, ENTETES_PAIEMENTS.length).setValues([ENTETES_PAIEMENTS]).setFontWeight('bold');
-  paiements.setFrozenRows(1);
+  const paiements = feuille_(FEUILLE_PAIEMENTS, ENTETES_PAIEMENTS);
   paiements.getRange(2, COL.STATUT, 1000, 1)
     .setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(STATUTS, true).build());
   paiements.getRange(2, COL.SERVICE, 1000, 1)
     .setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(SERVICES, true).build());
 
-  const clients = classeur.getSheetByName(FEUILLE_CLIENTS) || classeur.insertSheet(FEUILLE_CLIENTS);
-  clients.getRange(1, 1, 1, ENTETES_CLIENTS.length).setValues([ENTETES_CLIENTS]).setFontWeight('bold');
-  clients.setFrozenRows(1);
+  const clients = feuille_(FEUILLE_CLIENTS, ENTETES_CLIENTS);
   clients.getRange('A:A').setNumberFormat('@'); // garder le 0 devant les numéros
   clients.getRange('F:F').setNumberFormat('@');
 
-  const versements = classeur.getSheetByName(FEUILLE_VERSEMENTS) || classeur.insertSheet(FEUILLE_VERSEMENTS);
-  versements.getRange(1, 1, 1, ENTETES_VERSEMENTS.length).setValues([ENTETES_VERSEMENTS]).setFontWeight('bold');
-  versements.setFrozenRows(1);
-
-  const devis = classeur.getSheetByName(FEUILLE_DEVIS) || classeur.insertSheet(FEUILLE_DEVIS);
-  devis.getRange(1, 1, 1, ENTETES_DEVIS.length).setValues([ENTETES_DEVIS]).setFontWeight('bold');
-  devis.setFrozenRows(1);
+  feuille_(FEUILLE_VERSEMENTS, ENTETES_VERSEMENTS);
+  const devis = feuille_(FEUILLE_DEVIS, ENTETES_DEVIS);
   devis.getRange('D:D').setNumberFormat('@');
-  dossier_(CONFIG.DOSSIER_DEVIS);
+  const retraits = feuille_(FEUILLE_RETRAITS, ENTETES_RETRAITS);
+  retraits.getRange('D:D').setNumberFormat('@');
+  retraits.getRange(2, RT.STATUT, 1000, 1)
+    .setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(STATUTS_RETRAIT, true).build());
 
-  const synthese = classeur.getSheetByName(FEUILLE_COMMISSIONS) || classeur.insertSheet(FEUILLE_COMMISSIONS);
-  synthese.clear();
   // Séparateur d'arguments : « ; » si le tableau est en français (ou autre langue à virgule décimale), « , » sinon
   const sep = /^en/i.test(classeur.getSpreadsheetLocale()) ? ',' : ';';
-  synthese.getRange('A1').setValue('Commissions à verser par mois et par parrain (paiements validés)').setFontWeight('bold');
-  synthese.getRange('A2').setFormula(
-    '=IFERROR(QUERY(Paiements!A2:L' + sep + ' "select K, H, sum(J) where I = \'Validé\' and H <> \'\' and H <> \'' + CONFIG.CODE_DWTS + '\' and J > 0 ' +
-    'group by K, H label K \'Mois\', H \'Code parrain\', sum(J) \'Total (FCFA)\'"' + sep + ' 0)' + sep + ' "Aucune commission pour l\'instant")');
-  synthese.getRange('E1').setValue('Versement dès ' + CONFIG.SEUIL_VERSEMENT + ' FCFA').setFontWeight('bold');
-  // Tableau DWTS : commissions des clients venus sans parrain (gardées par DWTS, rien à verser)
-  synthese.getRange('G1').setValue('Commissions DWTS (code ' + CONFIG.CODE_DWTS + ', gardées)').setFontWeight('bold');
-  synthese.getRange('G2').setFormula(
-    '=IFERROR(QUERY(Paiements!A2:L' + sep + ' "select K, count(J), sum(J) where I = \'Validé\' and H = \'' + CONFIG.CODE_DWTS + '\' and J > 0 ' +
-    'group by K label K \'Mois\', count(J) \'Commandes\', sum(J) \'Total (FCFA)\'"' + sep + ' 0)' + sep + ' "Aucune commission pour l\'instant")');
-  synthese.getRange('K1').setValue('Total DWTS (FCFA)').setFontWeight('bold');
-  synthese.getRange('K2').setFormula(
-    '=SUMIFS(Paiements!J2:J' + sep + ' Paiements!I2:I' + sep + ' "Validé"' + sep + ' Paiements!H2:H' + sep + ' "' + CONFIG.CODE_DWTS + '")');
+  const synthese = construireCommissions_(classeur, sep);
 
-  dossierCaptures_();
-  dossier_(CONFIG.DOSSIER_FACTURES);
+  [CONFIG.DOSSIER_CAPTURES, CONFIG.DOSSIER_FACTURES, CONFIG.DOSSIER_DEVIS, CONFIG.DOSSIER_PHOTOS].forEach(dossier_);
+  secretLiens_();
 
   // Mise en forme des feuilles et tableau de bord (couleurs, graphiques)
   styliserFeuilles_(classeur, synthese);
@@ -115,121 +106,452 @@ function installer() {
   ScriptApp.newTrigger('surModification').forSpreadsheet(classeur).onEdit().create();
 }
 
+/** Feuille existante, ou créée avec ses en-têtes (le script ne plante plus si installer n'a pas été relancé). */
+function feuille_(nom, entetes) {
+  const classeur = SpreadsheetApp.getActive();
+  let feuille = classeur.getSheetByName(nom);
+  if (!feuille) feuille = classeur.insertSheet(nom);
+  const actuelles = feuille.getRange(1, 1, 1, entetes.length).getValues()[0];
+  if (actuelles.join('|') !== entetes.join('|')) {
+    feuille.getRange(1, 1, 1, entetes.length).setValues([entetes]).setFontWeight('bold');
+    feuille.setFrozenRows(1);
+  }
+  return feuille;
+}
+
 /**
- * Pages Inscription et Mon espace (lecture JSON) :
- *   ?action=inscription&nom=…&whatsapp=…&parrain=…  -> { ok, code, pin }
- *   ?action=espace&whatsapp=…&pin=…                 -> { ok, nom, code, paiements, filleuls, commissions, … }
+ * Feuille « Commissions » : 3 tableaux mis en forme.
+ *   A:C  commissions par mois et par parrain · E:H  solde par parrain (gagné, versé, reste)
+ *   J:L  commissions DWTS (gardées) · N  total DWTS
  */
+function construireCommissions_(classeur, sep) {
+  const f = function (formule) { return sep === ';' ? formule : formule.replace(/;/g, ','); };
+  const s = classeur.getSheetByName(FEUILLE_COMMISSIONS) || classeur.insertSheet(FEUILLE_COMMISSIONS);
+  s.clear();
+  s.clearConditionalFormatRules();
+  s.getBandings().forEach(function (b) { b.remove(); });
+  if (s.getMaxColumns() < 14) s.insertColumnsAfter(s.getMaxColumns(), 14 - s.getMaxColumns());
+  s.setHiddenGridlines(true);
+  const DW = CONFIG.CODE_DWTS;
+  const P = FEUILLE_PAIEMENTS;
+
+  s.getRange('A1:N1').merge().setValue('Commissions des parrains · versement dès ' + formaterXaf_(CONFIG.SEUIL_VERSEMENT))
+    .setBackground(THEME.marine).setFontColor('#FFFFFF').setFontWeight('bold').setFontSize(14).setFontFamily('Raleway');
+  s.setRowHeight(1, 40);
+  [['A3', 'Par mois et par parrain'], ['E3', 'Solde par parrain'], ['J3', 'Commissions DWTS (gardées)'], ['N3', 'Total DWTS']]
+    .forEach(function (t) { s.getRange(t[0]).setValue(t[1]).setFontColor(THEME.orange).setFontWeight('bold').setFontSize(12); });
+
+  s.getRange('A4').setFormula(f('=IFERROR(QUERY(' + P + '!A2:L;"select K, H, sum(J) where I = \'Validé\' and H <> \'\' and H <> \'' + DW +
+    '\' and J > 0 group by K, H order by K desc label K \'Mois\', H \'Parrain\', sum(J) \'Total\'";0);"Aucune commission")'));
+  s.getRange('E4').setFormula(f('=IFERROR(QUERY(' + P + '!A2:L;"select H, sum(J) where I = \'Validé\' and H <> \'\' and H <> \'' + DW +
+    '\' and J > 0 group by H order by sum(J) desc label H \'Parrain\', sum(J) \'Gagné\'";0);"Aucun parrain")'));
+  s.getRange('G4:H4').setValues([['Versé', 'Reste à verser']]);
+  s.getRange('G5').setFormula(f('=ARRAYFORMULA(IF(E5:E="";;SUMIF(' + FEUILLE_VERSEMENTS + '!A:A;E5:E;' + FEUILLE_VERSEMENTS + '!C:C)))'));
+  s.getRange('H5').setFormula(f('=ARRAYFORMULA(IF(E5:E="";;F5:F-G5:G))'));
+  s.getRange('J4').setFormula(f('=IFERROR(QUERY(' + P + '!A2:L;"select K, count(J), sum(J) where I = \'Validé\' and H = \'' + DW +
+    '\' and J > 0 group by K order by K desc label K \'Mois\', count(J) \'Commandes\', sum(J) \'Total\'";0);"Aucune commission")'));
+  s.getRange('N4').setFormula(f('=SUMIFS(' + P + '!J:J;' + P + '!I:I;"Validé";' + P + '!H:H;"' + DW + '")'));
+
+  // Mise en forme : en-têtes marine, lignes alternées seulement là où il y a des données, montants en XAF
+  const xaf = '#,##0 "XAF"';
+  ['A4:C4', 'E4:H4', 'J4:L4'].forEach(function (a1) {
+    s.getRange(a1).setBackground(THEME.marine).setFontColor('#FFFFFF').setFontWeight('bold').setHorizontalAlignment('center');
+  });
+  s.setRowHeight(4, 30);
+  s.getRange('C5:C500').setNumberFormat(xaf);
+  s.getRange('F5:H500').setNumberFormat(xaf);
+  s.getRange('L5:L500').setNumberFormat(xaf);
+  s.getRange('N4').setNumberFormat(xaf).setFontSize(16).setFontWeight('bold').setFontColor('#1A7F37')
+    .setBackground(THEME.carte).setHorizontalAlignment('center');
+  s.getRange('A1:N500').setFontFamily(THEME.police).setVerticalAlignment('middle');
+  s.getRange('A1').setFontFamily('Raleway');
+  const regles = [];
+  [['A5:C500', '$A5'], ['E5:H500', '$E5'], ['J5:L500', '$J5']].forEach(function (t) {
+    const plage = s.getRange(t[0]);
+    regles.push(SpreadsheetApp.newConditionalFormatRule().whenFormulaSatisfied('=AND(' + t[1] + '<>"",ISEVEN(ROW()))'.replace(/,/g, sep))
+      .setBackground(THEME.carte).setRanges([plage]).build());
+    regles.push(SpreadsheetApp.newConditionalFormatRule().whenFormulaSatisfied('=AND(' + t[1] + '<>"",ISODD(ROW()))'.replace(/,/g, sep))
+      .setBackground('#FFFFFF').setRanges([plage]).build());
+  });
+  // Reste à verser au-dessus du seuil : en rouge gras (à payer)
+  regles.push(SpreadsheetApp.newConditionalFormatRule().whenNumberGreaterThanOrEqualTo(CONFIG.SEUIL_VERSEMENT)
+    .setFontColor('#C0392B').setBold(true).setRanges([s.getRange('H5:H500')]).build());
+  s.setConditionalFormatRules(regles);
+  s.setColumnWidth(1, 110); s.setColumnWidth(2, 130); s.setColumnWidth(3, 120);
+  s.setColumnWidth(4, 24);
+  s.setColumnWidth(5, 130); s.setColumnWidths(6, 3, 120);
+  s.setColumnWidth(9, 24);
+  s.setColumnWidth(10, 110); s.setColumnWidth(11, 110); s.setColumnWidth(12, 120);
+  s.setColumnWidth(13, 24); s.setColumnWidth(14, 150);
+  s.setFrozenRows(4);
+  return s;
+}
+
+/** Lien GET (anciennes pages, anciens e-mails). Les pages du site passent par doPost. */
 function doGet(e) {
   const p = e.parameter || {};
+  if (p.action === 'valider' || p.action === 'refuser') {
+    // Anciens e-mails : renvoie vers la page de validation du site
+    const lien = CONFIG.URL_SITE + 'validation.html?t=paiement&a=' + encodeURIComponent(p.action) + '&l=' + encodeURIComponent(p.l) + '&s=' + encodeURIComponent(p.s);
+    return pageHtml_('Validation', '<p><a href="' + echapperHtml_(lien) + '" target="_top" style="font-size:18px">Ouvrir la page de validation</a></p>');
+  }
+  return reponse_(api_(p));
+}
+
+/** Toutes les actions JSON de l'espace client (appelées par le site, en POST ou en GET). */
+function api_(p) {
   try {
-    if (p.action === 'inscription') return reponse_(inscrire_(p));
-    if (p.action === 'espace') return reponse_(espace_(p));
-    if (p.action === 'valider' || p.action === 'refuser') return pageValidation_(p);
-    return reponse_({ ok: false, erreur: 'Action inconnue' });
+    switch (p.action) {
+      case 'inscription': return inscrire_(p);
+      case 'connexion': return connecter_(p);
+      case 'espace': return espaceParJeton_(p);
+      case 'facture': return telechargerFacture_(p);
+      case 'photo': return changerPhoto_(p);
+      case 'pin': return changerPin_(p);
+      case 'profil': return changerProfil_(p);
+      case 'retrait': return demanderRetrait_(p);
+      case 'infoValidation': return infoValidation_(p);
+      case 'confirmerValidation': return confirmerValidation_(p);
+      default: return { ok: false, erreur: 'Action inconnue' };
+    }
   } catch (erreur) {
-    return reponse_({ ok: false, erreur: 'Une erreur est survenue, réessayez plus tard.' });
+    console.error(erreur);
+    return { ok: false, erreur: 'Une erreur est survenue, réessayez plus tard.' };
   }
 }
 
-/** Inscription unique : code parrain personnel + code d'accès, et code du parrain enregistré une fois. */
+// ---------- Clients et sessions ----------
+
+function lireClients_() {
+  const feuille = feuille_(FEUILLE_CLIENTS, ENTETES_CLIENTS);
+  const lignes = feuille.getLastRow() > 1 ? feuille.getRange(2, 1, feuille.getLastRow() - 1, ENTETES_CLIENTS.length).getValues() : [];
+  return { feuille: feuille, lignes: lignes };
+}
+
+/** { feuille, ligne (n° de ligne), v (valeurs) } du client, ou null. */
+function trouverClient_(numero) {
+  const c = lireClients_();
+  for (let i = 0; i < c.lignes.length; i++) {
+    if (normaliserNumero_(c.lignes[i][CL.WHATSAPP - 1]) === numero) return { feuille: c.feuille, ligne: i + 2, v: c.lignes[i], tous: c.lignes };
+  }
+  return null;
+}
+
+function pinDe_(client) { return String(client.v[CL.PIN - 1]).replace(/^'/, '').trim(); }
+
+/** Jeton de session signé : numéro.expiration.signature (changer le code d'accès invalide les anciens jetons). */
+function creerJeton_(numero, pin) {
+  const expiration = Date.now() + CONFIG.DUREE_SESSION_JOURS * 86400000;
+  return numero + '.' + expiration + '.' + signatureSession_(numero, expiration, pin);
+}
+
+function signatureSession_(numero, expiration, pin) {
+  return signature_('session', numero + '|' + expiration, pin).slice(0, 40);
+}
+
+/** Client correspondant à un jeton valide, ou null. */
+function clientDuJeton_(jeton) {
+  const morceaux = String(jeton || '').split('.');
+  if (morceaux.length !== 3) return null;
+  const numero = normaliserNumero_(morceaux[0]);
+  const expiration = Number(morceaux[1]);
+  if (!numero || !(expiration > Date.now())) return null;
+  const client = trouverClient_(numero);
+  if (!client || signatureSession_(numero, expiration, pinDe_(client)) !== morceaux[2]) return null;
+  client.numero = numero;
+  return client;
+}
+
+const SESSION_EXPIREE = { ok: false, session: false, erreur: 'Votre session a expiré. Reconnectez-vous.' };
+
+/** Inscription unique : code parrain personnel, code d'accès choisi, et connexion directe à Mon espace. */
 function inscrire_(p) {
   const numero = normaliserNumero_(p.whatsapp);
   const nom = String(p.nom || '').trim().slice(0, 80);
   if (!nom || !numero) return { ok: false, erreur: 'Indiquez votre nom et un numéro WhatsApp valide.' };
   const email = String(p.email || '').trim().toLowerCase().slice(0, 120);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, erreur: 'Indiquez une adresse e-mail valide.' };
+  const pin = String(p.pin || '').trim();
+  if (!/^[0-9]{4,6}$/.test(pin)) return { ok: false, erreur: 'Le code d\'accès doit avoir 4 à 6 chiffres.' };
 
   const verrou = LockService.getScriptLock();
   verrou.waitLock(10000);
   try {
-    const clients = SpreadsheetApp.getActive().getSheetByName(FEUILLE_CLIENTS);
-    const lignes = clients.getLastRow() > 1 ? clients.getRange(2, 1, clients.getLastRow() - 1, 6).getValues() : [];
-    if (lignes.some(function (l) { return normaliserNumero_(l[0]) === numero; })) {
-      return { ok: false, erreur: 'Ce numéro est déjà inscrit. Ouvrez Mon espace, ou écrivez-nous si vous avez oublié votre code.' };
+    const c = lireClients_();
+    if (c.lignes.some(function (l) { return normaliserNumero_(l[0]) === numero; })) {
+      return { ok: false, erreur: 'Ce numéro est déjà inscrit. Connectez-vous, ou écrivez-nous si vous avez oublié votre code.' };
     }
     // Sans code parrain : le code maison DWTS est mis automatiquement
     const parrain = String(p.parrain || '').trim().toUpperCase() || CONFIG.CODE_DWTS;
-    if (parrain !== CONFIG.CODE_DWTS && !lignes.some(function (l) { return String(l[4]).toUpperCase() === parrain; })) {
+    if (parrain !== CONFIG.CODE_DWTS && !c.lignes.some(function (l) { return String(l[CL.CODE - 1]).toUpperCase() === parrain; })) {
       return { ok: false, erreur: 'Code parrain introuvable. Vérifiez-le, ou laissez la case vide.' };
     }
     const proprietes = PropertiesService.getScriptProperties();
     const suivant = Number(proprietes.getProperty('compteur_parrain') || 0) + 1;
     proprietes.setProperty('compteur_parrain', String(suivant));
     const code = 'PARRAIN-' + ('00' + suivant).slice(-3);
-    // Code d'accès choisi par le client (4 à 6 chiffres) ; au hasard s'il n'en a pas envoyé
-    const pinChoisi = String(p.pin || '').trim();
-    if (pinChoisi && !/^[0-9]{4,6}$/.test(pinChoisi)) return { ok: false, erreur: 'Le code d\'accès doit avoir 4 à 6 chiffres.' };
-    const pin = pinChoisi || String(Math.floor(1000 + Math.random() * 9000));
-    clients.appendRow(["'" + numero, nom, parrain, new Date(), code, "'" + pin, email]);
-    MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : nouvelle inscription (' + nom + ')',
-      nom + ' (' + numero + ', ' + email + ') s\'est inscrit. Son code parrain : ' + code + (parrain === CONFIG.CODE_DWTS ? '. Sans parrain (code DWTS).' : '. Parrainé par ' + parrain + '.'));
-    return { ok: true, code: code, pin: pin };
+    c.feuille.appendRow(["'" + numero, nom, parrain, new Date(), code, "'" + pin, email, '']);
   } finally {
     verrou.releaseLock();
   }
+  // Pas d'e-mail d'alerte : l'inscription se voit dans la feuille Clients et le tableau de bord
+  const client = trouverClient_(numero);
+  client.numero = numero;
+  const donnees = donneesEspace_(client);
+  donnees.jeton = creerJeton_(numero, pin);
+  return donnees;
 }
 
-/** Mon espace : paiements et factures du client ; filleuls, gains et solde s'il est parrain. */
-function espace_(p) {
+/** Connexion avec numéro + code d'accès : renvoie un jeton valable CONFIG.DUREE_SESSION_JOURS jours. */
+function connecter_(p) {
   const numero = normaliserNumero_(p.whatsapp);
+  if (!numero) return { ok: false, erreur: 'Numéro WhatsApp invalide.' };
   const cache = CacheService.getScriptCache();
   const cleEssais = 'essais_' + numero;
   const essais = Number(cache.get(cleEssais) || 0);
-  if (!numero) return { ok: false, erreur: 'Numéro WhatsApp invalide.' };
   if (essais >= 5) return { ok: false, erreur: 'Trop d\'essais. Réessayez dans une heure ou écrivez-nous.' };
-
-  const classeur = SpreadsheetApp.getActive();
-  const clients = classeur.getSheetByName(FEUILLE_CLIENTS);
-  const lignes = clients.getLastRow() > 1 ? clients.getRange(2, 1, clients.getLastRow() - 1, 6).getValues() : [];
-  const client = lignes.filter(function (l) { return normaliserNumero_(l[0]) === numero; })[0];
-  if (!client) {
-    return { ok: false, erreur: 'Ce numéro n\'est pas inscrit. Créez votre espace sur la page Inscription.' };
-  }
-  if (String(client[5]).replace(/^'/, '') !== String(p.pin || '').trim()) {
+  const client = trouverClient_(numero);
+  if (!client) return { ok: false, erreur: 'Ce numéro n\'est pas inscrit. Créez votre espace sur la page Inscription.' };
+  if (pinDe_(client) !== String(p.pin || '').trim()) {
     cache.put(cleEssais, String(essais + 1), 3600);
     return { ok: false, erreur: 'Code d\'accès incorrect.' };
   }
   cache.remove(cleEssais);
-  const code = String(client[4]).toUpperCase();
-  const fuseau = Session.getScriptTimeZone();
+  client.numero = numero;
+  const donnees = donneesEspace_(client);
+  donnees.jeton = creerJeton_(numero, pinDe_(client));
+  return donnees;
+}
 
-  const feuille = classeur.getSheetByName(FEUILLE_PAIEMENTS);
-  const donnees = feuille.getLastRow() > 1 ? feuille.getRange(2, 1, feuille.getLastRow() - 1, ENTETES_PAIEMENTS.length).getValues() : [];
-  const paiements = [];
+function espaceParJeton_(p) {
+  const client = clientDuJeton_(p.jeton);
+  return client ? donneesEspace_(client) : SESSION_EXPIREE;
+}
+
+/** Gains, versements et retraits d'un parrain. solde = gagné − versé − retrait approuvé en attente. */
+function comptesParrain_(code) {
+  const classeur = SpreadsheetApp.getActive();
+  const paiements = classeur.getSheetByName(FEUILLE_PAIEMENTS);
+  const donnees = paiements && paiements.getLastRow() > 1 ? paiements.getRange(2, 1, paiements.getLastRow() - 1, ENTETES_PAIEMENTS.length).getValues() : [];
   const parMois = {};
-  let gainsTotal = 0;
+  let gains = 0;
   donnees.forEach(function (l) {
-    if (normaliserNumero_(l[COL.WHATSAPP - 1]) === numero) {
-      paiements.push({
-        date: l[0] instanceof Date ? Utilities.formatDate(l[0], fuseau, 'dd/MM/yyyy') : String(l[0]),
-        service: l[COL.SERVICE - 1], montant: Number(l[COL.MONTANT - 1]) || 0,
-        statut: l[COL.STATUT - 1], facture: l[COL.STATUT - 1] === 'Validé' ? l[COL.FACTURE - 1] : ''
-      });
-    }
     if (code && String(l[COL.PARRAIN - 1]).toUpperCase() === code && l[COL.STATUT - 1] === 'Validé') {
       const gain = Number(l[COL.COMMISSION - 1]) || 0;
-      const mois = l[10] || '';
+      const mois = String(l[10] || '').replace(/^'/, '');
       parMois[mois] = parMois[mois] || { mois: mois, commandes: 0, gains: 0 };
       parMois[mois].commandes += 1;
       parMois[mois].gains += gain;
-      gainsTotal += gain;
+      gains += gain;
     }
   });
-
   const versements = classeur.getSheetByName(FEUILLE_VERSEMENTS);
   const verse = versements && versements.getLastRow() > 1 ?
     versements.getRange(2, 1, versements.getLastRow() - 1, 3).getValues()
       .filter(function (l) { return String(l[0]).toUpperCase() === code; })
       .reduce(function (total, l) { return total + (Number(l[2]) || 0); }, 0) : 0;
-
+  const retraits = classeur.getSheetByName(FEUILLE_RETRAITS);
+  const lignesRetraits = retraits && retraits.getLastRow() > 1 ? retraits.getRange(2, 1, retraits.getLastRow() - 1, ENTETES_RETRAITS.length).getValues() : [];
+  const fuseau = CONFIG.FUSEAU;
+  const mesRetraits = [];
+  let enCours = 0;
+  lignesRetraits.forEach(function (l) {
+    if (String(l[RT.CODE - 1]).toUpperCase() !== code) return;
+    if (l[RT.STATUT - 1] === 'Approuvé') enCours += Number(l[RT.MONTANT - 1]) || 0;
+    mesRetraits.push({
+      date: l[0] instanceof Date ? Utilities.formatDate(l[0], fuseau, 'dd/MM/yyyy') : String(l[0]),
+      numero: l[RT.NUMERO - 1], montant: Number(l[RT.MONTANT - 1]) || 0, statut: l[RT.STATUT - 1], note: l[RT.NOTE - 1]
+    });
+  });
   return {
-    ok: true, nom: client[1], code: code,
-    paiements: paiements.reverse(),
-    filleuls: lignes.filter(function (l) { return String(l[2]).toUpperCase() === code; }).length,
     commissions: Object.keys(parMois).sort().reverse().map(function (m) { return parMois[m]; }),
-    gainsTotal: gainsTotal, verse: verse, solde: gainsTotal - verse
+    gainsTotal: gains, verse: verse, enCours: enCours, solde: Math.max(0, gains - verse - enCours),
+    retraits: mesRetraits.reverse()
   };
+}
+
+/** Tout ce qu'affiche Mon espace. */
+function donneesEspace_(client) {
+  const numero = client.numero;
+  const code = String(client.v[CL.CODE - 1]).toUpperCase();
+  const fuseau = CONFIG.FUSEAU;
+  const date = function (d) { return d instanceof Date ? Utilities.formatDate(d, fuseau, 'dd/MM/yyyy') : String(d || ''); };
+
+  const feuille = SpreadsheetApp.getActive().getSheetByName(FEUILLE_PAIEMENTS);
+  const donnees = feuille && feuille.getLastRow() > 1 ? feuille.getRange(2, 1, feuille.getLastRow() - 1, ENTETES_PAIEMENTS.length).getValues() : [];
+  const paiements = [];
+  let depense = 0;
+  donnees.forEach(function (l, i) {
+    if (normaliserNumero_(l[COL.WHATSAPP - 1]) !== numero) return;
+    const valide = l[COL.STATUT - 1] === 'Validé';
+    if (valide) depense += Number(l[COL.MONTANT - 1]) || 0;
+    paiements.push({
+      id: i + 2, date: date(l[0]), service: l[COL.SERVICE - 1], designation: l[COL.DESIGNATION - 1] || '',
+      montant: Number(l[COL.MONTANT - 1]) || 0, statut: l[COL.STATUT - 1], facture: valide && !!l[COL.FACTURE - 1]
+    });
+  });
+
+  const tous = client.tous || lireClients_().lignes;
+  const filleuls = tous.filter(function (l) { return code && String(l[CL.PARRAIN - 1]).toUpperCase() === code; })
+    .map(function (l) {
+      const mots = String(l[CL.NOM - 1]).trim().split(/\s+/);
+      return { nom: mots[0] + (mots[1] ? ' ' + mots[1].charAt(0).toUpperCase() + '.' : ''), date: date(l[CL.INSCRIT - 1]) };
+    }).reverse();
+
+  const comptes = comptesParrain_(code);
+  const fenetre = fenetreRetrait_(new Date());
+  return {
+    ok: true, nom: client.v[CL.NOM - 1], code: code, whatsapp: numero, email: client.v[CL.EMAIL - 1] || '',
+    inscritLe: date(client.v[CL.INSCRIT - 1]), photo: photoDataUrl_(client.v[CL.PHOTO - 1]),
+    paiements: paiements.reverse(), totalDepense: depense,
+    filleuls: filleuls, commissions: comptes.commissions,
+    gainsTotal: comptes.gainsTotal, verse: comptes.verse, enCours: comptes.enCours, solde: comptes.solde,
+    retraits: comptes.retraits,
+    retrait: { ouvert: fenetre.ouvert, prochaine: fenetre.prochaine, seuil: CONFIG.SEUIL_VERSEMENT }
+  };
+}
+
+/** Facture PDF renvoyée au site (le client la télécharge sans passer par Google Drive). */
+function telechargerFacture_(p) {
+  const client = clientDuJeton_(p.jeton);
+  if (!client) return SESSION_EXPIREE;
+  const feuille = SpreadsheetApp.getActive().getSheetByName(FEUILLE_PAIEMENTS);
+  const ligne = Number(p.id);
+  if (!ligne || ligne < 2 || ligne > feuille.getLastRow()) return { ok: false, erreur: 'Facture introuvable.' };
+  const v = feuille.getRange(ligne, 1, 1, ENTETES_PAIEMENTS.length).getValues()[0];
+  if (normaliserNumero_(v[COL.WHATSAPP - 1]) !== client.numero || v[COL.STATUT - 1] !== 'Validé') return { ok: false, erreur: 'Facture introuvable.' };
+  const id = idDrive_(v[COL.FACTURE - 1]);
+  if (!id) return { ok: false, erreur: 'Facture pas encore prête.' };
+  const fichier = DriveApp.getFileById(id);
+  return { ok: true, nom: fichier.getName(), pdf: Utilities.base64Encode(fichier.getBlob().getBytes()) };
+}
+
+function idDrive_(lien) {
+  const m = String(lien || '').match(/\/d\/([\w-]{20,})/) || String(lien || '').match(/[?&]id=([\w-]{20,})/);
+  return m ? m[1] : '';
+}
+
+function photoDataUrl_(id) {
+  if (!id) return '';
+  try {
+    const blob = DriveApp.getFileById(String(id)).getBlob();
+    return 'data:' + blob.getContentType() + ';base64,' + Utilities.base64Encode(blob.getBytes());
+  } catch (erreur) {
+    return '';
+  }
+}
+
+/** Photo de profil (JPEG déjà réduite par la page), rangée dans DWTS - Photos clients. */
+function changerPhoto_(p) {
+  const client = clientDuJeton_(p.jeton);
+  if (!client) return SESSION_EXPIREE;
+  const image = String(p.image || '');
+  if (!image || image.length > 400000) return { ok: false, erreur: 'Image trop lourde.' };
+  const fichier = dossier_(CONFIG.DOSSIER_PHOTOS).createFile(
+    Utilities.newBlob(Utilities.base64Decode(image), 'image/jpeg', client.numero + '.jpg'));
+  const ancien = client.v[CL.PHOTO - 1];
+  if (ancien) { try { DriveApp.getFileById(String(ancien)).setTrashed(true); } catch (erreur) { /* déjà supprimée */ } }
+  client.feuille.getRange(client.ligne, CL.PHOTO).setValue(fichier.getId());
+  return { ok: true, photo: 'data:image/jpeg;base64,' + image };
+}
+
+/** Nouveau code d'accès : les autres appareils sont déconnectés, celui-ci reçoit un nouveau jeton. */
+function changerPin_(p) {
+  const client = clientDuJeton_(p.jeton);
+  if (!client) return SESSION_EXPIREE;
+  if (pinDe_(client) !== String(p.ancien || '').trim()) return { ok: false, erreur: 'Code d\'accès actuel incorrect.' };
+  const nouveau = String(p.nouveau || '').trim();
+  if (!/^[0-9]{4,6}$/.test(nouveau)) return { ok: false, erreur: 'Le nouveau code doit avoir 4 à 6 chiffres.' };
+  client.feuille.getRange(client.ligne, CL.PIN).setValue("'" + nouveau);
+  return { ok: true, jeton: creerJeton_(client.numero, nouveau) };
+}
+
+/** Modifier l'adresse e-mail (les factures y sont envoyées). */
+function changerProfil_(p) {
+  const client = clientDuJeton_(p.jeton);
+  if (!client) return SESSION_EXPIREE;
+  const email = String(p.email || '').trim().toLowerCase().slice(0, 120);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, erreur: 'Adresse e-mail invalide.' };
+  client.feuille.getRange(client.ligne, CL.EMAIL).setValue(email);
+  return { ok: true, email: email };
+}
+
+// ---------- Retraits des parrains ----------
+
+const MOIS_FR = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+
+/** Dernier samedi du mois (date UTC à minuit). mois : 1 à 12. */
+function dernierSamedi_(annee, mois) {
+  const dernierJour = new Date(Date.UTC(annee, mois, 0));
+  const ecart = (dernierJour.getUTCDay() + 1) % 7; // jours à reculer jusqu'au samedi
+  return Date.UTC(annee, mois - 1, dernierJour.getUTCDate() - ecart);
+}
+
+/** Retraits ouverts le dernier week-end du mois (samedi + dimanche), heure de Libreville. */
+function fenetreRetrait_(maintenant) {
+  if (!CONFIG.RETRAIT_DERNIER_WEEKEND) return { ouvert: true, prochaine: '' };
+  const morceaux = Utilities.formatDate(maintenant, CONFIG.FUSEAU, 'yyyy-M-d').split('-').map(Number);
+  const a = morceaux[0], m = morceaux[1];
+  const jour = Date.UTC(a, m - 1, morceaux[2]);
+  const ce = dernierSamedi_(a, m);
+  const precedent = m === 1 ? dernierSamedi_(a - 1, 12) : dernierSamedi_(a, m - 1);
+  const ouvert = jour === ce || jour === ce + 86400000 || jour === precedent + 86400000;
+  const prochain = jour <= ce + 86400000 ? ce : (m === 12 ? dernierSamedi_(a + 1, 1) : dernierSamedi_(a, m + 1));
+  const samedi = new Date(prochain);
+  const dimanche = new Date(prochain + 86400000);
+  const memeMois = samedi.getUTCMonth() === dimanche.getUTCMonth();
+  return {
+    ouvert: ouvert,
+    prochaine: 'samedi ' + samedi.getUTCDate() + (memeMois ? '' : ' ' + MOIS_FR[samedi.getUTCMonth()]) +
+      ' et dimanche ' + dimanche.getUTCDate() + ' ' + MOIS_FR[dimanche.getUTCMonth()]
+  };
+}
+
+/**
+ * Bouton « Demander mon retrait » : le montant est le solde disponible, calculé ici (rien n'est modifiable).
+ * Solde insuffisant : demande « Annulé ». Sinon « Approuvé » (versement sous 48 h) et e-mail avec un lien « Versé ».
+ */
+function demanderRetrait_(p) {
+  const client = clientDuJeton_(p.jeton);
+  if (!client) return SESSION_EXPIREE;
+  const code = String(client.v[CL.CODE - 1]).toUpperCase();
+  const fenetre = fenetreRetrait_(new Date());
+  if (!fenetre.ouvert) return { ok: false, erreur: 'Les retraits se font le dernier week-end du mois. Prochaine date : ' + fenetre.prochaine + '.' };
+
+  const verrou = LockService.getScriptLock();
+  verrou.waitLock(15000);
+  let resultat;
+  try {
+    const comptes = comptesParrain_(code);
+    if (comptes.enCours > 0) return { ok: false, erreur: 'Une demande de retrait est déjà en cours de versement.' };
+    const feuille = feuille_(FEUILLE_RETRAITS, ENTETES_RETRAITS);
+    const proprietes = PropertiesService.getScriptProperties();
+    const suivant = Number(proprietes.getProperty('compteur_retrait') || 0) + 1;
+    proprietes.setProperty('compteur_retrait', String(suivant));
+    const reference = 'RET-' + ('000' + suivant).slice(-4);
+    const montant = comptes.solde;
+    const suffisant = montant >= CONFIG.SEUIL_VERSEMENT;
+    const statut = suffisant ? 'Approuvé' : 'Annulé';
+    const note = suffisant ? 'Versement sous 48 h' : 'Solde insuffisant (minimum ' + formaterXaf_(CONFIG.SEUIL_VERSEMENT) + ')';
+    feuille.appendRow([new Date(), reference, code, "'" + client.numero, client.v[CL.NOM - 1], montant, statut, suffisant ? '' : new Date(), note]);
+    resultat = { ok: true, statut: statut, reference: reference, montant: montant, ligne: feuille.getLastRow() };
+  } finally {
+    verrou.releaseLock();
+  }
+  if (resultat.statut === 'Approuvé') {
+    const cle = cleRetrait_(resultat.reference, code, resultat.montant);
+    MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : retrait ' + resultat.reference + ' à verser (' + formaterXaf_(resultat.montant) + ')',
+      'Parrain : ' + client.v[CL.NOM - 1] + ' (' + code + ')\nMobile Money : ' + client.numero + '\nMontant : ' + formaterXaf_(resultat.montant) +
+      ' (solde calculé par le script, non modifiable)\n\nÀ verser sous 48 h, puis un clic :\n' +
+      '✅ Versé : ' + lienValidation_('retrait', 'verse', resultat.ligne, cle) + '\n' +
+      '❌ Refuser : ' + lienValidation_('retrait', 'refuser', resultat.ligne, cle) + '\n');
+  }
+  delete resultat.ligne;
+  return resultat;
+}
+
+function cleRetrait_(reference, code, montant) {
+  return String(reference) + '|' + String(code).toUpperCase() + '|' + Number(montant);
 }
 
 /** Reçoit une preuve envoyée depuis paiement.html : { whatsapp, sms?, capture? (base64 JPEG) }. */
@@ -237,6 +559,7 @@ function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
     if (d.type === 'devis') return reponse_(recevoirDevis_(d));
+    if (d.action) return reponse_(api_(d)); // espace client, retraits, validation
     const numero = normaliserNumero_(d.whatsapp);
     const sms = String(d.sms || '').trim();
     if (!numero || (!sms && !d.capture)) throw new Error('Numéro ou preuve manquant');
@@ -252,7 +575,7 @@ function doPost(e) {
 
     // Montant et TID lus dans le SMS collé (à compléter à la main pour une capture)
     const lu = lireSms_(sms);
-    const feuille = SpreadsheetApp.getActive().getSheetByName(FEUILLE_PAIEMENTS);
+    const feuille = feuille_(FEUILLE_PAIEMENTS, ENTETES_PAIEMENTS);
     const alerte = lu.tid && tidDejaVu_(feuille, lu.tid) ? 'TID déjà envoyé : vérifier' : '';
     const parrain = parrainDuClient_(numero) || CONFIG.CODE_DWTS; // client non inscrit ou sans parrain : DWTS
 
@@ -268,13 +591,14 @@ function doPost(e) {
       (lienCapture ? 'Capture : ' + lienCapture + '\n' : '') +
       (alerte ? '⚠️ ' + alerte + '\n' : '') +
       '\nVérifiez le SMS de réception (même montant, même TID), puis un clic suffit :\n' +
-      '✅ Valider : ' + lienAction_('valider', feuille.getLastRow(), cleLigne_(numero, sms, lienCapture)) + '\n' +
-      '❌ Refuser : ' + lienAction_('refuser', feuille.getLastRow(), cleLigne_(numero, sms, lienCapture)) + '\n' +
+      '✅ Valider : ' + lienValidation_('paiement', 'valider', feuille.getLastRow(), cleLigne_(numero, sms, lienCapture)) + '\n' +
+      '❌ Refuser : ' + lienValidation_('paiement', 'refuser', feuille.getLastRow(), cleLigne_(numero, sms, lienCapture)) + '\n' +
       '\n(Si ce n\'est pas du DEX, changez d\'abord le Service dans le tableau.)');
 
     return reponse_({ ok: true });
   } catch (erreur) {
-    return reponse_({ ok: false, erreur: String(erreur) });
+    console.error(erreur);
+    return reponse_({ ok: false, erreur: 'Envoi impossible : ' + String(erreur.message || erreur) });
   }
 }
 
@@ -326,7 +650,8 @@ const THEME = {
 function styliserFeuilles_(classeur, synthese) {
   const feuilles = [
     [FEUILLE_PAIEMENTS, ENTETES_PAIEMENTS.length], [FEUILLE_CLIENTS, ENTETES_CLIENTS.length],
-    [FEUILLE_VERSEMENTS, ENTETES_VERSEMENTS.length], [FEUILLE_DEVIS, ENTETES_DEVIS.length]
+    [FEUILLE_VERSEMENTS, ENTETES_VERSEMENTS.length], [FEUILLE_DEVIS, ENTETES_DEVIS.length],
+    [FEUILLE_RETRAITS, ENTETES_RETRAITS.length]
   ];
   feuilles.forEach(function (f) {
     const feuille = classeur.getSheetByName(f[0]);
@@ -358,8 +683,20 @@ function styliserFeuilles_(classeur, synthese) {
   const versements = classeur.getSheetByName(FEUILLE_VERSEMENTS);
   if (versements) versements.getRange('C:C').setNumberFormat('#,##0 "XAF"');
 
-  synthese.getRange('A1:K1').setFontFamily(THEME.police).setFontColor(THEME.orange).setFontSize(12);
-  synthese.getRange('A2:K40').setFontFamily(THEME.police);
+  const retraits = classeur.getSheetByName(FEUILLE_RETRAITS);
+  if (retraits) {
+    retraits.getRange('F:F').setNumberFormat('#,##0 "XAF"');
+    retraits.getRange('A:A').setNumberFormat('dd/MM/yyyy HH:mm');
+    retraits.getRange('H:H').setNumberFormat('dd/MM/yyyy HH:mm');
+    const plage = retraits.getRange(2, RT.STATUT, retraits.getMaxRows() - 1, 1);
+    const r = function (texte, fond, encre) {
+      return SpreadsheetApp.newConditionalFormatRule().whenTextEqualTo(texte).setBackground(fond).setFontColor(encre).setBold(true).setRanges([plage]).build();
+    };
+    retraits.setConditionalFormatRules([r('Versé', '#D9F2E3', '#1A7F37'), r('Approuvé', '#FFF2CC', '#9A6700'),
+      r('Annulé', '#EEEEEE', '#576475'), r('Refusé', '#FDE2E1', '#C0392B')]);
+    retraits.setTabColor('#1A7F37');
+  }
+
   synthese.setTabColor(THEME.orange);
 }
 
@@ -519,7 +856,7 @@ function creerTableauDeBord_(classeur, sep) {
   classeur.moveActiveSheet(1);
 }
 
-// ---------- Validation en un clic (liens de l'e-mail) ----------
+// ---------- Validation en un clic (liens des e-mails, page validation.html du site) ----------
 
 function secretLiens_() {
   const proprietes = PropertiesService.getScriptProperties();
@@ -536,14 +873,16 @@ function cleLigne_(numero, sms, capture) {
   return normaliserNumero_(numero) + '|' + String(sms || '').trim() + '|' + String(capture || '');
 }
 
-/** Signature d'un lien : action + numéro de ligne + empreinte de la preuve. */
+/** Signature HMAC : action + numéro de ligne + empreinte. */
 function signature_(action, ligne, cle) {
   const octets = Utilities.computeHmacSha256Signature(action + '|' + ligne + '|' + cle, secretLiens_());
   return octets.map(function (b) { return ('0' + (b & 0xff).toString(16)).slice(-2); }).join('');
 }
 
-function lienAction_(action, ligne, cle) {
-  return ScriptApp.getService().getUrl() + '?action=' + action + '&l=' + ligne + '&s=' + signature_(action, ligne, cle);
+/** Lien de l'e-mail : il ouvre la page validation.html du site (pas Google Drive). */
+function lienValidation_(type, action, ligne, cle) {
+  const nomSigne = type === 'retrait' ? 'retrait-' + action : action;
+  return CONFIG.URL_SITE + 'validation.html?t=' + type + '&a=' + action + '&l=' + ligne + '&s=' + signature_(nomSigne, ligne, cle);
 }
 
 function echapperHtml_(t) {
@@ -557,50 +896,70 @@ function pageHtml_(titre, corps) {
     '<h2>' + echapperHtml_(titre) + '</h2>' + corps + '</body>').setTitle('DWTS');
 }
 
-/** Retrouve la ligne d'un lien signé, ou null si le lien est faux ou la ligne a changé. */
-function ligneDuLien_(p) {
-  const feuille = SpreadsheetApp.getActive().getSheetByName(FEUILLE_PAIEMENTS);
+/** Ligne visée par un lien signé, ou null si le lien est faux ou la ligne a changé. */
+function cibleValidation_(p) {
+  const type = p.t === 'retrait' ? 'retrait' : 'paiement';
+  const actions = type === 'retrait' ? ['verse', 'refuser'] : ['valider', 'refuser'];
+  if (actions.indexOf(p.a) === -1) return null;
+  const feuille = type === 'retrait' ? feuille_(FEUILLE_RETRAITS, ENTETES_RETRAITS) : feuille_(FEUILLE_PAIEMENTS, ENTETES_PAIEMENTS);
+  const largeur = type === 'retrait' ? ENTETES_RETRAITS.length : ENTETES_PAIEMENTS.length;
   const ligne = Number(p.l);
   if (!ligne || ligne < 2 || ligne > feuille.getLastRow()) return null;
-  const valeurs = feuille.getRange(ligne, 1, 1, ENTETES_PAIEMENTS.length).getValues()[0];
-  const cle = cleLigne_(valeurs[COL.WHATSAPP - 1], valeurs[COL.SMS - 1], valeurs[COL.CAPTURE - 1]);
-  if (signature_(p.action, ligne, cle) !== p.s) return null;
-  return { feuille: feuille, ligne: ligne, valeurs: valeurs };
+  const v = feuille.getRange(ligne, 1, 1, largeur).getValues()[0];
+  const cle = type === 'retrait' ? cleRetrait_(v[RT.NUMERO - 1], v[RT.CODE - 1], v[RT.MONTANT - 1]) :
+    cleLigne_(v[COL.WHATSAPP - 1], v[COL.SMS - 1], v[COL.CAPTURE - 1]);
+  if (signature_(type === 'retrait' ? 'retrait-' + p.a : p.a, ligne, cle) !== String(p.s || '')) return null;
+  return { type: type, action: p.a, feuille: feuille, ligne: ligne, v: v };
 }
 
-/** Page de confirmation affichée par le lien de l'e-mail (rien n'est modifié avant le bouton). */
-function pageValidation_(p) {
-  const cible = ligneDuLien_(p);
-  if (!cible) return pageHtml_('Lien invalide', '<p>Ce lien n\'est pas valide ou la ligne a changé. Utilisez le tableau.</p>');
-  const v = cible.valeurs;
-  const statut = v[COL.STATUT - 1];
-  const resume = '<p><b>' + (Number(v[COL.MONTANT - 1]) || '?') + ' XAF</b> · ' + echapperHtml_(v[COL.SERVICE - 1]) +
-    '<br>Client : ' + echapperHtml_(String(v[COL.WHATSAPP - 1]).replace(/^\'/, '')) +
-    '<br>TID : ' + echapperHtml_(v[COL.TID - 1] || '—') +
-    '<br>Parrain : ' + echapperHtml_(v[COL.PARRAIN - 1] || '—') + '</p>';
-  if (statut !== 'À vérifier') return pageHtml_('Déjà traité', resume + '<p>Statut actuel : <b>' + echapperHtml_(statut) + '</b>.</p>');
-  const mot = p.action === 'valider' ? 'Valider' : 'Refuser';
-  return pageHtml_(mot + ' ce paiement ?', resume +
-    '<p>Vérifiez que le montant et le TID sont les mêmes que dans votre SMS de réception.</p>' +
-    '<button id="b" style="font-size:18px;padding:14px 22px;border:0;border-radius:8px;background:' + (p.action === 'valider' ? '#1a7f37' : '#c0392b') + ';color:#fff"' +
-    ' onclick="this.disabled=true;this.textContent=\'…\';google.script.run.withSuccessHandler(function(t){document.body.innerHTML=t}).confirmerLien_(' +
-    JSON.stringify(p.action) + ',' + Number(p.l) + ',' + JSON.stringify(String(p.s)) + ')">' + mot + '</button>');
+/** Résumé affiché par validation.html avant le bouton (rien n'est modifié ici). */
+function infoValidation_(p) {
+  const c = cibleValidation_(p);
+  if (!c) return { ok: false, erreur: 'Ce lien n\'est pas valide ou la ligne a changé. Utilisez le tableau Google Sheets.' };
+  const v = c.v;
+  if (c.type === 'retrait') {
+    return {
+      ok: true, type: 'retrait', action: c.action, statut: v[RT.STATUT - 1], aTraiter: v[RT.STATUT - 1] === 'Approuvé',
+      titre: c.action === 'verse' ? 'Confirmer le versement ?' : 'Refuser ce retrait ?',
+      details: [['Retrait', v[RT.NUMERO - 1]], ['Parrain', v[RT.NOM - 1] + ' (' + v[RT.CODE - 1] + ')'],
+        ['Mobile Money', String(v[RT.WHATSAPP - 1]).replace(/^'/, '')], ['Montant', formaterXaf_(v[RT.MONTANT - 1])]]
+    };
+  }
+  return {
+    ok: true, type: 'paiement', action: c.action, statut: v[COL.STATUT - 1], aTraiter: v[COL.STATUT - 1] === 'À vérifier',
+    titre: c.action === 'valider' ? 'Valider ce paiement ?' : 'Refuser ce paiement ?',
+    details: [['Montant', v[COL.MONTANT - 1] ? formaterXaf_(v[COL.MONTANT - 1]) : '? (capture : à lire)'], ['Service', v[COL.SERVICE - 1]],
+      ['Client', String(v[COL.WHATSAPP - 1]).replace(/^'/, '')], ['TID', v[COL.TID - 1] || '—'], ['Parrain', v[COL.PARRAIN - 1] || '—'],
+      ['SMS collé', v[COL.SMS - 1] || '—']],
+    capture: v[COL.CAPTURE - 1] || ''
+  };
 }
 
-/** Appelée par le bouton de la page de confirmation. */
-function confirmerLien_(action, ligne, sig) {
+/** Bouton de validation.html : applique le statut (une seule fois). */
+function confirmerValidation_(p) {
   const verrou = LockService.getScriptLock();
   verrou.waitLock(15000);
   try {
-    const cible = ligneDuLien_({ action: action, l: ligne, s: sig });
-    if (!cible) return '<h2>Lien invalide</h2>';
-    if (cible.valeurs[COL.STATUT - 1] !== 'À vérifier') return '<h2>Déjà traité</h2>';
-    const statut = action === 'valider' ? 'Validé' : 'Refusé';
-    cible.feuille.getRange(cible.ligne, COL.STATUT).setValue(statut);
-    if (statut === 'Validé') traiterLigne_(cible.feuille, cible.ligne, true);
-    return '<h2>' + statut + ' ✓</h2>' + (statut === 'Validé' ? (emailDuClient_(cible.valeurs[COL.WHATSAPP - 1]) ?
-      '<p>La facture a été envoyée par e-mail au client.</p>' :
-      '<p>Ce client n\'a pas d\'e-mail enregistré : la facture vous est envoyée, à transférer sur WhatsApp.</p>') : '');
+    const c = cibleValidation_(p);
+    if (!c) return { ok: false, erreur: 'Lien invalide.' };
+    if (c.type === 'retrait') {
+      if (c.v[RT.STATUT - 1] !== 'Approuvé') return { ok: false, erreur: 'Déjà traité (statut : ' + c.v[RT.STATUT - 1] + ').' };
+      const statut = c.action === 'verse' ? 'Versé' : 'Refusé';
+      c.feuille.getRange(c.ligne, RT.STATUT, 1, 3).setValues([[statut, new Date(), statut === 'Versé' ? 'Versé par Mobile Money' : 'Refusé par DWTS']]);
+      if (statut === 'Versé') {
+        // Le versement entre dans la feuille Versements : le solde du parrain se met à jour
+        feuille_(FEUILLE_VERSEMENTS, ENTETES_VERSEMENTS).appendRow([c.v[RT.CODE - 1], new Date(), Number(c.v[RT.MONTANT - 1]) || 0, 'Retrait ' + c.v[RT.NUMERO - 1]]);
+      }
+      return { ok: true, message: statut === 'Versé' ? 'Versement enregistré ✓ Le solde du parrain est à jour.' : 'Retrait refusé ✓ Le montant redevient disponible.' };
+    }
+    if (c.v[COL.STATUT - 1] !== 'À vérifier') return { ok: false, erreur: 'Déjà traité (statut : ' + c.v[COL.STATUT - 1] + ').' };
+    const statut = c.action === 'valider' ? 'Validé' : 'Refusé';
+    c.feuille.getRange(c.ligne, COL.STATUT).setValue(statut);
+    if (statut === 'Refusé') return { ok: true, message: 'Paiement refusé ✓' };
+    traiterLigne_(c.feuille, c.ligne, true);
+    return { ok: true, message: emailDuClient_(c.v[COL.WHATSAPP - 1]) ?
+      'Paiement validé ✓ La facture PDF a été envoyée par e-mail au client et apparaît dans son espace.' :
+      'Paiement validé ✓ Ce client n\'a pas d\'e-mail : la facture PDF vous est envoyée, à transférer sur WhatsApp.' };
   } finally {
     verrou.releaseLock();
   }
@@ -644,19 +1003,19 @@ function creerFacture_(v) {
 
   const pdf = HtmlService.createHtmlOutput(html).getBlob().getAs('application/pdf').setName(numero + '.pdf');
   const fichier = dossier_(CONFIG.DOSSIER_FACTURES).createFile(pdf);
-  fichier.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); // lisible depuis Mon espace
+  // Fichier privé : le client reçoit le PDF en pièce jointe et le télécharge depuis Mon espace (sans lien Drive)
   const emailClient = emailDuClient_(telephone);
   if (emailClient) {
     // Facture envoyée directement au client (adresse donnée à l'inscription)
     MailApp.sendEmail(emailClient, 'DWTS : votre facture ' + numero + ' (' + montantTexte + ')',
       'Bonjour' + (client ? ' ' + client : '') + ',\n\nMerci pour votre paiement. Votre facture ' + numero + ' (' + montantTexte + ') est jointe à ce message.\n' +
-      'Vous la retrouvez aussi dans votre espace client : ' + fichier.getUrl() + '\n\nDWTS - Digital World Technology Service',
+      'Vous la retrouvez aussi dans votre espace client : ' + CONFIG.URL_SITE + 'espace.html\n\nDWTS - Digital World Technology Service',
       { attachments: [pdf], name: 'DWTS', replyTo: CONFIG.EMAIL_ALERTE });
   } else {
     // Client sans adresse e-mail connue : la facture vous revient, à transférer sur WhatsApp
     MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : facture ' + numero + ' (' + montantTexte + ') : pas d\'e-mail client',
-      'Ce client n\'a pas d\'adresse e-mail enregistrée. Transférez le PDF joint sur WhatsApp (' + telephone + ').\n' +
-      fichier.getUrl(), { attachments: [pdf] });
+      'Ce client n\'a pas d\'adresse e-mail enregistrée. Transférez le PDF joint sur WhatsApp (' + telephone + ').',
+      { attachments: [pdf] });
   }
   return fichier.getUrl();
 }
@@ -755,18 +1114,16 @@ function recevoirDevis_(d) {
 
   const pdf = HtmlService.createHtmlOutput(html).getBlob().getAs('application/pdf').setName(reference + '.pdf');
   const fichier = dossier_(CONFIG.DOSSIER_DEVIS).createFile(pdf);
-  fichier.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
 
   const resume = lignes.map(function (l) { return l.quantite + ' × ' + l.prestation + ' (' + l.formule + ')'; }).join(' ; ');
-  SpreadsheetApp.getActive().getSheetByName(FEUILLE_DEVIS).appendRow([
+  feuille_(FEUILLE_DEVIS, ENTETES_DEVIS).appendRow([
     maintenant, reference, branche, "'" + numero, nom, entreprise, email, resume, unique, mensuel, precisions, fichier.getUrl()]);
 
   MailApp.sendEmail(email, 'DWTS : votre devis ' + reference + ' (' + formaterXaf_(unique + mensuel) + ')',
     'Bonjour ' + nom + ',\n\nMerci pour votre demande. Votre devis ' + reference + ' est joint à ce message (valable 15 jours, jusqu\'au ' + validite + ').\n' +
     'Pour le valider ou le modifier, répondez à cet e-mail ou écrivez-nous sur WhatsApp au 062 67 14 45.\n\nDWTS - Digital World Technology Service',
     { attachments: [pdf], name: 'DWTS', replyTo: CONFIG.EMAIL_ALERTE });
-  MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : devis ' + reference + ' envoyé à ' + (entreprise || nom) + ' (' + formaterXaf_(unique + mensuel) + ')',
-    branche + ' · ' + (entreprise ? entreprise + ' · ' : '') + nom + ' · ' + numero + ' · ' + email + '\n' + resume + (precisions ? '\nPrécisions : ' + precisions : '') + '\n' + fichier.getUrl());
+  // Pas d'alerte pour vous : le devis est dans la feuille Devis (lien du PDF en colonne L)
   return { ok: true, reference: reference };
 }
 

@@ -81,6 +81,18 @@
       $$('.nav__liens a').forEach(function (a) { a.addEventListener('click', fermerMenu); });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') fermerMenu(); });
     }
+
+    // Client déjà connecté (session gardée dans ce navigateur) : « Connexion » devient « Mon espace »
+    try {
+      var session = JSON.parse(localStorage.getItem('dwts_session') || 'null');
+      var expiration = session && session.jeton ? Number(String(session.jeton).split('.')[1]) : 0;
+      if (expiration > Date.now()) {
+        var connexion = $('.nav__connexion');
+        var inscription = $('.nav__inscription');
+        if (connexion) connexion.textContent = 'Mon espace';
+        if (inscription) inscription.hidden = true;
+      }
+    } catch (e) { /* stockage indisponible : on garde le menu normal */ }
   }
 
 
@@ -569,7 +581,7 @@
 
 
   /* ---------- 13. Tarifs ---------- */
-  var listeOnglets = $('[role="tablist"]');
+  var listeOnglets = $('[role="tablist"]:not(.onglets-espace)');
   if (listeOnglets) {
     var onglets = $$('[role="tab"]', listeOnglets);
     var fond = $('.onglet__fond', listeOnglets);

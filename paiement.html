@@ -14,10 +14,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&amp;display=swap" rel="stylesheet">
 
   <!-- Styles du site -->
-  <link rel="stylesheet" href="assets/css/style.css?v=202610231">
+  <link rel="stylesheet" href="assets/css/style.css?v=202610222">
 
   <!-- Styles des pages Paiement, Inscription et Mon espace -->
-  <link rel="stylesheet" href="assets/css/espace.css?v=202610221">
+  <link rel="stylesheet" href="assets/css/espace.css?v=202610222">
 
   <!-- Indique que JavaScript est actif (sert aux animations d'apparition) -->
   <script>document.documentElement.className += ' js';</script>
@@ -43,6 +43,8 @@
       <a href="logia.html">Logia</a>
       <a href="tarifs.html">Tarifs</a>
       <a href="parrainage.html">Parrainage</a>
+      <a class="nav__inscription" href="inscription.html">Inscription</a>
+        <a class="bouton bouton--petit bouton--contour nav__connexion" href="espace.html">Connexion</a>
         <a class="bouton bouton--petit" href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20j%27ai%20une%20question%20sur%20mon%20paiement." target="_blank" rel="noopener">Commander<span class="sr-only"> sur WhatsApp (nouvel onglet)</span></a>
       </nav>
     </div>
@@ -132,8 +134,9 @@
             </div>
 
             <div class="champ">
-              <label for="sms">… ou collez le SMS de paiement</label>
-              <textarea id="sms" name="sms" placeholder="Vous avez envoyé 2500F au 074741303… TID: PP…"></textarea>
+              <label for="sms">… ou collez le SMS de paiement <small>(collage uniquement : le texte ne peut pas être modifié)</small></label>
+              <textarea id="sms" name="sms" placeholder="Copiez le SMS de paiement, puis collez-le ici (appui long → Coller)" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+              <button type="button" id="sms-effacer" class="sms-effacer" hidden>Effacer et recoller</button>
             </div>
 
             <!-- Champ piège contre les robots : doit rester vide -->
@@ -273,6 +276,39 @@
       });
     });
 
+    // SMS : collage seulement. Le texte collé est verrouillé (pas de retouche du montant ou du TID).
+    (function () {
+      const zone = document.getElementById('sms');
+      const effacer = document.getElementById('sms-effacer');
+      let accepte = '';
+      let collage = false;
+      const verrouiller = function () {
+        accepte = zone.value;
+        zone.readOnly = !!accepte;
+        zone.classList.toggle('sms-verrouille', !!accepte);
+        effacer.hidden = !accepte;
+      };
+      zone.addEventListener('paste', function () { if (!zone.readOnly) collage = true; });
+      zone.addEventListener('drop', function (e) { e.preventDefault(); });
+      zone.addEventListener('beforeinput', function (e) {
+        if (e.inputType === 'insertFromPaste' || (e.inputType === 'insertReplacementText' && collage)) return;
+        if (!accepte && e.data && e.data.length >= 20) return; // presse-papiers du clavier (Gboard…) : un SMS entier d'un coup
+        if (e.cancelable) e.preventDefault();
+      });
+      zone.addEventListener('input', function () {
+        // Collage : menu « Coller », ou SMS entier inséré d'un coup par le clavier
+        if (collage || (!accepte && zone.value.trim().length >= 20)) { collage = false; zone.value = zone.value.trim(); verrouiller(); return; }
+        zone.value = accepte; // frappe au clavier : annulée
+      });
+      effacer.addEventListener('click', function () {
+        zone.readOnly = false;
+        zone.value = '';
+        verrouiller();
+        zone.focus();
+      });
+      document.getElementById('form-paiement').addEventListener('reset', function () { setTimeout(function () { zone.readOnly = false; zone.value = ''; verrouiller(); }, 0); });
+    })();
+
     // Aperçu de la capture choisie
     const champCapture = document.getElementById('capture');
     const apercu = document.getElementById('apercu');
@@ -338,13 +374,16 @@
       bouton.textContent = 'Envoi en cours…';
       try {
         if (fichier) donnees.capture = await reduireImage(fichier);
-        await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(donnees) });
+        const reponse = await fetch(URL_SCRIPT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(donnees) });
+        const r = await reponse.json();
+        if (!r.ok) throw new Error(r.erreur || 'Envoi refusé');
         form.reset();
         apercu.hidden = true;
         document.getElementById('depot-texte').textContent = 'Touchez ici pour choisir la capture';
         afficherMessage('<b>Preuve bien envoyée, merci !</b><br>Nous vérifions la réception de votre paiement et vous envoyons votre fichier final sur WhatsApp.', 'ok');
       } catch (erreur) {
-        afficherMessage('L\'envoi n\'a pas abouti. Vérifiez votre connexion, ou <a href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">envoyez la capture sur WhatsApp</a>.', 'erreur');
+        afficherMessage('L\'envoi n\'a pas abouti' + (erreur && erreur.message && !/fetch|network|json/i.test(erreur.message) ? ' (' + String(erreur.message).replace(/[<>&]/g, '') + ')' : '') +
+          '. Vérifiez votre connexion, ou <a href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">envoyez la capture sur WhatsApp</a>.', 'erreur');
       } finally {
         bouton.disabled = false;
         bouton.textContent = 'Envoyer ma preuve';
@@ -355,6 +394,6 @@
   <!-- Bibliothèques (CDN) puis script du site -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="assets/js/main.js?v=202610181716"></script>
+  <script src="assets/js/main.js?v=202610222"></script>
 </body>
 </html>

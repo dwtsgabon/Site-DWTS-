@@ -44,3 +44,102 @@
 .chiffre b { font-size: 1.35rem; }
 .statut { white-space: nowrap; display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .8rem; background: var(--surface-2); border: 1px solid var(--ligne); }
 .statut--valide { border-color: rgba(34, 197, 94, .5); color: #4ade80; }
+.statut--attente { border-color: rgba(250, 204, 21, .5); color: #facc15; }
+.statut--refuse { border-color: rgba(229, 72, 77, .55); color: #f87171; }
+.statut--neutre { color: var(--gris); }
+
+/* ---------- Mon espace (connecté) ---------- */
+.espace { padding: calc(var(--nav-h) + 28px) 0 90px; }
+.espace__conteneur { max-width: 1100px; }
+.espace__chargement { text-align: center; color: var(--gris); padding: 80px 0; }
+.espace .bloc { margin-bottom: 20px; }
+.bloc__entete { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.bloc__entete h2 { margin: 0; }
+.vide { color: var(--gris); }
+
+/* Carte profil */
+.profil-carte {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center;
+  background: radial-gradient(120% 140% at 0% 0%, rgba(255, 106, 0, .16), transparent 55%), var(--surface);
+  border: 1px solid var(--ligne); border-radius: var(--rayon); padding: clamp(20px, 3.5vw, 32px); margin-bottom: 18px;
+}
+.profil-carte .surtitre { margin: 0 0 4px; }
+.profil-carte h1 { font-size: clamp(1.6rem, 4vw, 2.3rem); margin: 0 0 6px; letter-spacing: -.03em; }
+.profil-carte p { color: var(--gris); margin: 0; }
+.profil-carte__code { background: var(--surface-2); border: 1px solid var(--ligne); border-radius: 16px; padding: 14px 18px; text-align: center; }
+.profil-carte__code small { display: block; color: var(--gris); }
+.profil-carte__code b { display: block; font-size: 1.35rem; letter-spacing: .04em; color: var(--accent); margin: 4px 0 10px; white-space: nowrap; }
+.profil-carte__actions { display: flex; gap: 8px; justify-content: center; }
+.avatar { position: relative; width: 92px; height: 92px; border-radius: 50%; background: var(--degrade); display: grid; place-items: center; flex: none; }
+.avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.avatar #avatar-initiales { font-size: 2rem; font-weight: 900; color: #fff; }
+.avatar #avatar-initiales[hidden], .avatar img[hidden] { display: none; }
+.avatar__bouton { position: absolute; right: -4px; bottom: -4px; width: 36px; height: 36px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--ligne); display: grid; place-items: center; cursor: pointer; }
+.avatar__bouton:hover { border-color: var(--accent); }
+.avatar__bouton svg { width: 18px; height: 18px; fill: none; stroke: var(--blanc); stroke-width: 1.8; }
+.avatar__bouton input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.avatar.est-envoi { opacity: .55; }
+.mini-bouton { border: 1px solid var(--ligne); background: transparent; color: var(--blanc); border-radius: 999px; padding: 7px 14px; font: inherit; font-size: .85rem; cursor: pointer; white-space: nowrap; display: inline-block; }
+.mini-bouton:hover { border-color: var(--accent); }
+.mini-bouton[disabled] { opacity: .6; cursor: wait; }
+.lien-bouton { background: none; border: 0; color: var(--accent-texte); font: inherit; font-weight: 600; cursor: pointer; }
+
+/* Onglets */
+.onglets-espace { display: flex; gap: 6px; overflow-x: auto; padding: 6px; background: var(--surface); border: 1px solid var(--ligne); border-radius: 999px; margin-bottom: 20px; scrollbar-width: none; }
+.onglets-espace::-webkit-scrollbar { display: none; }
+.onglets-espace button { flex: none; border: 0; background: transparent; color: var(--gris); font: inherit; font-weight: 600; font-size: .92rem; padding: 10px 18px; border-radius: 999px; cursor: pointer; transition: background .25s, color .25s; }
+.onglets-espace button:hover { color: var(--blanc); }
+.onglets-espace button.est-actif { background: var(--accent); color: #fff; }
+#message-espace { margin: 0 0 18px; }
+
+/* Indicateurs */
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.kpi { background: var(--surface); border: 1px solid var(--ligne); border-radius: 18px; padding: 16px 18px; }
+.kpi small { display: block; color: var(--gris); margin: 10px 0 2px; }
+.kpi b { font-size: 1.35rem; letter-spacing: -.02em; }
+.kpi__icone { width: 38px; height: 38px; border-radius: 12px; background: var(--surface-2); display: grid; place-items: center; }
+.kpi__icone svg { width: 20px; height: 20px; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.kpi--accent { border-color: rgba(255, 106, 0, .45); background: linear-gradient(160deg, rgba(255, 106, 0, .16), var(--surface) 70%); }
+.kpi--accent b { color: var(--accent); }
+
+.grille-espace { display: grid; grid-template-columns: 1fr; gap: 0 20px; }
+@media (min-width: 860px) { .grille-espace { grid-template-columns: 1fr 1fr; } }
+.solde-grand { font-size: clamp(1.9rem, 5vw, 2.6rem) !important; font-weight: 900; color: var(--blanc) !important; letter-spacing: -.03em; margin: 0 0 12px !important; }
+.jauge { height: 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--ligne); overflow: hidden; margin-bottom: 12px; }
+.jauge span { display: block; height: 100%; width: 0; background: var(--degrade); border-radius: 999px; transition: width .8s var(--courbe, ease); }
+#zone-retrait .bouton { width: 100%; justify-content: center; border: 0; cursor: pointer; font: inherit; }
+#zone-retrait .bouton[disabled] { opacity: .45; cursor: not-allowed; }
+#zone-retrait .alerte { margin-bottom: 14px; }
+
+.actions-rapides { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.actions-rapides a { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 16px; background: var(--surface-2); border: 1px solid var(--ligne); font-weight: 600; font-size: .92rem; transition: border-color .25s, transform .25s; }
+.actions-rapides a:hover { border-color: var(--accent); transform: translateY(-2px); }
+.actions-rapides svg { width: 24px; height: 24px; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.tableau-defile { overflow-x: auto; }
+.tableau td small { color: var(--gris); }
+.lien-invitation { display: flex; gap: 8px; }
+.lien-invitation input { flex: 1; min-width: 0; background: var(--surface-2); color: var(--blanc); border: 1px solid var(--ligne); border-radius: 12px; padding: 10px 12px; font: inherit; font-size: .9rem; }
+.pastille { display: inline-grid; place-items: center; min-width: 26px; height: 26px; padding: 0 8px; border-radius: 999px; background: var(--accent); color: #fff; font-size: .8rem; vertical-align: middle; margin-left: 6px; }
+.liste-filleuls { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; max-height: 340px; overflow-y: auto; }
+.liste-filleuls li { display: flex; gap: 12px; align-items: center; }
+.liste-filleuls small { color: var(--gris); }
+.mini-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--ligne); display: grid; place-items: center; font-weight: 800; font-size: .8rem; flex: none; }
+.infos { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 0; }
+.infos dt { color: var(--gris); }
+.infos dd { margin: 0; font-weight: 600; word-break: break-word; }
+.espace .formulaire .bouton--petit { width: auto; }
+
+@media (max-width: 700px) {
+  .profil-carte { grid-template-columns: auto 1fr; }
+  .profil-carte__code { grid-column: 1 / -1; }
+  .avatar { width: 72px; height: 72px; }
+  .avatar #avatar-initiales { font-size: 1.6rem; }
+  .kpis { grid-template-columns: 1fr 1fr; }
+  .kpi--accent { grid-column: 1 / -1; }
+}
+
+/* SMS collé : verrouillé */
+.champ textarea.sms-verrouille { background: rgba(34, 197, 94, .06); border-color: rgba(34, 197, 94, .4); cursor: default; }
+.sms-effacer { justify-self: start; border: 1px solid var(--ligne); background: transparent; color: var(--blanc); border-radius: 999px; padding: 7px 14px; font: inherit; font-size: .85rem; cursor: pointer; }
+.sms-effacer[hidden] { display: none; }

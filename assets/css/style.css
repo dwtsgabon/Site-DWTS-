@@ -269,6 +269,16 @@ body::after {
   box-shadow: 0 0 10px var(--accent);
 }
 .nav__liens .bouton { margin-left: 10px; }
+.nav__liens .bouton + .bouton { margin-left: 8px; }
+.nav__liens [hidden] { display: none !important; }
+/* Écrans moyens : 9 éléments dans la barre, on resserre */
+@media (min-width: 901px) and (max-width: 1260px) {
+  .marque__nom { display: none; }
+  .nav__liens { gap: 2px; }
+  .nav__liens a:not(.bouton) { padding: 8px 10px; font-size: .9rem; }
+  .nav__liens .bouton--petit { padding: 10px 14px; font-size: .86rem; }
+  .nav__liens .bouton { margin-left: 6px; }
+}
 
 /* Bouton menu (téléphone) */
 .nav__burger {
@@ -978,6 +988,8 @@ body::after {
   }
   .nav__liens a:not(.bouton) { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; }
   .nav__liens .bouton { margin: 20px 0 0; }
+  .nav__liens .bouton + .bouton { margin: 10px 0 0; }
+  .nav__liens a:not(.bouton) { font-size: 1.7rem; }
   .menu-ouvert .nav__liens { opacity: 1; visibility: visible; }
   .menu-ouvert { overflow: hidden; }
   /* Le flou de la barre empêcherait le menu de couvrir l'écran : on le retire menu ouvert */
