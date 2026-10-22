@@ -7,6 +7,9 @@ la capture est rangée dans Google Drive, et tu reçois un e-mail.
 Le **code parrain** s'enregistre **une seule fois**, à l'inscription du client, dans la feuille **Clients** :
 ensuite chaque paiement validé de ce client crédite son parrain tout seul (500 FCFA pour DEX),
 et la feuille **Commissions** donne le total à verser par parrain et par mois.
+À chaque statut **Validé**, une **facture PDF au logo de la branche** (DEX, Visuo ou Logia, avec le logo DWTS)
+est créée dans Drive (dossier **DWTS - Factures**), son lien est noté dans la colonne **Facture**,
+et elle t'est envoyée par e-mail, prête à transférer au client sur WhatsApp.
 
 Tout est gratuit (Google Sheets, Drive et Apps Script).
 
@@ -17,6 +20,8 @@ Tout est gratuit (Google Sheets, Drive et Apps Script).
 3. Effacer le contenu, coller tout le fichier `apps-script.gs`, enregistrer (icône disquette).
 4. En haut, choisir la fonction **installer**, cliquer **Exécuter**, puis accepter les autorisations
    (Google affiche « application non validée » : **Paramètres avancés → Accéder au projet**, c'est ton propre script).
+
+`installer` crée aussi le déclencheur qui fabrique les factures : accepter les autorisations demandées (Drive, e-mail, accès aux logos).
 
 Le tableau contient maintenant les feuilles **Paiements**, **Clients** et **Commissions**, et un dossier Drive **DWTS - Preuves de paiement** est créé.
 
@@ -42,8 +47,10 @@ seront reliés à son parrain automatiquement.
    Dépôt chez un agent : comparer montant, heure et code agent (`A7793`…).
    Une **Alerte** « TID déjà envoyé » signale une capture réutilisée.
 3. Si la preuve est une capture, compléter **Montant** et **TID** ; si ce n'est pas du DEX, changer **Service**.
-4. Passer la colonne **Statut** à **Validé** (ou **Refusé**), puis envoyer le fichier final au client sur WhatsApp.
-5. Fin du mois : feuille **Commissions**, verser à chaque parrain dont le total atteint 5 000 FCFA.
+4. Facultatif : écrire la **Désignation** de la facture (ex. « Exposé palier 2 · Mode 1 ») ; sinon « Prestation DEX ».
+5. Passer la colonne **Statut** à **Validé** (ou **Refusé**) : la facture PDF arrive par e-mail.
+   Envoyer au client le fichier final et la facture sur WhatsApp.
+6. Fin du mois : feuille **Commissions**, verser à chaque parrain dont le total atteint 5 000 FCFA.
 
 Visuo et Logia : la commission du parrain dépend du pack mensuel ; la saisir à la main dans la colonne **Commission**.
 
@@ -51,3 +58,6 @@ Visuo et Logia : la commission du parrain dépend du pack mensuel ; la saisir à
 
 En haut de `apps-script.gs`, bloc `CONFIG` : e-mail d'alerte, nom du dossier, montant de la commission DEX, seuil de versement.
 Après une modification du script : **Déployer → Gérer les déploiements → Modifier → Nouvelle version** (l'adresse `/exec` ne change pas).
+
+Les logos des factures sont lus sur le dépôt GitHub (branche `main`) : ils apparaissent une fois cette version du site publiée.
+Pour des devis complets ou une facture à plusieurs lignes, utiliser le classeur `outils-factures/DWTS_Devis_Factures.xlsx`.
