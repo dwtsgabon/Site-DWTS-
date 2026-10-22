@@ -69,6 +69,13 @@ Code d'accès oublié : il est dans la colonne **Code d'accès** de **Clients**.
 
 Visuo et Logia : la commission du parrain dépend du pack mensuel ; la saisir à la main dans la colonne **Commission**.
 
+## Devis en ligne
+
+`devis.html` : le client choisit sa branche (Visuo ou Logia), ses prestations et formules, laisse nom, WhatsApp et e-mail.
+Le script recalcule le total avec ses propres prix (liste `CATALOGUE_DEVIS`), crée le devis PDF au logo de la branche (dossier Drive **DWTS - Devis**),
+l'envoie au client par e-mail, ajoute une ligne dans la feuille **Devis** et te prévient par e-mail. Aucune action de ta part.
+Les prix sont dans `assets/js/catalogue-devis.js` (page) et `CATALOGUE_DEVIS` (script) : les modifier aux deux endroits.
+
 ## Modifier un réglage
 
 En haut de `apps-script.gs`, bloc `CONFIG` : e-mail d'alerte, nom du dossier, montant de la commission DEX, seuil de versement.

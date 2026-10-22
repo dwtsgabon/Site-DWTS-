@@ -19,7 +19,8 @@ const CONFIG = {
   COMMISSION_DEX: 500, // FCFA par commande DEX payée par un client parrainé
   SEUIL_VERSEMENT: 5000, // versement au parrain dès ce solde
   CODE_DWTS: 'DWTS', // code maison : client sans parrain = commission gardée par DWTS
-  DOSSIER_FACTURES: 'DWTS - Factures', // dossier Google Drive des factures PDF
+  DOSSIER_FACTURES: 'DWTS - Factures',
+  DOSSIER_DEVIS: 'DWTS - Devis', // dossier Google Drive des factures PDF
   // Logos imprimés sur les factures (publiés avec le site)
   LOGOS: {
     DWTS: 'https://raw.githubusercontent.com/mbadingaryan-sketch/Site-DWTS-/main/assets/img/logo-dwts.png',
@@ -34,6 +35,8 @@ const FEUILLE_PAIEMENTS = 'Paiements';
 const FEUILLE_CLIENTS = 'Clients';
 const FEUILLE_COMMISSIONS = 'Commissions';
 const FEUILLE_VERSEMENTS = 'Versements';
+const FEUILLE_DEVIS = 'Devis';
+const ENTETES_DEVIS = ['Reçu le', 'N° devis', 'Branche', 'WhatsApp', 'Nom', 'E-mail', 'Lignes', 'Total unique (XAF)', 'Total mensuel (XAF)', 'Précisions', 'PDF'];
 
 // Paiements : A Reçu le | B WhatsApp | C Service | D Montant | E TID | F SMS collé | G Capture
 //             H Code parrain | I Statut | J Commission | K Mois | L Alerte | M Désignation | N Facture
@@ -46,6 +49,11 @@ const ENTETES_CLIENTS = ['WhatsApp', 'Nom', 'Code de son parrain', 'Inscrit le',
 const ENTETES_VERSEMENTS = ['Code parrain', 'Date', 'Montant versé (FCFA)', 'Note'];
 const STATUTS = ['À vérifier', 'Validé', 'Refusé'];
 const SERVICES = ['DEX', 'Visuo', 'Logia'];
+
+// DEBUT CATALOGUE (même liste que assets/js/catalogue-devis.js)
+const CATALOGUE_DEVIS = [["Visuo","Logo","Basique",6500,"Unique"],["Visuo","Logo","Standard",10000,"Unique"],["Visuo","Logo","Premium",15000,"Unique"],["Visuo","Affiche ou flyer","Basique",2500,"Unique"],["Visuo","Affiche ou flyer","Standard",4000,"Unique"],["Visuo","Affiche ou flyer","Premium",6000,"Unique"],["Visuo","Carte d'invitation","Basique",2000,"Unique"],["Visuo","Carte d'invitation","Standard",3000,"Unique"],["Visuo","Carte d'invitation","Premium",5000,"Unique"],["Visuo","Carte de visite","Basique",2000,"Unique"],["Visuo","Carte de visite","Standard",3000,"Unique"],["Visuo","Carte de visite","Premium",5000,"Unique"],["Visuo","Modèle de facture ou devis","Basique",2500,"Unique"],["Visuo","Modèle de facture ou devis","Standard",3500,"Unique"],["Visuo","Modèle de facture ou devis","Premium",5000,"Unique"],["Visuo","Vidéo publicitaire 15 à 30 s","Basique",7500,"Unique"],["Visuo","Vidéo publicitaire 15 à 30 s","Standard",9500,"Unique"],["Visuo","Vidéo publicitaire 15 à 30 s","Premium",15000,"Unique"],["Visuo","Site vitrine","Basique",12500,"Unique"],["Visuo","Site vitrine","Standard",25000,"Unique"],["Visuo","Site vitrine","Premium",45000,"Unique"],["Visuo","Maintenance du site","Basique",2500,"Mensuel"],["Visuo","Maintenance du site","Standard",5000,"Mensuel"],["Visuo","Maintenance du site","Premium",10000,"Mensuel"],["Visuo","Gestion des pages","Basique",7000,"Mensuel"],["Visuo","Gestion des pages","Standard",12500,"Mensuel"],["Visuo","Gestion des pages","Premium",22000,"Mensuel"],["Visuo","Gestion du compte WhatsApp","Toutes formules",10000,"Mensuel"],["Visuo","Publication réseaux","À l'unité",1000,"Unique"],["Visuo","Pack Starter (1 affiche, 4 publications)","Pack",6000,"Mensuel"],["Visuo","Pack Basique (2 affiches, 8 publications, 1 vidéo)","Pack",18000,"Mensuel"],["Visuo","Pack Standard (4 affiches, 12 publications, 2 vidéos, maintenance)","Pack",50000,"Mensuel"],["Visuo","Pack Premium (6 affiches, 20 publications, 4 vidéos, maintenance)","Pack",115000,"Mensuel"],["Visuo","Site + facture avec un pack","Basique",15000,"Unique"],["Visuo","Site + facture avec un pack","Standard",28000,"Unique"],["Visuo","Site + facture avec un pack","Premium",50000,"Unique"],["Logia","Automatisation","Basique",7500,"Unique"],["Logia","Automatisation","Standard",15000,"Unique"],["Logia","Automatisation","Premium",30000,"Unique"],["Logia","Bot WhatsApp","Basique",15000,"Unique"],["Logia","Bot WhatsApp","Standard",30000,"Unique"],["Logia","Bot WhatsApp","Premium",60000,"Unique"],["Logia","Logiciel de gestion","Basique",45000,"Unique"],["Logia","Logiciel de gestion","Standard",90000,"Unique"],["Logia","Logiciel de gestion","Premium",180000,"Unique"],["Logia","Suivi","Basique",5000,"Mensuel"],["Logia","Suivi","Standard",10000,"Mensuel"],["Logia","Suivi","Premium",20000,"Mensuel"],["Logia","Pack Starter : mise en service","Pack",7500,"Unique"],["Logia","Pack Starter : suivi","Pack",5000,"Mensuel"],["Logia","Pack Business : mise en service","Pack",40000,"Unique"],["Logia","Pack Business : suivi","Pack",10000,"Mensuel"],["Logia","Pack Entreprise : mise en service","Pack",110000,"Unique"],["Logia","Pack Entreprise : suivi","Pack",20000,"Mensuel"]];
+// FIN CATALOGUE
+
 
 /** Crée les feuilles, les listes et le dossier des captures. À lancer une seule fois. */
 function installer() {
@@ -68,6 +76,12 @@ function installer() {
   const versements = classeur.getSheetByName(FEUILLE_VERSEMENTS) || classeur.insertSheet(FEUILLE_VERSEMENTS);
   versements.getRange(1, 1, 1, ENTETES_VERSEMENTS.length).setValues([ENTETES_VERSEMENTS]).setFontWeight('bold');
   versements.setFrozenRows(1);
+
+  const devis = classeur.getSheetByName(FEUILLE_DEVIS) || classeur.insertSheet(FEUILLE_DEVIS);
+  devis.getRange(1, 1, 1, ENTETES_DEVIS.length).setValues([ENTETES_DEVIS]).setFontWeight('bold');
+  devis.setFrozenRows(1);
+  devis.getRange('D:D').setNumberFormat('@');
+  dossier_(CONFIG.DOSSIER_DEVIS);
 
   const synthese = classeur.getSheetByName(FEUILLE_COMMISSIONS) || classeur.insertSheet(FEUILLE_COMMISSIONS);
   synthese.clear();
@@ -218,6 +232,7 @@ function espace_(p) {
 function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
+    if (d.type === 'devis') return reponse_(recevoirDevis_(d));
     const numero = normaliserNumero_(d.whatsapp);
     const sms = String(d.sms || '').trim();
     if (!numero || (!sms && !d.capture)) throw new Error('Numéro ou preuve manquant');
@@ -430,6 +445,114 @@ function creerFacture_(v) {
       fichier.getUrl(), { attachments: [pdf] });
   }
   return fichier.getUrl();
+}
+
+// ---------- Devis en ligne (Visuo et Logia) ----------
+
+/** FAC- pour les factures, DEV-V-0001 / DEV-L-0001 pour les devis. */
+function numeroDevis_(branche) {
+  const proprietes = PropertiesService.getScriptProperties();
+  const cle = 'devis_' + branche;
+  const suivant = Number(proprietes.getProperty(cle) || 0) + 1;
+  proprietes.setProperty(cle, String(suivant));
+  return 'DEV-' + branche.charAt(0) + '-' + ('000' + suivant).slice(-4);
+}
+
+function formaterXaf_(n) {
+  return Number(n).toLocaleString('fr-FR').replace(/\u202f|\u00a0/g, ' ') + ' XAF';
+}
+
+/**
+ * Demande de devis envoyée par devis.html : { type:'devis', branche, nom, whatsapp, email, precisions, lignes:[{p, f, q}] }.
+ * Les prix sont relus dans CATALOGUE_DEVIS (jamais ceux envoyés par la page).
+ * Le devis PDF est créé, rangé dans Drive, noté dans la feuille Devis et envoyé par e-mail au client.
+ */
+function recevoirDevis_(d) {
+  const branche = String(d.branche || '');
+  const nom = String(d.nom || '').trim().slice(0, 80);
+  const numero = normaliserNumero_(d.whatsapp);
+  const email = String(d.email || '').trim().toLowerCase().slice(0, 120);
+  const precisions = String(d.precisions || '').trim().slice(0, 500);
+  if (['Visuo', 'Logia'].indexOf(branche) === -1) return { ok: false, erreur: 'Branche inconnue.' };
+  if (!nom || !numero) return { ok: false, erreur: 'Nom ou numéro WhatsApp manquant.' };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, erreur: 'Adresse e-mail invalide.' };
+  if (!Array.isArray(d.lignes) || !d.lignes.length || d.lignes.length > 20) return { ok: false, erreur: 'Choisissez entre 1 et 20 lignes.' };
+
+  // Maximum 5 devis par heure et par numéro
+  const cache = CacheService.getScriptCache();
+  const cleCache = 'devis_' + numero;
+  const faits = Number(cache.get(cleCache) || 0);
+  if (faits >= 5) return { ok: false, erreur: 'Trop de demandes, réessayez dans une heure.' };
+  cache.put(cleCache, String(faits + 1), 3600);
+
+  const lignes = [];
+  let unique = 0;
+  let mensuel = 0;
+  for (let i = 0; i < d.lignes.length; i++) {
+    const demande = d.lignes[i] || {};
+    const quantite = Math.floor(Number(demande.q));
+    const trouve = CATALOGUE_DEVIS.filter(function (c) { return c[0] === branche && c[1] === demande.p && c[2] === demande.f; })[0];
+    if (!trouve || !(quantite >= 1 && quantite <= 50)) return { ok: false, erreur: 'Une ligne du devis est invalide.' };
+    const total = trouve[3] * quantite;
+    lignes.push({ prestation: trouve[1], formule: trouve[2], prix: trouve[3], type: trouve[4], quantite: quantite, total: total });
+    if (trouve[4] === 'Mensuel') mensuel += total; else unique += total;
+  }
+
+  const verrou = LockService.getScriptLock();
+  verrou.waitLock(10000);
+  let reference;
+  try { reference = numeroDevis_(branche); } finally { verrou.releaseLock(); }
+
+  const maintenant = new Date();
+  const fuseau = Session.getScriptTimeZone();
+  const couleur = CONFIG.COULEURS[branche];
+  const date = Utilities.formatDate(maintenant, fuseau, 'dd/MM/yyyy');
+  const validite = Utilities.formatDate(new Date(maintenant.getTime() + 15 * 86400000), fuseau, 'dd/MM/yyyy');
+  const cellule = 'padding:6px;border-bottom:1px solid #e5e7eb;';
+  const corps = lignes.map(function (l) {
+    return '<tr><td style="' + cellule + '">' + echapperHtml_(l.prestation) + '</td>' +
+      '<td style="' + cellule + '">' + echapperHtml_(l.formule) + (l.type === 'Mensuel' ? ' · mensuel' : '') + '</td>' +
+      '<td style="' + cellule + 'text-align:right">' + l.quantite + '</td>' +
+      '<td style="' + cellule + 'text-align:right">' + formaterXaf_(l.prix) + '</td>' +
+      '<td style="' + cellule + 'text-align:right">' + formaterXaf_(l.total) + '</td></tr>';
+  }).join('');
+  const ligneTotal = function (titre, montant, fond) {
+    return '<tr' + (fond ? ' style="background:' + couleur + ';color:#fff;font-weight:bold"' : '') + '><td colspan="4" style="padding:6px;text-align:right">' + titre +
+      '</td><td style="padding:6px;text-align:right">' + formaterXaf_(montant) + '</td></tr>';
+  };
+  const conditions = branche === 'Visuo' ?
+    'Paiement après validation de l\'aperçu, par Airtel Money (074 74 13 03) ou Mobicash (062 67 14 45). Les packs et la gestion se renouvellent chaque mois ; la publicité payante (Ads) n\'est pas comprise.' :
+    'Mise en service après validation de la démonstration ; paiement par Airtel Money (074 74 13 03) ou Mobicash (062 67 14 45). Le suivi mensuel démarre le mois de la mise en service.';
+  const html =
+    '<html><head><meta charset="utf-8"></head><body style="font-family:Arial,sans-serif;color:#111;margin:28px;font-size:12px">' +
+    '<table style="width:100%"><tr><td>' + imageLogo_(branche, 64) + '</td><td style="text-align:right">' + imageLogo_('DWTS', 48) + '</td></tr></table>' +
+    '<div style="font-weight:bold;margin-top:8px">DWTS · Digital World Technology Service</div>' +
+    '<div style="color:#6b7280;font-size:10px;border-bottom:2px solid ' + couleur + ';padding-bottom:6px">Port-Gentil, Gabon · WhatsApp 062 67 14 45 · digitalwtservice@gmail.com</div>' +
+    '<table style="width:100%;margin-top:14px"><tr><td><div style="color:' + couleur + ';font-weight:bold;font-size:10px">PRÉPARÉ POUR</div><b>' + echapperHtml_(nom) + '</b><br>' +
+    echapperHtml_(numero) + '<br>' + echapperHtml_(email) + '</td>' +
+    '<td style="text-align:right"><b>DEVIS N° <span style="color:' + couleur + '">' + reference + '</span></b><br>Date : ' + date + '<br>Valable jusqu\'au : ' + validite + '</td></tr></table>' +
+    '<table style="width:100%;border-collapse:collapse;margin-top:14px"><tr style="background:#111827;color:#fff"><td style="padding:6px">Prestation</td><td style="padding:6px">Formule</td>' +
+    '<td style="padding:6px;text-align:right">Qté</td><td style="padding:6px;text-align:right">Prix unitaire</td><td style="padding:6px;text-align:right">Total</td></tr>' + corps +
+    ligneTotal('Total unique', unique, false) + ligneTotal('Total mensuel', mensuel, false) + ligneTotal('TOTAL À PAYER AU DÉMARRAGE', unique + mensuel, true) + '</table>' +
+    (precisions ? '<p style="margin-top:12px"><b>Précisions :</b> ' + echapperHtml_(precisions) + '</p>' : '') +
+    '<p style="color:#4b5563;font-size:10px;margin-top:14px">' + conditions + '</p>' +
+    '<p style="text-align:center;color:' + couleur + ';font-weight:bold;margin-top:18px">Merci pour votre confiance !</p></body></html>';
+
+  const pdf = HtmlService.createHtmlOutput(html).getBlob().getAs('application/pdf').setName(reference + '.pdf');
+  const fichier = dossier_(CONFIG.DOSSIER_DEVIS).createFile(pdf);
+  fichier.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+
+  const resume = lignes.map(function (l) { return l.quantite + ' × ' + l.prestation + ' (' + l.formule + ')'; }).join(' ; ');
+  SpreadsheetApp.getActive().getSheetByName(FEUILLE_DEVIS).appendRow([
+    maintenant, reference, branche, "'" + numero, nom, email, resume, unique, mensuel, precisions, fichier.getUrl()]);
+
+  MailApp.sendEmail(email, 'DWTS : votre devis ' + reference + ' (' + formaterXaf_(unique + mensuel) + ')',
+    'Bonjour ' + nom + ',\n\nMerci pour votre demande. Votre devis ' + reference + ' est joint à ce message (valable 15 jours, jusqu\'au ' + validite + ').\n' +
+    'Pour le valider ou le modifier, répondez à cet e-mail ou écrivez-nous sur WhatsApp au 062 67 14 45.\n\nDWTS - Digital World Technology Service',
+    { attachments: [pdf], name: 'DWTS', replyTo: CONFIG.EMAIL_ALERTE });
+  MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : devis ' + reference + ' envoyé à ' + nom + ' (' + formaterXaf_(unique + mensuel) + ')',
+    branche + ' · ' + nom + ' · ' + numero + ' · ' + email + '\n' + resume + (precisions ? '\nPrécisions : ' + precisions : '') + '\n' + fichier.getUrl());
+  return { ok: true, reference: reference };
 }
 
 /** FAC-D-0001, FAC-V-0001, FAC-L-0001 : un compteur par branche. */
