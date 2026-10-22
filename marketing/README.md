@@ -16,6 +16,15 @@ Ce dossier contient les outils qui fabriquent les publications de DWTS (affiches
 - Voix off officielle : ElevenLabs **Paul K** (`voice_id` `ecxPjiGTvAfpGEams6ec`), modèle `eleven_v4`, **1 seule prise** par vidéo.
 - Uniquement de vraies réalisations (`assets/img/dex`, `assets/img/visuo`, `assets/img/logia`), jamais d'images inventées.
 
+## Règles de conception (compétence `meta-ads-dwts`, section 10)
+
+- **Reels 9:16 : zones de sécurité.** Rien d'important dans les **14 % du haut** (y < 270) ni les **35 % du bas** (y > 1248) : l'interface Facebook (titre, légende, boutons) les recouvre. Bouton, prix et texte vivent entre y = 270 et y = 1248. `base.css` applique déjà ces positions.
+- **Pas de logo pendant les 3 premières secondes** d'un reel : on commence directement par l'accroche. Le logo apparaît sur l'écran final.
+- **Accroche : 7 mots maximum**, très grosse, une seule idée par écran.
+- **Affiches 4:5 : au moins 30 % d'espace vide**, un seul élément principal. Titre + élément principal + prix + bouton ; éviter le paragraphe de sous-titre et les listes longues.
+- Le texte à l'écran doit suffire à comprendre la vidéo sans le son (85 % des vidéos sont vues sans le son).
+- Vérifier chaque rendu avec un cadre rouge sur les zones interdites avant de l'envoyer.
+
 ## Semaine type
 
 | Jour | Facebook | Chaîne WhatsApp (publiée à la main) |
