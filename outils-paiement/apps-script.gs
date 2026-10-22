@@ -136,7 +136,10 @@ function inscrire_(p) {
     const suivant = Number(proprietes.getProperty('compteur_parrain') || 0) + 1;
     proprietes.setProperty('compteur_parrain', String(suivant));
     const code = 'PARRAIN-' + ('00' + suivant).slice(-3);
-    const pin = String(Math.floor(1000 + Math.random() * 9000));
+    // Code d'accès choisi par le client (4 à 6 chiffres) ; au hasard s'il n'en a pas envoyé
+    const pinChoisi = String(p.pin || '').trim();
+    if (pinChoisi && !/^[0-9]{4,6}$/.test(pinChoisi)) return { ok: false, erreur: 'Le code d\'accès doit avoir 4 à 6 chiffres.' };
+    const pin = pinChoisi || String(Math.floor(1000 + Math.random() * 9000));
     clients.appendRow(["'" + numero, nom, parrain, new Date(), code, "'" + pin]);
     MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : nouvelle inscription (' + nom + ')',
       nom + ' (' + numero + ') s\'est inscrit. Son code parrain : ' + code + (parrain === CONFIG.CODE_DWTS ? '. Sans parrain (code DWTS).' : '. Parrainé par ' + parrain + '.'));

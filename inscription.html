@@ -85,6 +85,10 @@
               <label for="parrain">Code de la personne qui vous a recommandé <small>(laissez vide si personne ne vous a recommandé)</small></label>
               <input id="parrain" name="parrain" placeholder="ex. PARRAIN-024" autocapitalize="characters">
             </div>
+            <div class="champ">
+              <label for="pin">Créez votre code d'accès <small>(4 à 6 chiffres, pour ouvrir Mon espace)</small></label>
+              <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" maxlength="6" pattern="[0-9]{4,6}" required>
+            </div>
             <div class="piege" aria-hidden="true"><label for="site">Site</label><input id="site" name="site" tabindex="-1" autocomplete="off"></div>
             <button class="bouton" type="submit">M'inscrire</button>
             <div class="message" id="message" role="status" aria-live="polite"></div>
@@ -161,7 +165,8 @@
         form.reportValidity();
         return;
       }
-      const donnees = { nom: form.nom.value.trim(), whatsapp: form.whatsapp.value.trim(), parrain: form.parrain.value.trim().toUpperCase() };
+      const donnees = { nom: form.nom.value.trim(), whatsapp: form.whatsapp.value.trim(), parrain: form.parrain.value.trim().toUpperCase(), pin: form.pin.value.trim() };
+      if (!/^[0-9]{4,6}$/.test(donnees.pin)) { afficherMessage('Votre code d\'accès doit avoir 4 à 6 chiffres.', 'erreur'); return; }
 
       // Script pas encore relié : demande d'inscription par WhatsApp
       if (!URL_SCRIPT) {
@@ -179,8 +184,7 @@
         if (!r.ok) { afficherMessage(echapper(r.erreur), 'erreur'); return; }
         form.reset();
         afficherMessage('<b>Bienvenue ' + echapper(donnees.nom) + ' !</b><br>Votre code parrain : <span class="code-perso">' + echapper(r.code) + '</span><br>' +
-          'Votre code d\'accès à Mon espace : <span class="code-perso">' + echapper(r.pin) + '</span><br>' +
-          '<small>Notez-les (capture d\'écran) : le code d\'accès vous sera demandé pour ouvrir <a href="espace.html">Mon espace</a>.</small>', 'ok');
+          '<small>Votre code d\'accès est celui que vous venez de créer. Il vous sera demandé pour ouvrir <a href="espace.html">Mon espace</a>.</small>', 'ok');
       }).catch(function () {
         afficherMessage('L\'inscription n\'a pas abouti. Vérifiez votre connexion ou <a href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">écrivez-nous sur WhatsApp</a>.', 'erreur');
       }).finally(function () {
