@@ -60,6 +60,37 @@
     </header>
 
     <section class="paiement">
+      <div class="conteneur">
+        <div class="bloc" id="simulateur-prix">
+          <h2>Combien je paie ?</h2>
+          <div class="champ">
+            <label for="sp-prestation">Prestation DEX</label>
+            <select id="sp-prestation"></select>
+          </div>
+          <div class="champ">
+            <label for="sp-mode">Mode</label>
+            <select id="sp-mode"></select>
+          </div>
+          <div class="champ">
+            <label style="display:flex;gap:10px;align-items:center;cursor:pointer"><input id="sp-impression" type="checkbox" style="width:20px;height:20px"> Je veux aussi l'impression <small>(Port-Gentil uniquement)</small></label>
+          </div>
+          <div id="sp-options" hidden>
+            <div class="champ">
+              <label for="sp-pages">Nombre de pages à imprimer</label>
+              <input id="sp-pages" type="number" min="1" max="500" value="10" inputmode="numeric">
+            </div>
+            <div class="champ">
+              <label for="sp-couleur">Type d'impression</label>
+              <select id="sp-couleur"><option value="noirblanc">Noir et blanc</option><option value="couleur">Couleur</option></select>
+            </div>
+          </div>
+          <p id="sp-total" style="color:var(--blanc);font-weight:600;margin:0"></p>
+          <p style="margin-top:8px"><small>Prix indicatif : le montant exact vous est confirmé avant le paiement. L'impression n'est proposée qu'à Port-Gentil ; ailleurs, vous recevez le PDF prêt à imprimer.</small></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="paiement">
       <div class="conteneur paiement__grille">
 
         <!-- Comment payer -->
@@ -165,10 +196,45 @@
   </footer>
 
   <script src="assets/js/config-espace.js"></script>
+  <script src="assets/js/catalogue-dex.js"></script>
   <script>
     // Adresse du script Google : assets/js/config-espace.js (vide = envoi par WhatsApp à la place)
     const URL_SCRIPT = window.DWTS_URL_SCRIPT || '';
     const WHATSAPP = '24162671445';
+
+    // Simulateur « Combien je paie ? » (prestation DEX + impression facultative)
+    (function () {
+      const DEX = window.DWTS_DEX || [];
+      const IMP = window.DWTS_IMPRESSION || { couleur: 500, noirblanc: 200 };
+      const g = function (id) { return document.getElementById(id); };
+      const xaf = function (n) { return Number(n).toLocaleString('fr-FR') + ' XAF'; };
+      const prestations = [];
+      DEX.forEach(function (c) { if (prestations.indexOf(c[0]) === -1) prestations.push(c[0]); });
+      g('sp-prestation').innerHTML = prestations.map(function (p) { return '<option>' + p.replace(/&/g, '&amp;') + '</option>'; }).join('');
+      function modes() {
+        g('sp-mode').innerHTML = DEX.filter(function (c) { return c[0] === g('sp-prestation').value; })
+          .map(function (c) { return '<option value="' + c[1] + '">' + c[1] + ' : ' + xaf(c[2]) + '</option>'; }).join('');
+        calculer();
+      }
+      function calculer() {
+        const ligne = DEX.filter(function (c) { return c[0] === g('sp-prestation').value && c[1] === g('sp-mode').value; })[0];
+        if (!ligne) return;
+        const impression = g('sp-impression').checked;
+        g('sp-options').hidden = !impression;
+        let texte = g('sp-prestation').value + ' (' + ligne[1] + ') : ' + xaf(ligne[2]);
+        let total = ligne[2];
+        if (impression) {
+          const pages = Math.max(1, Math.min(500, parseInt(g('sp-pages').value, 10) || 1));
+          const prix = pages * IMP[g('sp-couleur').value];
+          total += prix;
+          texte += '<br>Impression ' + pages + ' page' + (pages > 1 ? 's' : '') + ' (' + (g('sp-couleur').value === 'couleur' ? 'couleur ' + IMP.couleur : 'noir et blanc ' + IMP.noirblanc) + ' F la page) : ' + xaf(prix);
+        }
+        g('sp-total').innerHTML = texte + '<br><span style="font-size:1.2rem">Total à payer : ' + xaf(total) + '</span>';
+      }
+      g('sp-prestation').addEventListener('change', modes);
+      ['sp-mode', 'sp-impression', 'sp-pages', 'sp-couleur'].forEach(function (id) { g(id).addEventListener('input', calculer); g(id).addEventListener('change', calculer); });
+      modes();
+    })();
 
     // Boutons « Copier » des numéros de paiement
     document.querySelectorAll('[data-copier]').forEach(function (bouton) {
