@@ -18,6 +18,7 @@ const CONFIG = {
   DOSSIER_CAPTURES: 'DWTS - Preuves de paiement', // dossier Google Drive des captures
   COMMISSION_DEX: 500, // FCFA par commande DEX payée par un client parrainé
   SEUIL_VERSEMENT: 5000, // versement au parrain dès ce solde
+  CODE_DWTS: 'DWTS', // code maison : client sans parrain = commission gardée par DWTS
   DOSSIER_FACTURES: 'DWTS - Factures', // dossier Google Drive des factures PDF
   // Logos imprimés sur les factures (publiés avec le site)
   LOGOS: {
@@ -72,9 +73,17 @@ function installer() {
   synthese.clear();
   synthese.getRange('A1').setValue('Commissions à verser par mois et par parrain (paiements validés)').setFontWeight('bold');
   synthese.getRange('A2').setFormula(
-    "=IFERROR(QUERY(Paiements!A2:L, \"select K, H, sum(J) where I = 'Validé' and H <> '' and J > 0 " +
+    "=IFERROR(QUERY(Paiements!A2:L, \"select K, H, sum(J) where I = 'Validé' and H <> '' and H <> '" + CONFIG.CODE_DWTS + "' and J > 0 " +
     "group by K, H label K 'Mois', H 'Code parrain', sum(J) 'Total (FCFA)'\", 0), \"Aucune commission pour l'instant\")");
   synthese.getRange('E1').setValue('Versement dès ' + CONFIG.SEUIL_VERSEMENT + ' FCFA').setFontWeight('bold');
+  // Tableau DWTS : commissions des clients venus sans parrain (gardées par DWTS, rien à verser)
+  synthese.getRange('G1').setValue('Commissions DWTS (code ' + CONFIG.CODE_DWTS + ', gardées)').setFontWeight('bold');
+  synthese.getRange('G2').setFormula(
+    "=IFERROR(QUERY(Paiements!A2:L, \"select K, count(J), sum(J) where I = 'Validé' and H = '" + CONFIG.CODE_DWTS + "' and J > 0 " +
+    "group by K label K 'Mois', count(J) 'Commandes', sum(J) 'Total (FCFA)'\", 0), \"Aucune commission pour l'instant\")");
+  synthese.getRange('K1').setValue('Total DWTS (FCFA)').setFontWeight('bold');
+  synthese.getRange('K2').setFormula(
+    "=SUMIFS(Paiements!J2:J, Paiements!I2:I, \"Validé\", Paiements!H2:H, \"" + CONFIG.CODE_DWTS + "\")");
 
   dossierCaptures_();
   dossier_(CONFIG.DOSSIER_FACTURES);
@@ -116,8 +125,9 @@ function inscrire_(p) {
     if (lignes.some(function (l) { return normaliserNumero_(l[0]) === numero; })) {
       return { ok: false, erreur: 'Ce numéro est déjà inscrit. Ouvrez Mon espace, ou écrivez-nous si vous avez oublié votre code.' };
     }
-    const parrain = String(p.parrain || '').trim().toUpperCase();
-    if (parrain && !lignes.some(function (l) { return String(l[4]).toUpperCase() === parrain; })) {
+    // Sans code parrain : le code maison DWTS est mis automatiquement
+    const parrain = String(p.parrain || '').trim().toUpperCase() || CONFIG.CODE_DWTS;
+    if (parrain !== CONFIG.CODE_DWTS && !lignes.some(function (l) { return String(l[4]).toUpperCase() === parrain; })) {
       return { ok: false, erreur: 'Code parrain introuvable. Vérifiez-le, ou laissez la case vide.' };
     }
     const proprietes = PropertiesService.getScriptProperties();
@@ -127,7 +137,7 @@ function inscrire_(p) {
     const pin = String(Math.floor(1000 + Math.random() * 9000));
     clients.appendRow(["'" + numero, nom, parrain, new Date(), code, "'" + pin]);
     MailApp.sendEmail(CONFIG.EMAIL_ALERTE, 'DWTS : nouvelle inscription (' + nom + ')',
-      nom + ' (' + numero + ') s\'est inscrit. Son code parrain : ' + code + (parrain ? '. Parrainé par ' + parrain + '.' : '.'));
+      nom + ' (' + numero + ') s\'est inscrit. Son code parrain : ' + code + (parrain === CONFIG.CODE_DWTS ? '. Sans parrain (code DWTS).' : '. Parrainé par ' + parrain + '.'));
     return { ok: true, code: code, pin: pin };
   } finally {
     verrou.releaseLock();
@@ -214,7 +224,7 @@ function doPost(e) {
     const lu = lireSms_(sms);
     const feuille = SpreadsheetApp.getActive().getSheetByName(FEUILLE_PAIEMENTS);
     const alerte = lu.tid && tidDejaVu_(feuille, lu.tid) ? 'TID déjà envoyé : vérifier' : '';
-    const parrain = parrainDuClient_(numero);
+    const parrain = parrainDuClient_(numero) || CONFIG.CODE_DWTS; // client non inscrit ou sans parrain : DWTS
 
     feuille.appendRow([
       maintenant, "'" + numero, 'DEX', lu.montant || '', lu.tid, sms, lienCapture,

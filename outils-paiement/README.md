@@ -7,6 +7,9 @@ la capture est rangée dans Google Drive, et tu reçois un e-mail.
 Le **code parrain** s'enregistre **une seule fois**, à l'inscription du client, dans la feuille **Clients** :
 ensuite chaque paiement validé de ce client crédite son parrain tout seul (500 FCFA pour DEX),
 et la feuille **Commissions** donne le total à verser par parrain et par mois.
+Un client **sans code parrain** (inscription sans code, ou paiement d'un numéro non inscrit) reçoit automatiquement le **code maison `DWTS`** :
+sa commission reste chez DWTS et s'affiche dans un tableau à part, **Commissions DWTS** (feuille **Commissions**, colonnes G à K),
+pour voir combien de ventes viennent de ta propre pub, et combien des parrains.
 À chaque statut **Validé**, une **facture PDF au logo de la branche** (DEX, Visuo ou Logia, avec le logo DWTS)
 est créée dans Drive (dossier **DWTS - Factures**), son lien est noté dans la colonne **Facture**,
 et elle t'est envoyée par e-mail, prête à transférer au client sur WhatsApp.
@@ -60,6 +63,7 @@ Code d'accès oublié : il est dans la colonne **Code d'accès** de **Clients**.
 5. Passer la colonne **Statut** à **Validé** (ou **Refusé**) : la facture PDF arrive par e-mail.
    Envoyer au client le fichier final et la facture sur WhatsApp.
 6. Fin du mois : feuille **Commissions**, verser à chaque parrain dont le total atteint 5 000 FCFA.
+   Le tableau **Commissions DWTS** (à droite) n'est pas à verser : c'est ce que DWTS garde.
 
 Visuo et Logia : la commission du parrain dépend du pack mensuel ; la saisir à la main dans la colonne **Commission**.
 
