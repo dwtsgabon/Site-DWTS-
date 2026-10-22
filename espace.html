@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mon espace | DWTS</title>
+  <meta name="description" content="Mon espace DWTS : vos paiements, vos factures, vos filleuls et vos commissions de parrain.">
+  <meta name="theme-color" content="#0a0a0b">
+  <link rel="icon" type="image/png" href="assets/img/logo-dwts.png?v=202610181716">
+
+  <!-- Police Inter (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&amp;display=swap" rel="stylesheet">
+
+  <!-- Styles du site -->
+  <link rel="stylesheet" href="assets/css/style.css?v=202610181716">
+
+  <!-- Styles des pages Paiement, Inscription et Mon espace -->
+  <link rel="stylesheet" href="assets/css/espace.css?v=202610221">
+
+  <!-- Indique que JavaScript est actif (sert aux animations d'apparition) -->
+  <script>document.documentElement.className += ' js';</script>
+</head>
+<body class="page-parrainage">
+
+  <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+  <!-- ===== Navigation fixe ===== -->
+  <header class="nav">
+    <div class="conteneur nav__inner">
+      <a class="marque" href="index.html" aria-label="DWTS, retour à l'accueil">
+        <span class="marque__sigle">DWTS</span>
+        <span class="marque__nom" aria-hidden="true">Digital World<br>Technology <b>Service</b></span>
+      </a>
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu">
+        <span></span><span></span>
+      </button>
+      <nav id="menu" class="nav__liens" aria-label="Navigation principale">
+      <a href="index.html">DWTS</a>
+      <a href="dex.html">DEX</a>
+      <a href="visuo.html">Visuo</a>
+      <a href="logia.html">Logia</a>
+      <a href="tarifs.html">Tarifs</a>
+      <a href="parrainage.html">Parrainage</a>
+        <a class="bouton bouton--petit" href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20j%27ai%20une%20question%20sur%20mon%20espace." target="_blank" rel="noopener">Commander<span class="sr-only"> sur WhatsApp (nouvel onglet)</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+
+    <header class="parrain-hero">
+      <div class="conteneur">
+        <p class="surtitre intro">[ Mon espace ]</p>
+        <h1 class="titre-section hero__titre intro"><span class="ligne"><span>Vos commandes,</span></span><span class="ligne"><span>vos <span class="degrade-anime">gains.</span></span></span></h1>
+        <p class="intro-section intro">Vos paiements, vos factures et, si vous êtes parrain, vos filleuls et vos commissions.</p>
+      </div>
+    </header>
+
+    <section class="paiement">
+      <div class="conteneur" style="max-width:1040px">
+        <div class="bloc" id="bloc-connexion">
+          <h2>Ouvrir mon espace</h2>
+          <form class="formulaire" id="form-espace" novalidate>
+            <div class="champ">
+              <label for="whatsapp">Numéro WhatsApp</label>
+              <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="06 ou 07…" required>
+            </div>
+            <div class="champ">
+              <label for="pin">Code d'accès <small>(reçu à l'inscription)</small></label>
+              <input id="pin" name="pin" inputmode="numeric" autocomplete="one-time-code" maxlength="4" required>
+            </div>
+            <button class="bouton" type="submit">Ouvrir</button>
+            <div class="message" id="message" role="status" aria-live="polite"></div>
+          </form>
+          <p style="margin-top:16px">Pas encore inscrit ? <a href="inscription.html">Créer mon espace</a>. Code oublié ? <a href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20j%27ai%20oubli%C3%A9%20mon%20code%20d%27acc%C3%A8s." target="_blank" rel="noopener">Écrivez-nous</a>.</p>
+        </div>
+
+        <div id="contenu-espace" hidden>
+          <div class="bloc" style="margin-bottom:24px">
+            <h2 id="bonjour">Bonjour</h2>
+            <div class="chiffres" id="chiffres"></div>
+            <p>Votre code parrain : <span class="code-perso" id="mon-code"></span></p>
+          </div>
+          <div class="bloc" style="margin-bottom:24px">
+            <h2>Mes paiements et factures</h2>
+            <div id="paiements"></div>
+          </div>
+          <div class="bloc">
+            <h2>Mes commissions de parrain</h2>
+            <div id="commissions"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="pied">
+    <div class="conteneur">
+      <div class="pied__grille">
+        <div class="pied__logo">
+          <img src="assets/img/logo-dwts-clair.png?v=202610181716" alt="Logo Digital World Technology Service" width="900" height="715" loading="lazy">
+          <p>Services numériques au Gabon : documents, conception graphique, sites web, logiciels et automatisation.</p>
+        </div>
+        <div>
+          <h2>Nos branches</h2>
+          <ul>
+            <li><a href="dex.html">DEX — DocuExpress</a></li>
+            <li><a href="visuo.html">Visuo — Conception</a></li>
+            <li><a href="logia.html">Logia — Logiciels</a></li>
+            <li><a href="tarifs.html">Tarifs</a></li>
+            <li><a href="parrainage.html">Parrainage</a></li>
+            <li><a href="paiement.html">Paiement</a></li>
+            <li><a href="inscription.html">Inscription</a></li>
+            <li><a href="espace.html">Mon espace</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Nous contacter</h2>
+          <ul class="pied__contact">
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg>
+              <a href="https://wa.me/24162671445?text=Bonjour%20DWTS%2C%20j%27ai%20une%20question%20sur%20mon%20espace." target="_blank" rel="noopener">+241 62 67 14 45 (WhatsApp)</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              <a href="mailto:digitalwtservice@gmail.com">digitalwtservice@gmail.com</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="pied__bas">
+        <span>© <span data-annee>2026</span> DWTS — Digital World Technology Service. Gabon.</span>
+        <a href="#contenu">Retour en haut ↑</a>
+      </div>
+    </div>
+    <div class="pied__geant" aria-hidden="true">DWTS</div>
+  </footer>
+
+  <script src="assets/js/config-espace.js"></script>
+  <script>
+    const URL_SCRIPT = window.DWTS_URL_SCRIPT || '';
+    const WHATSAPP = '24162671445';
+    function afficherMessage(texte, type) {
+      const boite = document.getElementById('message');
+      boite.className = 'message message--' + type;
+      boite.innerHTML = texte;
+    }
+    function echapper(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function appeler(parametres) {
+      return fetch(URL_SCRIPT + '?' + new URLSearchParams(parametres).toString()).then(function (r) { return r.json(); });
+    }
+    function xaf(n) { return Number(n || 0).toLocaleString('fr-FR') + ' XAF'; }
+
+    function tableau(entetes, lignes) {
+      if (!lignes.length) return '<p>Rien pour l\'instant.</p>';
+      return '<div style="overflow-x:auto"><table class="tableau"><thead><tr>' + entetes.map(function (e) {
+        return '<th class="' + (e.nombre ? 'nombre' : '') + '">' + e.titre + '</th>'; }).join('') + '</tr></thead><tbody>' +
+        lignes.join('') + '</tbody></table></div>';
+    }
+
+    document.getElementById('form-espace').addEventListener('submit', function (evenement) {
+      evenement.preventDefault();
+      const form = evenement.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      if (!URL_SCRIPT) {
+        afficherMessage('Mon espace sera bientôt disponible. En attendant, <a href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">écrivez-nous sur WhatsApp</a>.', 'erreur');
+        return;
+      }
+      const bouton = form.querySelector('button[type="submit"]');
+      bouton.disabled = true;
+      appeler({ action: 'espace', whatsapp: form.whatsapp.value.trim(), pin: form.pin.value.trim() }).then(function (r) {
+        if (!r.ok) { afficherMessage(echapper(r.erreur), 'erreur'); return; }
+        document.getElementById('bloc-connexion').hidden = true;
+        document.getElementById('contenu-espace').hidden = false;
+        document.getElementById('bonjour').textContent = 'Bonjour ' + r.nom;
+        document.getElementById('mon-code').textContent = r.code;
+        document.getElementById('chiffres').innerHTML =
+          '<div class="chiffre"><small>Paiements validés</small><b>' + r.paiements.filter(function (p) { return p.statut === 'Validé'; }).length + '</b></div>' +
+          '<div class="chiffre"><small>Filleuls</small><b>' + r.filleuls + '</b></div>' +
+          '<div class="chiffre"><small>Gains totaux</small><b>' + xaf(r.gainsTotal) + '</b></div>' +
+          '<div class="chiffre"><small>Solde à recevoir</small><b>' + xaf(r.solde) + '</b></div>';
+        document.getElementById('paiements').innerHTML = tableau(
+          [{ titre: 'Date' }, { titre: 'Service' }, { titre: 'Montant', nombre: true }, { titre: 'Statut' }, { titre: 'Facture' }],
+          r.paiements.map(function (p) {
+            return '<tr><td>' + echapper(p.date) + '</td><td>' + echapper(p.service) + '</td><td class="nombre">' + (p.montant ? xaf(p.montant) : '—') +
+              '</td><td><span class="statut' + (p.statut === 'Validé' ? ' statut--valide' : '') + '">' + echapper(p.statut) + '</span></td><td>' +
+              (p.facture ? '<a href="' + encodeURI(p.facture) + '" target="_blank" rel="noopener">Voir</a>' : '—') + '</td></tr>';
+          }));
+        document.getElementById('commissions').innerHTML = tableau(
+          [{ titre: 'Mois' }, { titre: 'Commandes de filleuls' }, { titre: 'Gains', nombre: true }],
+          r.commissions.map(function (c) {
+            return '<tr><td>' + echapper(c.mois) + '</td><td>' + c.commandes + '</td><td class="nombre">' + xaf(c.gains) + '</td></tr>';
+          })) + '<p style="margin-top:12px">Versement en fin de mois par mobile money dès 5 000 FCFA de solde. Déjà versé : ' + xaf(r.verse) + '.</p>';
+      }).catch(function () {
+        afficherMessage('Connexion impossible pour le moment. Réessayez dans un instant.', 'erreur');
+      }).finally(function () { bouton.disabled = false; });
+    });
+  </script>
+  <!-- Bibliothèques (CDN) puis script du site -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="assets/js/main.js?v=202610181716"></script>
+</body>
+</html>
