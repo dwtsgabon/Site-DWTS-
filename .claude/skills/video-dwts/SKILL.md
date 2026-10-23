@@ -13,6 +13,16 @@ Règle d'Elie : **ne jamais générer une vidéo automatiquement.**
 
 Ne passe jamais à l'étape suivante sans réponse claire. Une réponse « ok » ou « oui » suffit, mais elle doit porter sur l'étape en cours.
 
+## Voix off (toutes les vidéos DWTS)
+- Voix clonée ElevenLabs **« Elie Ryan »**, voice_id `UFztn0Bt9isMl7KChsdJ`, modèle `eleven_v4`, balise `[warmly]` en tête : ton doux, naturel, présentation marketing. Réglage validé par Elie (test du 23 oct. 2026, prise 2).
+- Ne jamais changer de voix sans sa demande. Chaque génération coûte des crédits : générer le texte final en une fois.
+
+## Ton du script (retours d'Elie)
+- Partir du besoin du client, pas de la structure. DEX, Visuo et Logia = « notre équipe DEX », etc. : des équipes de DWTS, pas des marques à part. Pas de logos des branches, seulement celui de DWTS.
+- Pas de délai chiffré ni de comparaison invérifiable (« mieux que la concurrence »).
+- Parcours : il nous écrit → il commande → il voit l'aperçu → il paie après validation.
+- Fin : appel à l'action (« le monde numérique à votre service », WhatsApp), icône Facebook + nom (pas de lien), puis parrainage avec les montants, sans « si ce n'est pas pour vous ».
+
 ## Faits de marque (à vérifier sur le site avant d'écrire)
 - DWTS = Digital World Technology Service, Port-Gentil, Gabon. Slogan : « Le monde numérique, à votre portée. »
 - DEX (documents, 3 modes), Visuo (« Bien vue, bien vendue. »), Logia (« Automatisez, respirez. »).
