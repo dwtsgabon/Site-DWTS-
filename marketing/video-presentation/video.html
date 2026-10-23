@@ -38,6 +38,18 @@ h2{font-size:72px;line-height:1.08;font-weight:800;letter-spacing:-.02em}
 .gain{position:absolute;width:440px;background:var(--surf);border:1px solid #2a2a2e;border-radius:36px;padding:50px 20px;text-align:center}
 .gain b{display:block;font-size:104px;font-weight:900;color:var(--or);font-variant-numeric:tabular-nums}
 .gain span{font-size:38px;color:var(--gris);line-height:1.3;display:block}
+.nb{display:inline-block;width:74px;height:74px;border-radius:50%;background:var(--or);color:#111;font:800 44px/74px Inter;margin-right:14px;vertical-align:middle}
+.bulle{position:absolute;left:360px;top:40px;font:700 30px/1 'JetBrains Mono',monospace;background:#1f2c34;color:#d9fdd3;padding:14px 22px;border-radius:24px}
+.carte9{background:var(--surf);border:1px solid #2a2a2e;border-radius:40px;padding:50px 50px 44px}
+.c9t{font-size:44px;line-height:1.3;color:#e8e8ea}.c9t b{color:var(--or2)}
+.c9g{font-size:150px;font-weight:900;color:var(--or);margin-top:20px;font-variant-numeric:tabular-nums;line-height:1}
+.c9s{font-size:40px;color:var(--gris);margin-top:14px}
+.pk{flex:1;background:var(--surf);border:1px solid #2a2a2e;border-radius:30px;padding:30px 34px;text-align:left}
+.pk h4{font:700 36px/1 'JetBrains Mono',monospace;letter-spacing:.2em;margin-bottom:16px}
+.pk p{display:flex;justify-content:space-between;font-size:36px;padding:10px 0;border-bottom:1px dashed #333}.pk p span{color:var(--gris)}
+.ex{display:flex;justify-content:space-between;font-size:52px;font-weight:700;padding:30px 10px;border-bottom:2px dashed #333;margin-top:10px}.ex span{color:#ddd;font-weight:600}
+.ex.tot{border-bottom:none;border-top:4px solid var(--or);margin-top:20px;font-size:64px}.ex.tot b{color:var(--or);font-size:96px}
+.mm{color:#fff;font:800 40px/1 Inter;padding:22px 34px;border-radius:20px}
 </style></head><body>
 <div id="fond"><div class="blob" id="b1" style="width:900px;height:900px;background:rgba(255,106,0,.30)"></div><div class="blob" id="b2" style="width:800px;height:800px;background:rgba(30,111,217,.26)"></div><div class="blob" id="b3" style="width:600px;height:600px;background:rgba(139,61,255,.18)"></div></div>
 
@@ -111,13 +123,52 @@ h2{font-size:72px;line-height:1.08;font-weight:800;letter-spacing:-.02em}
   <div class="ligne a" id="i8" style="top:1420px;font-size:40px;color:var(--gris)"><svg viewBox="0 0 24 24" fill="none" stroke="#a1a1a6" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>dwtsgabon.github.io/Site-DWTS-</div>
   <div class="ligne a" id="f8" style="top:1530px;font-size:40px"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1877F2"/><path d="M13.4 19v-6h2l.3-2.4h-2.3V9.2c0-.7.2-1.2 1.2-1.2h1.2V5.9c-.2 0-1-.1-1.8-.1-1.8 0-3 1.1-3 3.1v1.8H9V13h2v6z" fill="#fff"/></svg>Digital World Technology Service</div>
 </section>
-<!-- 9 -->
-<section class="s" id="s9" style="justify-content:flex-start;padding-top:260px">
+<!-- 9 : parrainage expliqué -->
+<section class="s" id="s9" style="justify-content:flex-start;padding-top:150px">
   <span class="tag a" id="g9" style="color:var(--or2)">Parrainage DWTS</span>
-  <h2 class="a" id="t9">Vous connaissez forcément<br>quelqu'un qui a<br><span class="or">besoin de nous.</span></h2>
-  <div class="gain a" id="n1" style="left:80px;top:900px"><b id="v1">0 F</b><span>par commande<br>DEX</span></div>
-  <div class="gain a" id="n2" style="right:80px;top:900px"><b id="v2">0 F</b><span>jusqu'à, chaque mois<br>avec Visuo et Logia</span></div>
-  <p class="a" id="r9" style="position:absolute;left:0;right:0;top:1330px;font-size:46px;color:var(--txt);font-weight:600">Inscription gratuite sur le site</p>
+  <h2 class="a" id="t9" style="font-size:78px">Gagnez de l'argent<br><span class="or">avec DWTS.</span></h2>
+  <!-- A : code + partage -->
+  <div id="pA" style="position:absolute;left:0;right:0;top:640px">
+    <div class="a" id="a1" style="font-size:52px;font-weight:800"><span class="nb">1</span> Inscription gratuite sur le site</div>
+    <div class="a" id="a2" style="margin:50px auto 0;width:760px;border:4px dashed var(--or);border-radius:36px;padding:44px;background:#151517">
+      <div style="font:600 32px/1 'JetBrains Mono',monospace;letter-spacing:.2em;color:var(--gris)">VOTRE CODE PARRAIN</div>
+      <div style="font:800 92px/1.1 'JetBrains Mono',monospace;color:#fff;margin-top:20px">PARRAIN-001</div>
+      <div style="font-size:30px;color:var(--gris);margin-top:10px">exemple</div></div>
+    <div class="a" id="a3" style="font-size:52px;font-weight:800;margin-top:70px"><span class="nb">2</span> Partagez votre code</div>
+    <div class="a" id="a4" style="position:relative;height:200px;margin-top:30px">
+      <svg viewBox="0 0 24 24" fill="#25D366" style="width:150px;height:150px"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>
+      <span class="bulle" id="b9a">PARRAIN-001</span><span class="bulle" id="b9b">PARRAIN-001</span><span class="bulle" id="b9c">PARRAIN-001</span></div>
+  </div>
+  <!-- B : DEX -->
+  <div id="pB" style="position:absolute;left:70px;right:70px;top:640px">
+    <div class="a" id="bh" style="font-size:52px;font-weight:800"><span class="nb">3</span> Vous gagnez</div>
+    <div class="a carte9" id="b1" style="margin-top:50px">
+      <div class="c9t">Un ami commande un <b>exposé</b>, un <b>CV</b> ou un <b>mémoire</b> avec votre code</div>
+      <div class="c9g"><span id="vB">0</span> F</div>
+      <div class="c9s">à chaque commande</div></div>
+  </div>
+  <!-- C : Visuo / Logia -->
+  <div id="pC" style="position:absolute;left:70px;right:70px;top:600px">
+    <div class="a carte9" id="c1">
+      <div class="c9t">Un commerçant prend un <b>pack mensuel</b> Visuo ou Logia avec votre code</div>
+      <div class="c9g" style="font-size:110px"><span id="vC1">1 000</span> à <span id="vC2">5 000</span> F</div>
+      <div class="c9s">chaque mois de son abonnement</div></div>
+    <div style="display:flex;gap:30px;margin-top:36px">
+      <div class="a pk" id="c2"><h4 style="color:var(--or2)">VISUO</h4><p><span>Starter</span><b>1 000 F</b></p><p><span>Basique</span><b>2 000 F</b></p><p><span>Standard</span><b>5 000 F</b></p></div>
+      <div class="a pk" id="c3"><h4 style="color:var(--cy)">LOGIA</h4><p><span>Starter</span><b>1 000 F</b></p><p><span>Business</span><b>2 000 F</b></p><p><span>Entreprise</span><b>4 000 F</b></p></div>
+    </div>
+    <div class="a" id="c4" style="font-size:32px;color:var(--gris);margin-top:24px">Votre gain par mois, selon le pack</div>
+  </div>
+  <!-- D : exemple -->
+  <div id="pD" style="position:absolute;left:90px;right:90px;top:600px">
+    <div class="a" id="d0" style="font:700 40px/1 'JetBrains Mono',monospace;letter-spacing:.2em;color:var(--or2)">EXEMPLE CE MOIS-CI</div>
+    <div class="a ex" id="dx1"><span>Exposé · ami 1</span><b>500 F</b></div>
+    <div class="a ex" id="dx2"><span>Exposé · ami 2</span><b>500 F</b></div>
+    <div class="a ex" id="dx3"><span>Pack Visuo Standard</span><b>5 000 F</b></div>
+    <div class="a ex tot" id="dx4"><span>Pour vous</span><b><span id="vD">0</span> F</b></div>
+    <div class="a" id="dx5" style="margin-top:50px;display:flex;justify-content:center;gap:24px">
+      <span class="mm" style="background:#E4002B">Airtel Money</span><span class="mm" style="background:#0A6FB7">Mobicash</span></div>
+  </div>
 </section>
 <!-- fin -->
 <section class="s" id="s10">
@@ -129,7 +180,7 @@ h2{font-size:72px;line-height:1.08;font-weight:800;letter-spacing:-.02em}
 
 <script>
 // Scènes : [début, fin] en secondes de vidéo
-var SC={s1:[0,6.25],s2:[6.25,10.4],s3:[10.4,21.25],s4:[21.25,28.5],s5:[28.5,35.5],s6:[35.5,40.7],s7:[40.7,45.85],s8:[45.85,53.6],s9:[53.6,63.3],s10:[63.3,67]};
+var SC={s1:[0,6.25],s2:[6.25,10.4],s3:[10.4,21.25],s4:[21.25,28.5],s5:[28.5,35.5],s6:[35.5,40.7],s7:[40.7,45.85],s8:[45.85,53.6],s9:[53.6,82.8],s10:[82.8,87.2]};
 var $=function(i){return document.getElementById(i)};
 function cl(x){return x<0?0:x>1?1:x}
 function eo(x){x=cl(x);return 1-Math.pow(1-x,3)}            // ease-out
@@ -186,18 +237,25 @@ function render(t){
   // 8
   var p8=eb(cl((t-45.95)/.6));st($('l8'),cl((t-45.95)/.3),'scale('+(.5+.5*p8)+')','drop-shadow(0 0 '+(60*(1-cl((t-46.2)/1.2)))+'px rgba(255,106,0,.9))');
   up('t8',t,46.9);pop('w8',t,49.85);up('i8',t,51.0);up('f8',t,51.6);
-  // 9 : compteurs
-  pop('g9',t,53.75);up('t9',t,54.0);
-  up('n1',t,55.8);up('n2',t,56.6);
-  var c1=Math.round(500*eo((t-57.85)/.8)),c2=Math.round(5000*eo((t-60.2)/.9)/50)*50;
-  $('v1').textContent=c1.toLocaleString('fr-FR')+' F';$('v2').textContent=c2.toLocaleString('fr-FR')+' F';
-  $('n1').style.boxShadow=t>58.6&&t<59.4?'0 0 0 4px #FF6A00':'none';$('n2').style.boxShadow=t>61.1&&t<61.9?'0 0 0 4px #FF6A00':'none';
-  up('r9',t,61.6);
+  // 9 : parrainage (voix à partir de 54,0 s)
+  pop('g9',t,53.75);up('t9',t,54.1);
+  function phase(id,t0,t1){var pi=eo((t-t0)/.4),po=eo((t-t1)/.35);var el=$(id);el.style.display=(t<t0-.01||t>t1+.4)?'none':'block';st(el,pi*(1-po),'translateX('+((1-pi)*120-po*160)+'px)')}
+  phase('pA',57.2,62.15);phase('pB',62.2,68.7);phase('pC',68.75,75.9);phase('pD',75.95,90);
+  up('a1',t,57.3);pop('a2',t,59.55);up('a3',t,61.2);up('a4',t,61.35);
+  [['b9a',61.5,-330,150],['b9b',61.7,0,230],['b9c',61.9,330,150]].forEach(function(b){var q=eo((t-b[1])/.6);st($(b[0]),cl((t-b[1])/.15),'translate('+(b[2]*q)+'px,'+(b[3]*q)+'px) scale('+(.6+.4*q)+')')});
+  up('bh',t,62.3);up('b1',t,62.6,.5,120);
+  $('vB').textContent=Math.round(500*eo((t-63.0)/.8));$('b1').style.boxShadow=(t>66.6&&t<67.6)?'0 0 0 5px #FF6A00':'none';
+  up('c1',t,68.85,.5,120);
+  $('vC1').textContent=Math.round(1000*eo((t-69.3)/.7)).toLocaleString('fr-FR');$('vC2').textContent=Math.round(5000*eo((t-69.5)/.9)).toLocaleString('fr-FR');
+  $('c1').style.boxShadow=(t>73&&t<74)?'0 0 0 5px #FF6A00':'none';pop('c2',t,74.2);pop('c3',t,74.5);up('c4',t,74.9);
+  up('d0',t,76.0);up('dx1',t,76.85);up('dx2',t,77.4);up('dx3',t,78.1);up('dx4',t,79.2);
+  $('vD').textContent=Math.round(6000*eo((t-79.3)/.8)/100)*100>0?(Math.round(6000*eo((t-79.3)/.8)/100)*100).toLocaleString('fr-FR'):'0';
+  pop('dx5',t,81.4);
   // fin
-  var p10=eb(cl((t-63.4)/.6));st($('l10'),cl((t-63.4)/.3),'scale('+(.5+.5*p10)+')','drop-shadow(0 0 '+(60*(1-cl((t-63.6)/1.2)))+'px rgba(255,106,0,.9))');
-  up('t10',t,64.0);up('u10',t,64.4);
+  var p10=eb(cl((t-82.9)/.6));st($('l10'),cl((t-82.9)/.3),'scale('+(.5+.5*p10)+')','drop-shadow(0 0 '+(60*(1-cl((t-83.1)/1.2)))+'px rgba(255,106,0,.9))');
+  up('t10',t,83.5);up('u10',t,83.9);
   // fondu final
-  $('noir').style.opacity=cl((t-66.4)/.6);
+  $('noir').style.opacity=cl((t-86.5)/.7);
 }
 window.render=render;render(+(location.hash.slice(1)||0));
 </script>

@@ -3,8 +3,8 @@
 Format vertical 9:16 (1080 × 1920), environ 68 s. Voix : « Elie Ryan » (voir `.claude/skills/video-dwts/SKILL.md`).
 
 ## État (23 oct. 2026)
-- Vidéo montée : `DWTS-presentation.mp4` (1080 × 1920, 30 i/s, 67 s, son -14 LUFS).
-- Sources : `video.html` (animation, `render(t)`), `mixage.py` (voix + musique + effets), flow ElevenLabs « DWTS - Vidéo de présentation ».
+- Vidéo montée (v2) : `DWTS-presentation.mp4` (1080 × 1920, 30 i/s, 87 s, son -14 LUFS). Scène parrainage refaite (code exemple PARRAIN-001, 500 F par commande DEX, 1 000 à 5 000 F/mois Visuo-Logia, exemple 6 000 F).
+- Sources : `video.html` (animation, `render(t)`), `mixage2.py` (voix nettoyée, musique baissée automatiquement sous la voix, effets égalisés), flow ElevenLabs « DWTS - Vidéo de présentation ».
 - Voix : prise 2. Pause de 2,5 s ajoutée avant la scène 7 pour laisser lire les prix.
 - Musique : ElevenLabs Music v2.5, instrumentale (aucune parole détectée).
 - Photo de l'affiche Cap Fit : générée par IA (ElevenLabs, Seedream), sans filigrane.
@@ -24,6 +24,6 @@ Format vertical 9:16 (1080 × 1920), environ 68 s. Voix : « Elie Ryan » (voir 
 6. « Et quel que soit votre budget, il y a une formule pour vous. »
 7. « Vous nous écrivez, vous commandez, vous découvrez l'aperçu, et vous ne payez qu'après l'avoir validé. »
 8. « DWTS, le monde numérique à votre service. Écrivez-nous sur WhatsApp au 062 67 14 45. »
-9. « Vous connaissez forcément quelqu'un qui a besoin de nous. Recommandez DWTS : 500 F pour chaque commande DEX, et jusqu'à 5 000 F chaque mois avec Visuo et Logia. »
+9. « Et vous pouvez aussi gagner de l'argent avec DWTS. Inscrivez-vous gratuitement sur notre site : vous recevez votre code parrain. Partagez-le. Un ami commande un exposé, un CV ou un mémoire avec votre code ? Vous gagnez 500 francs, à chaque commande. Un commerçant prend un pack mensuel Visuo ou Logia avec votre code ? Vous gagnez de 1 000 à 5 000 francs, chaque mois de son abonnement. Exemple : deux exposés et un pack Visuo Standard, c'est 6 000 francs pour vous ce mois-ci, versés par Mobile Money. »
 
 À l'écran, scène 8 : logo, WhatsApp, site, icône Facebook et le nom « Digital World Technology Service » (pas de lien).
