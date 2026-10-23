@@ -589,14 +589,16 @@ function doPost(e) {
     const maintenant = new Date();
     const fuseau = Session.getScriptTimeZone();
     let lienCapture = '';
+    let texteCapture = '';
     if (d.capture) {
       const nomFichier = Utilities.formatDate(maintenant, fuseau, 'yyyy-MM-dd_HH-mm') + '_' + numero + '.jpg';
-      lienCapture = dossierCaptures_()
-        .createFile(Utilities.newBlob(Utilities.base64Decode(d.capture), 'image/jpeg', nomFichier)).getUrl();
+      const image = Utilities.newBlob(Utilities.base64Decode(d.capture), 'image/jpeg', nomFichier);
+      lienCapture = dossierCaptures_().createFile(image).getUrl();
+      texteCapture = lireImage_(image); // texte de la capture (reconnaissance de Google Drive)
     }
 
-    // Montant et TID lus dans le SMS collé (à compléter à la main pour une capture)
-    const lu = lireSms_(sms);
+    // Montant et TID lus dans le SMS collé, sinon dans le texte de la capture (vérifiés sur la page de validation)
+    const lu = lireSms_(sms || texteCapture);
     const feuille = feuille_(FEUILLE_PAIEMENTS, ENTETES_PAIEMENTS);
     const alerte = lu.tid && tidDejaVu_(feuille, lu.tid) ? 'TID déjà envoyé : vérifier' : '';
     const parrain = parrainDuClient_(numero) || CONFIG.CODE_DWTS; // client non inscrit ou sans parrain : DWTS
@@ -610,6 +612,7 @@ function doPost(e) {
       'DWTS : nouvelle preuve de paiement' + (lu.montant ? ' (' + lu.montant + ' XAF)' : ''),
       'Client : ' + numero + (parrain ? ' (parrain ' + parrain + ')' : '') + '\n' +
       (sms ? 'SMS collé : ' + sms + '\n' : '') +
+      (!sms && lu.montant ? 'Lu sur la capture : ' + lu.montant + ' XAF' + (lu.tid ? ', TID ' + lu.tid : '') + ' (à vérifier)\n' : '') +
       (lienCapture ? 'Capture : ' + lienCapture + '\n' : '') +
       (alerte ? '⚠️ ' + alerte + '\n' : '') +
       '\nVérifiez le SMS de réception (même montant, même TID), puis un clic suffit :\n' +
@@ -953,7 +956,10 @@ function infoValidation_(p) {
     details: [['Montant', v[COL.MONTANT - 1] ? formaterXaf_(v[COL.MONTANT - 1]) : '? (capture : à lire)'], ['Service', v[COL.SERVICE - 1]],
       ['Client', String(v[COL.WHATSAPP - 1]).replace(/^'/, '')], ['TID', v[COL.TID - 1] || '—'], ['Parrain', v[COL.PARRAIN - 1] || '—'],
       ['SMS collé', v[COL.SMS - 1] || '—']],
-    capture: v[COL.CAPTURE - 1] || ''
+    capture: imageCapture_(v[COL.CAPTURE - 1]),
+    // Valeurs modifiables avant de valider (lues dans le SMS ou la capture)
+    champs: { montant: Number(v[COL.MONTANT - 1]) || '', tid: v[COL.TID - 1] || '', service: v[COL.SERVICE - 1] || 'DEX',
+      designation: v[COL.DESIGNATION - 1] || '' }, services: SERVICES
   };
 }
 
@@ -978,6 +984,12 @@ function confirmerValidation_(p) {
     const statut = c.action === 'valider' ? 'Validé' : 'Refusé';
     c.feuille.getRange(c.ligne, COL.STATUT).setValue(statut);
     if (statut === 'Refusé') return { ok: true, message: 'Paiement refusé ✓' };
+    // Montant, TID, service et désignation vérifiés sur la page : écrits avant la facture
+    const montant = Math.round(Number(String(p.montant || '').replace(/[^\d]/g, '')));
+    if (montant > 0) c.feuille.getRange(c.ligne, COL.MONTANT).setValue(montant);
+    if (p.tid !== undefined) c.feuille.getRange(c.ligne, COL.TID).setValue(String(p.tid).trim().toUpperCase().slice(0, 40));
+    if (SERVICES.indexOf(p.service) !== -1) c.feuille.getRange(c.ligne, COL.SERVICE).setValue(p.service);
+    if (p.designation !== undefined) c.feuille.getRange(c.ligne, COL.DESIGNATION).setValue(String(p.designation).trim().slice(0, 120));
     traiterLigne_(c.feuille, c.ligne, true);
     return { ok: true, message: emailDuClient_(c.v[COL.WHATSAPP - 1]) ?
       'Paiement validé ✓ La facture PDF a été envoyée par e-mail au client et apparaît dans son espace.' :
@@ -1200,11 +1212,44 @@ function nomDuClient_(telephone) {
 }
 
 /** Lit le montant et le TID d'un SMS Airtel Money / Mobicash collé par le client. */
+/**
+ * Texte d'une image (reconnaissance de caractères de Google Drive), ou '' si indisponible.
+ * Nécessite le service « Drive API » ajouté dans Apps Script (Services +).
+ */
+function lireImage_(image) {
+  try {
+    if (typeof Drive === 'undefined') return '';
+    let id;
+    if (Drive.Files.create) id = Drive.Files.create({ name: 'dwts-ocr', mimeType: 'application/vnd.google-apps.document' }, image, { ocrLanguage: 'fr', fields: 'id' }).id;
+    else id = Drive.Files.insert({ title: 'dwts-ocr', mimeType: 'application/vnd.google-apps.document' }, image, { ocr: true, ocrLanguage: 'fr' }).id;
+    const texte = DocumentApp.openById(id).getBody().getText();
+    DriveApp.getFileById(id).setTrashed(true);
+    return texte.replace(/\s+/g, ' ').trim();
+  } catch (erreur) {
+    console.error('Lecture de la capture impossible : ' + erreur);
+    return '';
+  }
+}
+
+/** Capture en image intégrée (data:) pour la page de validation, ou '' si introuvable. */
+function imageCapture_(lien) {
+  const id = idDrive_(lien);
+  if (!id) return '';
+  try {
+    const blob = DriveApp.getFileById(id).getBlob();
+    return 'data:' + blob.getContentType() + ';base64,' + Utilities.base64Encode(blob.getBytes());
+  } catch (erreur) {
+    return '';
+  }
+}
+
 function lireSms_(sms) {
   const resultat = { montant: '', tid: '' };
   if (!sms) return resultat;
-  const montant = sms.match(/(\d[\d\s.]*\d|\d)\s*F(?:CFA)?\b/i);
-  if (montant) resultat.montant = Number(montant[1].replace(/[\s.]/g, ''));
+  // Montant : après « Montant », sinon premier nombre (2 500 / 2.500 / 2500) suivi de F, FCFA ou XAF
+  const montant = sms.match(/montant\s*:?\s*(\d{1,3}(?:[ .\u00a0]\d{3})+|\d+)/i) ||
+    sms.match(/(?:^|[^\d.])(\d{1,3}(?:[ .\u00a0]\d{3})+|\d+)\s*(?:F(?:CFA)?|XAF)\b/i);
+  if (montant) resultat.montant = Number(montant[1].replace(/[\s.\u00a0]/g, ''));
   const tid = sms.match(/T(?:X|XN)?\s*I\s*d\s*:?\s*([A-Z]{2}\d{6}\.\d{4}\.[A-Z0-9]+)/i);
   if (tid) resultat.tid = tid[1].toUpperCase();
   return resultat;

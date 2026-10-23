@@ -50,13 +50,19 @@
 
   <main id="contenu">
     <section class="paiement espace">
-      <div class="conteneur" style="max-width:560px">
+      <div class="conteneur" style="max-width:640px">
         <div class="bloc">
           <p class="surtitre">[ Validation DWTS ]</p>
           <h2 id="titre">Chargement…</h2>
           <dl class="infos" id="details"></dl>
-          <p id="capture" hidden style="margin-top:14px"></p>
-          <p id="aide" hidden style="margin-top:14px">Comparez avec votre SMS de réception : même montant, même TID.</p>
+          <div id="capture" hidden style="margin-top:16px"></div>
+          <form class="formulaire" id="champs" hidden style="margin-top:18px" novalidate>
+            <p id="aide">Comparez avec votre SMS de réception : même montant, même TID. Corrigez si besoin : la facture utilisera ces valeurs.</p>
+            <div class="champ"><label for="f-montant">Montant reçu (XAF)</label><input id="f-montant" inputmode="numeric" required></div>
+            <div class="champ"><label for="f-tid">TID</label><input id="f-tid" autocapitalize="characters" spellcheck="false"></div>
+            <div class="champ"><label for="f-service">Service</label><select id="f-service"></select></div>
+            <div class="champ"><label for="f-designation">Désignation sur la facture <small>(facultatif, ex. Exposé palier 2 · Mode 1)</small></label><input id="f-designation" maxlength="120"></div>
+          </form>
           <button class="bouton" type="button" id="confirmer" hidden style="width:100%;justify-content:center;border:0;cursor:pointer;font:inherit;margin-top:10px"></button>
           <div class="message" id="message" role="status" aria-live="polite"></div>
         </div>
@@ -122,18 +128,42 @@
       g('titre').textContent = r.aTraiter ? r.titre : 'Déjà traité';
       g('details').innerHTML = r.details.map(function (l) { return '<dt>' + esc(l[0]) + '</dt><dd>' + esc(l[1]) + '</dd>'; }).join('') +
         '<dt>Statut</dt><dd>' + esc(r.statut) + '</dd>';
-      if (r.capture) { g('capture').hidden = false; g('capture').innerHTML = '<a href="' + encodeURI(r.capture) + '" target="_blank" rel="noopener">Voir la capture envoyée</a>'; }
+      if (r.capture) {
+        g('capture').hidden = false;
+        g('capture').innerHTML = '<p style="margin:0 0 8px"><b>Capture envoyée</b> <small>(touchez pour agrandir)</small></p>' +
+          '<a href="#" id="agrandir"><img src="' + r.capture + '" alt="Capture du paiement" style="display:block;width:100%;border-radius:12px;border:1px solid var(--ligne)"></a>';
+        g('agrandir').addEventListener('click', function (e) {
+          e.preventDefault();
+          const w = window.open('');
+          if (w) w.document.write('<title>Capture</title><body style="margin:0;background:#111"><img src="' + r.capture + '" style="width:100%">');
+        });
+      }
       if (!r.aTraiter) return;
-      g('aide').hidden = r.type !== 'paiement' || lien.a !== 'valider';
+      const avecChamps = r.type === 'paiement' && lien.a === 'valider' && r.champs;
+      if (avecChamps) {
+        g('champs').hidden = false;
+        g('f-montant').value = r.champs.montant;
+        g('f-tid').value = r.champs.tid;
+        g('f-designation').value = r.champs.designation;
+        g('f-service').innerHTML = (r.services || ['DEX', 'Visuo', 'Logia']).map(function (s) {
+          return '<option' + (s === r.champs.service ? ' selected' : '') + '>' + esc(s) + '</option>';
+        }).join('');
+      }
       const bouton = g('confirmer');
       const positif = lien.a === 'valider' || lien.a === 'verse';
       bouton.hidden = false;
       bouton.textContent = lien.a === 'valider' ? 'Valider le paiement' : lien.a === 'verse' ? 'Confirmer : retrait versé' : 'Refuser';
       if (!positif) bouton.style.background = '#c0392b';
       bouton.addEventListener('click', function () {
+        const envoi = Object.assign({}, lien);
+        if (avecChamps) {
+          const montant = Number(g('f-montant').value.replace(/[^\d]/g, ''));
+          if (!(montant > 0)) { message('Indiquez le montant reçu avant de valider.', 'erreur'); g('f-montant').focus(); return; }
+          Object.assign(envoi, { montant: montant, tid: g('f-tid').value.trim(), service: g('f-service').value, designation: g('f-designation').value.trim() });
+        }
         bouton.disabled = true;
         bouton.textContent = 'Un instant…';
-        window.dwtsApi('confirmerValidation', lien).then(function (c) {
+        window.dwtsApi('confirmerValidation', envoi).then(function (c) {
           bouton.hidden = true;
           message(esc(c.ok ? c.message : c.erreur), c.ok ? 'ok' : 'erreur');
         }).catch(function () {
