@@ -3,12 +3,11 @@
 Format vertical 9:16 (1080 × 1920), environ 68 s. Voix : « Elie Ryan » (voir `.claude/skills/video-dwts/SKILL.md`).
 
 ## État (23 oct. 2026)
-- Script : validé.
-- Visuels : validés (`scenes.html`, rendu de chaque scène via `scenes.html#1` … `#9`).
-- Maquettes Visuo : `visuo.html` (logos `#l1`…`#l6`, affiches `#p1`…`#p5`). Les rendus sont dans `assets/img/visuo/logo-*.jpg` et `affiche-*.jpg`.
-- L'affiche Cap Fit (`#p4`) attend une photo de sport libre de droits. Les photos reçues portaient un filigrane « dreamstime », elles sont refusées.
-- Musique : à créer avec le connecteur ElevenLabs complet (choix d'Elie). Style moderne, afro-électro douce, sous la voix.
-- Reste à faire : voix off complète, effets sonores (whoosh, pop, ding), musique, puis montage synchronisé sur la voix et export HD.
+- Vidéo montée : `DWTS-presentation.mp4` (1080 × 1920, 30 i/s, 67 s, son -14 LUFS).
+- Sources : `video.html` (animation, `render(t)`), `mixage.py` (voix + musique + effets), flow ElevenLabs « DWTS - Vidéo de présentation ».
+- Voix : prise 2. Pause de 2,5 s ajoutée avant la scène 7 pour laisser lire les prix.
+- Musique : ElevenLabs Music v2.5, instrumentale (aucune parole détectée).
+- Photo de l'affiche Cap Fit : générée par IA (ElevenLabs, Seedream), sans filigrane.
 
 ## Montage voulu par Elie
 - Moderne, avec des effets sonores, et des transitions calées sur la voix off et la musique.
