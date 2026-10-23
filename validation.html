@@ -128,7 +128,12 @@
       g('titre').textContent = r.aTraiter ? r.titre : 'Déjà traité';
       g('details').innerHTML = r.details.map(function (l) { return '<dt>' + esc(l[0]) + '</dt><dd>' + esc(l[1]) + '</dd>'; }).join('') +
         '<dt>Statut</dt><dd>' + esc(r.statut) + '</dd>';
-      if (r.capture) {
+      if (r.alerte) message('⚠️ ' + esc(r.alerte), 'erreur');
+      if (r.capture && r.capture.indexOf('data:') !== 0) {
+        // Ancienne version du script : simple lien vers la capture
+        g('capture').hidden = false;
+        g('capture').innerHTML = '<a href="' + encodeURI(r.capture) + '" target="_blank" rel="noopener">Voir la capture envoyée</a>';
+      } else if (r.capture) {
         g('capture').hidden = false;
         g('capture').innerHTML = '<p style="margin:0 0 8px"><b>Capture envoyée</b> <small>(touchez pour agrandir)</small></p>' +
           '<a href="#" id="agrandir"><img src="' + r.capture + '" alt="Capture du paiement" style="display:block;width:100%;border-radius:12px;border:1px solid var(--ligne)"></a>';
