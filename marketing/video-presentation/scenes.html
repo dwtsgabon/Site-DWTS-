@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+:root{--or:#FF6A00;--or2:#ff9a4d;--bl:#1E6FD9;--vi:#8B3DFF;--cy:#22D3EE;--fond:#0a0a0b;--surf:#151517;--txt:#f5f5f7;--gris:#a1a1a6}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--fond);font-family:Inter,sans-serif;color:var(--txt)}
+.s{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:110px 90px;text-align:center;
+ background:radial-gradient(900px 700px at 80% 10%,rgba(255,106,0,.20),transparent 60%),radial-gradient(800px 700px at 10% 95%,rgba(30,111,217,.18),transparent 60%),var(--fond)}
+.s.on{display:flex}
+.logo{width:300px;position:absolute;top:80px;left:50%;transform:translateX(-50%);opacity:.95}
+h1{font-size:92px;line-height:1.05;font-weight:800;letter-spacing:-.02em}
+h2{font-size:70px;line-height:1.1;font-weight:800;letter-spacing:-.02em}
+.or{color:var(--or)}
+.tag{display:inline-block;font:600 34px/1 ui-monospace,Menlo,monospace;letter-spacing:.25em;text-transform:uppercase;padding:18px 30px;border:2px solid currentColor;border-radius:60px;margin-bottom:46px}
+.sous{font-size:44px;color:var(--gris);margin-top:40px;line-height:1.35;font-weight:500}
+.bande{position:absolute;left:0;right:0;bottom:150px;font-size:46px;font-weight:700}
+.bande span{background:var(--or);color:#111;padding:16px 34px;border-radius:18px;display:inline-block}
+.q{display:flex;align-items:center;gap:36px;text-align:left;background:var(--surf);border:1px solid #2a2a2e;border-radius:36px;padding:44px 48px;margin:22px 0;width:100%}
+.q svg{flex:none;width:96px;height:96px;stroke:var(--or);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.q p{font-size:52px;font-weight:700;line-height:1.15}
+.pile{position:relative;width:860px;height:900px;margin:30px 0}
+.pile img{position:absolute;border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.6);border:6px solid #fff}
+.grille{display:grid;grid-template-columns:1fr 1fr;gap:26px;width:880px;margin:20px 0}
+.grille img{width:100%;border-radius:22px;box-shadow:0 20px 60px rgba(0,0,0,.5);aspect-ratio:4/5;object-fit:cover}
+.puces{font-size:40px;font-weight:600;color:var(--txt);margin-top:34px;line-height:1.6}
+.puces b{color:var(--or)}
+.tel{width:430px;border-radius:56px;border:14px solid #222;box-shadow:0 40px 90px rgba(0,0,0,.7)}
+.prix{width:100%;text-align:left}
+.bloc{background:var(--surf);border:1px solid #2a2a2e;border-radius:30px;padding:34px 40px;margin:22px 0;border-left:10px solid var(--c)}
+.bloc h3{font:700 38px/1 ui-monospace,Menlo,monospace;letter-spacing:.2em;color:var(--c);margin-bottom:16px}
+.bloc ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 40px}
+.bloc li{font-size:36px;display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed #2f2f33;padding:6px 0}
+.bloc li b{white-space:nowrap;color:var(--txt)}
+.bloc li span{color:var(--gris)}
+.etapes{width:100%;text-align:left}
+.etape{display:flex;align-items:center;gap:36px;margin:26px 0}
+.etape i{flex:none;width:130px;height:130px;border-radius:50%;background:var(--or);color:#111;font:800 60px/130px Inter;text-align:center;font-style:normal}
+.etape p{font-size:54px;font-weight:700}
+.etape small{display:block;font-size:34px;color:var(--gris);font-weight:500;margin-top:6px}
+.cta img{width:640px}
+.ligne{display:flex;align-items:center;justify-content:center;gap:22px;font-size:46px;font-weight:600;margin:18px 0}
+.ligne svg{width:64px;height:64px}
+.gain{display:flex;gap:26px;width:100%;margin:40px 0}
+.gain div{flex:1;background:var(--surf);border:1px solid #2a2a2e;border-radius:34px;padding:46px 20px}
+.gain b{display:block;font-size:88px;font-weight:800;color:var(--or)}
+.gain span{font-size:36px;color:var(--gris)}
+</style></head><body>
+
+<!-- 1 Accroche : une question à la fois, au centre -->
+<section class="s" id="s1">
+  <img class="logo" src="../../assets/img/logo-dwts-clair.png" alt="">
+  <div class="q" style="flex-direction:column;text-align:center;padding:80px 60px;gap:40px"><svg viewBox="0 0 24 24" style="width:170px;height:170px"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><p style="font-size:84px">Votre exposé est<br><span class="or">pour demain</span> ?</p></div>
+  <p class="sous">1 / 3 · la question sort, la suivante entre</p>
+</section>
+
+<!-- 2 Solution -->
+<section class="s" id="s2">
+  <img src="../../assets/img/logo-dwts-clair.png" style="width:760px" alt="">
+  <h2 style="margin-top:70px">Nos équipes conçoivent<br><span class="or">la solution</span> à votre besoin.</h2>
+</section>
+
+<!-- 3 DEX -->
+<section class="s" id="s3">
+  <span class="tag" style="color:#79b0ff">Notre équipe DEX</span>
+  <h2>Corrigé, bien présenté,<br>prêt à imprimer.</h2>
+  <div class="pile">
+    <img src="../../assets/img/dex/expose-meyene.jpg" style="width:440px;left:20px;top:110px;transform:rotate(-9deg)">
+    <img src="../../assets/img/dex/expose-nzebi.jpg" style="width:440px;right:20px;top:110px;transform:rotate(9deg)">
+    <img src="../../assets/img/dex/expose-francais.jpg" style="width:480px;left:190px;top:40px">
+  </div>
+  <div class="bande"><span>Exposé dès 2 500 F · Livraison rapide</span></div>
+</section>
+
+<!-- 4 Visuo -->
+<section class="s" id="s4" style="padding:90px 50px">
+  <span class="tag" style="color:var(--or2)">Notre équipe Visuo</span>
+  <h2>Pour vous faire <span class="or">connaître.</span></h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;width:960px;margin-top:46px">
+    <img src="../../assets/img/visuo/logo-saveurs-du-cap.jpg" style="width:100%;border-radius:22px"><img src="../../assets/img/visuo/logo-nappy-queen.jpg" style="width:100%;border-radius:22px"><img src="../../assets/img/visuo/logo-delices-de-maman.jpg" style="width:100%;border-radius:22px">
+  </div>
+  <div style="position:relative;width:960px;height:700px;margin-top:40px">
+    <img src="../../assets/img/visuo/affiche-salon.jpg" style="position:absolute;width:400px;left:0;top:60px;transform:rotate(-7deg);border-radius:18px;box-shadow:0 30px 70px rgba(0,0,0,.6)">
+    <img src="../../assets/img/visuo/affiche-boutique.jpg" style="position:absolute;width:400px;right:0;top:60px;transform:rotate(7deg);border-radius:18px;box-shadow:0 30px 70px rgba(0,0,0,.6)">
+    <img src="../../assets/img/visuo/affiche-restaurant.jpg" style="position:absolute;width:440px;left:260px;top:0;border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.7)">
+  </div>
+  <p class="puces" style="margin-top:20px">Logo · <b>Affiches</b> · Vidéos<br><b>Site web</b> · Réseaux sociaux</p>
+</section>
+
+<!-- 5 Logia -->
+<section class="s" id="s5">
+  <span class="tag" style="color:var(--cy)">Notre équipe Logia</span>
+  <h2>Vos clients ont une réponse,<br><span style="color:var(--cy)">jour et nuit.</span></h2>
+  <div style="display:flex;align-items:center;gap:40px;margin-top:60px">
+    <img class="tel" src="../../assets/img/logia/bot.jpg">
+    <div style="display:flex;flex-direction:column;gap:30px;width:420px">
+      <img src="../../assets/img/logia/flux.jpg" style="width:100%;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.6)">
+      <img src="../../assets/img/logia/gestion.jpg" style="width:100%;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.6)">
+    </div>
+  </div>
+  <p class="puces">Bot WhatsApp · <b>Outils automatiques</b></p>
+</section>
+
+<!-- 6 Prix -->
+<section class="s" id="s6" style="padding:90px 60px">
+  <h2 style="font-size:62px;margin-bottom:26px">Quel que soit votre budget,<br><span class="or">il y a une formule.</span></h2>
+  <div class="prix">
+    <div class="bloc" style="--c:#79b0ff"><h3>ÉQUIPE DEX</h3><ul>
+      <li><span>CV + lettre</span><b>1 500 F</b></li><li><span>Exposé</span><b>2 500 F</b></li>
+      <li><span>Rapport de stage</span><b>7 500 F</b></li><li><span>Mémoire</span><b>10 500 F</b></li></ul></div>
+    <div class="bloc" style="--c:var(--or2)"><h3>ÉQUIPE VISUO</h3><ul>
+      <li><span>Invitation</span><b>2 000 F</b></li><li><span>Affiche</span><b>2 500 F</b></li>
+      <li><span>Logo</span><b>6 500 F</b></li><li><span>Vidéo pub</span><b>7 500 F</b></li>
+      <li><span>Site vitrine</span><b>12 500 F</b></li><li><span>Réseaux</span><b>6 500 F/mois</b></li></ul></div>
+    <div class="bloc" style="--c:var(--cy)"><h3>ÉQUIPE LOGIA</h3><ul>
+      <li><span>Automatisation</span><b>7 500 F</b></li><li><span>Bot WhatsApp</span><b>15 000 F</b></li>
+      <li><span>Logiciel</span><b>45 000 F</b></li><li><span>Suivi</span><b>5 000 F/mois</b></li></ul></div>
+  </div>
+  <p style="font-size:30px;color:var(--gris);margin-top:22px">Prix de départ en francs CFA · tous les tarifs sur le site</p>
+</section>
+
+<!-- 7 Parcours -->
+<section class="s" id="s7">
+  <h2 style="margin-bottom:60px">Simple,<br><span class="or">et sans risque.</span></h2>
+  <div class="etapes">
+    <div class="etape"><i>1</i><p>Vous nous écrivez<small>sur WhatsApp</small></p></div>
+    <div class="etape"><i>2</i><p>Vous commandez<small>prix confirmé avant de commencer</small></p></div>
+    <div class="etape"><i>3</i><p>Vous voyez l'aperçu<small>et vous le validez</small></p></div>
+    <div class="etape"><i>4</i><p>Vous payez<small>seulement après validation</small></p></div>
+  </div>
+</section>
+
+<!-- 8 Appel à l'action -->
+<section class="s cta" id="s8">
+  <img src="../../assets/img/logo-dwts-clair.png" alt="">
+  <h2 style="margin:50px 0 60px">Le monde numérique,<br><span class="or">à votre service.</span></h2>
+  <div class="ligne"><svg viewBox="0 0 24 24" fill="#25D366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>062 67 14 45</div>
+  <div class="ligne" style="font-size:38px;color:var(--gris)"><svg viewBox="0 0 24 24" fill="none" stroke="#a1a1a6" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>dwtsgabon.github.io/Site-DWTS-</div>
+  <div class="ligne" style="font-size:38px"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1877F2"/><path d="M13.4 19v-6h2l.3-2.4h-2.3V9.2c0-.7.2-1.2 1.2-1.2h1.2V5.9c-.2 0-1-.1-1.8-.1-1.8 0-3 1.1-3 3.1v1.8H9V13h2v6z" fill="#fff"/></svg>Digital World Technology Service</div>
+</section>
+
+<!-- 9 Parrainage -->
+<section class="s" id="s9">
+  <span class="tag" style="color:var(--or2)">Parrainage DWTS</span>
+  <h2>Vous connaissez forcément<br>quelqu'un qui a<br><span class="or">besoin de nous.</span></h2>
+  <div class="gain">
+    <div><b>500 F</b><span>par commande DEX</span></div>
+    <div><b>5 000 F</b><span>jusqu'à, chaque mois<br>avec Visuo et Logia</span></div>
+  </div>
+  <p class="sous" style="margin-top:10px">Inscription gratuite sur le site</p>
+  <img src="../../assets/img/logo-dwts-clair.png" style="width:260px;position:absolute;bottom:100px" alt="">
+</section>
+
+<script>
+var n=(location.hash||'#1').slice(1);document.getElementById('s'+n).classList.add('on');
+</script>
+</body></html>
