@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+:root{--or:#FF6A00;--or2:#ff9a4d;--cy:#22D3EE;--fond:#0a0a0b;--surf:#151517;--txt:#f5f5f7;--gris:#a1a1a6}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--fond);font-family:Inter,sans-serif;color:var(--txt)}
+#fond{position:absolute;inset:0;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(120px)}
+#grain{position:absolute;inset:0;opacity:.10;mix-blend-mode:overlay;pointer-events:none;
+ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>")}
+.s{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:110px 80px;text-align:center;opacity:0}
+.a{will-change:transform,opacity}
+h2{font-size:72px;line-height:1.08;font-weight:800;letter-spacing:-.02em}
+.or{color:var(--or)}
+.tag{display:inline-block;font:600 34px/1 'JetBrains Mono',monospace;letter-spacing:.25em;text-transform:uppercase;padding:18px 30px;border:2px solid currentColor;border-radius:60px;margin-bottom:40px}
+.carte{position:absolute;left:80px;right:80px;top:640px;background:var(--surf);border:1px solid #2a2a2e;border-radius:44px;padding:80px 60px;display:flex;flex-direction:column;align-items:center;gap:40px;box-shadow:0 40px 100px rgba(0,0,0,.5)}
+.carte svg{width:170px;height:170px;stroke:var(--or);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.carte p{font-size:76px;font-weight:800;line-height:1.1}
+.puce{display:inline-block;font:700 44px/1 Inter;padding:20px 34px;border-radius:60px;background:#1d1d20;border:2px solid #333;margin:10px}
+.puce.on{background:var(--or);color:#111;border-color:var(--or)}
+.doc{position:absolute;border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.6);border:6px solid #fff}
+.bande{position:absolute;left:0;right:0;bottom:170px;font-size:50px;font-weight:800}
+.bande span{background:var(--or);color:#111;padding:20px 40px;border-radius:20px;display:inline-block}
+.logo-m{position:absolute;width:300px;height:300px;border-radius:26px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.aff{position:absolute;width:430px;border-radius:20px;box-shadow:0 30px 70px rgba(0,0,0,.6)}
+.tel{position:absolute;width:470px;height:1000px;border-radius:64px;border:16px solid #1e1e1e;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.7);background:#0b141a}
+.bloc{position:absolute;left:60px;right:60px;background:var(--surf);border:1px solid #2a2a2e;border-radius:32px;padding:34px 44px;border-left:12px solid var(--c);text-align:left}
+.bloc h3{font:700 40px/1 'JetBrains Mono',monospace;letter-spacing:.2em;color:var(--c);margin-bottom:18px}
+.bloc ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 40px}
+.bloc li{font-size:36px;display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed #2f2f33;padding:6px 0}
+.bloc li b{white-space:nowrap}.bloc li span{color:var(--gris)}
+.etape{position:absolute;left:90px;right:90px;display:flex;align-items:center;gap:40px;text-align:left}
+.etape i{flex:none;width:140px;height:140px;border-radius:50%;background:var(--or);color:#111;font:800 64px/140px Inter;text-align:center;font-style:normal}
+.etape p{font-size:58px;font-weight:800}
+.etape small{display:block;font-size:36px;color:var(--gris);font-weight:500;margin-top:8px}
+.ligne{position:absolute;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:24px;font-size:52px;font-weight:700}
+.ligne svg{width:72px;height:72px}
+.gain{position:absolute;width:440px;background:var(--surf);border:1px solid #2a2a2e;border-radius:36px;padding:50px 20px;text-align:center}
+.gain b{display:block;font-size:104px;font-weight:900;color:var(--or);font-variant-numeric:tabular-nums}
+.gain span{font-size:38px;color:var(--gris);line-height:1.3;display:block}
+</style></head><body>
+<div id="fond"><div class="blob" id="b1" style="width:900px;height:900px;background:rgba(255,106,0,.30)"></div><div class="blob" id="b2" style="width:800px;height:800px;background:rgba(30,111,217,.26)"></div><div class="blob" id="b3" style="width:600px;height:600px;background:rgba(139,61,255,.18)"></div></div>
+
+<!-- 1 -->
+<section class="s" id="s1">
+  <img class="a" id="l1" src="file:///home/user/Site-DWTS-/assets/img/logo-dwts-clair.png" style="position:absolute;top:110px;left:390px;width:300px">
+  <div class="carte a" id="q1"><svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><p>Votre exposé est<br><span class="or">pour demain</span> ?</p></div>
+  <div class="carte a" id="q2"><svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M3 9v11h18V9M3 9h18M9 20v-6h6v6"/></svg><p>Votre commerce<br><span class="or">manque de clients</span> ?</p></div>
+  <div class="carte a" id="q3"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z"/><path d="M8 11h8M8 14h5"/></svg><p>Les <span class="or">mêmes messages</span><br>toute la journée ?</p></div>
+</section>
+<!-- 2 -->
+<section class="s" id="s2">
+  <img class="a" id="l2" src="file:///home/user/Site-DWTS-/assets/img/logo-dwts-clair.png" style="width:780px">
+  <h2 class="a" id="t2a" style="margin-top:80px">Nos équipes conçoivent</h2>
+  <h2 class="a" id="t2b"><span class="or">la solution</span> à votre besoin.</h2>
+</section>
+<!-- 3 -->
+<section class="s" id="s3" style="justify-content:flex-start;padding-top:200px">
+  <span class="tag a" id="g3" style="color:#79b0ff">Notre équipe DEX</span>
+  <div><span class="puce a" id="c3a">Corrigé</span><span class="puce a" id="c3b">Bien présenté</span><span class="puce a" id="c3c">Prêt à imprimer</span></div>
+  <img class="doc a" id="d1" src="file:///home/user/Site-DWTS-/assets/img/dex/expose-meyene.jpg" style="width:460px;left:60px;top:720px">
+  <img class="doc a" id="d2" src="file:///home/user/Site-DWTS-/assets/img/dex/expose-nzebi.jpg" style="width:460px;right:60px;top:720px">
+  <img class="doc a" id="d3" src="file:///home/user/Site-DWTS-/assets/img/dex/expose-francais.jpg" style="width:500px;left:290px;top:650px">
+  <div class="bande a" id="bd3"><span>Exposé dès 2 500 F · Livraison rapide</span></div>
+</section>
+<!-- 4 -->
+<section class="s" id="s4" style="justify-content:flex-start;padding-top:150px">
+  <span class="tag a" id="g4" style="color:var(--or2)">Notre équipe Visuo</span>
+  <h2 class="a" id="t4">Pour vous faire <span class="or">connaître.</span></h2>
+  <div id="logos" style="position:absolute;left:0;right:0;top:520px;height:640px">
+    <img class="logo-m a" id="m1" src="visuo/logo-1.png" style="left:60px;top:0"><img class="logo-m a" id="m2" src="visuo/logo-2.png" style="left:390px;top:0"><img class="logo-m a" id="m3" src="visuo/logo-3.png" style="left:720px;top:0">
+    <img class="logo-m a" id="m4" src="visuo/logo-4.png" style="left:60px;top:330px"><img class="logo-m a" id="m5" src="visuo/logo-5.png" style="left:390px;top:330px"><img class="logo-m a" id="m6" src="visuo/logo-6.png" style="left:720px;top:330px">
+  </div>
+  <div id="fil" class="a" style="position:absolute;left:0;top:560px;height:560px;width:3000px">
+    <img class="aff" src="visuo/affiche-1.png" style="left:0"><img class="aff" src="visuo/affiche-2.png" style="left:470px"><img class="aff" src="visuo/affiche-3.png" style="left:940px"><img class="aff" src="visuo/affiche-4.png" style="left:1410px"><img class="aff" src="visuo/affiche-5.png" style="left:1880px">
+  </div>
+  <div style="position:absolute;left:40px;right:40px;bottom:170px">
+    <span class="puce a" id="p4a">Logo</span><span class="puce a" id="p4b">Affiches</span><span class="puce a" id="p4c">Vidéos</span><span class="puce a" id="p4d">Site web</span><span class="puce a" id="p4e">Réseaux sociaux</span>
+  </div>
+</section>
+<!-- 5 -->
+<section class="s" id="s5" style="justify-content:flex-start;padding-top:150px">
+  <span class="tag a" id="g5" style="color:var(--cy)">Notre équipe Logia</span>
+  <h2 class="a" id="t5">Vos clients ont une réponse,<br><span style="color:var(--cy)">jour et nuit.</span></h2>
+  <div class="tel a" id="tel" style="left:80px;top:600px"><img id="chat" src="file:///home/user/Site-DWTS-/assets/img/logia/bot.jpg" style="width:100%;display:block"></div>
+  <img class="a" id="o1" src="file:///home/user/Site-DWTS-/assets/img/logia/flux.jpg" style="position:absolute;right:60px;top:760px;width:440px;border-radius:22px;box-shadow:0 20px 60px rgba(0,0,0,.6)">
+  <img class="a" id="o2" src="file:///home/user/Site-DWTS-/assets/img/logia/gestion.jpg" style="position:absolute;right:60px;top:1080px;width:440px;border-radius:22px;box-shadow:0 20px 60px rgba(0,0,0,.6)">
+  <div style="position:absolute;left:40px;right:40px;bottom:120px"><span class="puce a" id="p5a">Bot WhatsApp 24h/24</span><span class="puce a" id="p5b">Outils automatiques</span></div>
+</section>
+<!-- 6 -->
+<section class="s" id="s6" style="justify-content:flex-start;padding-top:170px">
+  <h2 class="a" id="t6" style="font-size:66px">Quel que soit votre budget,<br><span class="or">il y a une formule.</span></h2>
+  <div class="bloc a" id="k1" style="--c:#79b0ff;top:520px"><h3>ÉQUIPE DEX</h3><ul><li><span>CV + lettre</span><b>1 500 F</b></li><li><span>Exposé</span><b>2 500 F</b></li><li><span>Rapport de stage</span><b>7 500 F</b></li><li><span>Mémoire</span><b>10 500 F</b></li></ul></div>
+  <div class="bloc a" id="k2" style="--c:var(--or2);top:880px"><h3>ÉQUIPE VISUO</h3><ul><li><span>Invitation</span><b>2 000 F</b></li><li><span>Affiche</span><b>2 500 F</b></li><li><span>Logo</span><b>6 500 F</b></li><li><span>Vidéo pub</span><b>7 500 F</b></li><li><span>Site vitrine</span><b>12 500 F</b></li><li><span>Réseaux</span><b>6 500 F/mois</b></li></ul></div>
+  <div class="bloc a" id="k3" style="--c:var(--cy);top:1310px"><h3>ÉQUIPE LOGIA</h3><ul><li><span>Automatisation</span><b>7 500 F</b></li><li><span>Bot WhatsApp</span><b>15 000 F</b></li><li><span>Logiciel</span><b>45 000 F</b></li><li><span>Suivi</span><b>5 000 F/mois</b></li></ul></div>
+  <p class="a" id="f6" style="position:absolute;left:0;right:0;bottom:120px;font-size:34px;color:var(--gris)">Prix de départ en francs CFA · tous les tarifs sur le site</p>
+</section>
+<!-- 7 -->
+<section class="s" id="s7" style="justify-content:flex-start;padding-top:230px">
+  <h2 class="a" id="t7" style="font-size:84px">Simple,<br><span class="or">et sans risque.</span></h2>
+  <div class="etape a" id="e1" style="top:700px"><i>1</i><p>Vous nous écrivez<small>sur WhatsApp</small></p></div>
+  <div class="etape a" id="e2" style="top:930px"><i>2</i><p>Vous commandez<small>prix confirmé avant de commencer</small></p></div>
+  <div class="etape a" id="e3" style="top:1160px"><i>3</i><p>Vous voyez l'aperçu<small>et vous le validez</small></p></div>
+  <div class="etape a" id="e4" style="top:1390px"><i>4</i><p>Vous payez<small>seulement après validation</small></p></div>
+</section>
+<!-- 8 -->
+<section class="s" id="s8" style="justify-content:flex-start;padding-top:260px">
+  <img class="a" id="l8" src="file:///home/user/Site-DWTS-/assets/img/logo-dwts-clair.png" style="width:680px">
+  <h2 class="a" id="t8" style="margin-top:50px;font-size:80px">Le monde numérique,<br><span class="or">à votre service.</span></h2>
+  <div class="ligne a" id="w8" style="top:1260px;font-size:64px"><svg viewBox="0 0 24 24" fill="#25D366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg><span id="num">062 67 14 45</span></div>
+  <div class="ligne a" id="i8" style="top:1420px;font-size:40px;color:var(--gris)"><svg viewBox="0 0 24 24" fill="none" stroke="#a1a1a6" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>dwtsgabon.github.io/Site-DWTS-</div>
+  <div class="ligne a" id="f8" style="top:1530px;font-size:40px"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1877F2"/><path d="M13.4 19v-6h2l.3-2.4h-2.3V9.2c0-.7.2-1.2 1.2-1.2h1.2V5.9c-.2 0-1-.1-1.8-.1-1.8 0-3 1.1-3 3.1v1.8H9V13h2v6z" fill="#fff"/></svg>Digital World Technology Service</div>
+</section>
+<!-- 9 -->
+<section class="s" id="s9" style="justify-content:flex-start;padding-top:260px">
+  <span class="tag a" id="g9" style="color:var(--or2)">Parrainage DWTS</span>
+  <h2 class="a" id="t9">Vous connaissez forcément<br>quelqu'un qui a<br><span class="or">besoin de nous.</span></h2>
+  <div class="gain a" id="n1" style="left:80px;top:900px"><b id="v1">0 F</b><span>par commande<br>DEX</span></div>
+  <div class="gain a" id="n2" style="right:80px;top:900px"><b id="v2">0 F</b><span>jusqu'à, chaque mois<br>avec Visuo et Logia</span></div>
+  <p class="a" id="r9" style="position:absolute;left:0;right:0;top:1330px;font-size:46px;color:var(--txt);font-weight:600">Inscription gratuite sur le site</p>
+</section>
+<!-- fin -->
+<section class="s" id="s10">
+  <img class="a" id="l10" src="file:///home/user/Site-DWTS-/assets/img/logo-dwts-clair.png" style="width:760px">
+  <p class="a" id="t10" style="margin-top:60px;font-size:50px;font-weight:800;white-space:nowrap">Le monde numérique, <span class="or">à votre service.</span></p>
+  <p class="a" id="u10" style="margin-top:40px;font-size:40px;color:var(--gris)">WhatsApp 062 67 14 45</p>
+</section>
+<div id="grain"></div><div id="noir" style="position:absolute;inset:0;background:#000;opacity:0"></div>
+
+<script>
+// Scènes : [début, fin] en secondes de vidéo
+var SC={s1:[0,6.25],s2:[6.25,10.4],s3:[10.4,21.25],s4:[21.25,28.5],s5:[28.5,35.5],s6:[35.5,40.7],s7:[40.7,45.85],s8:[45.85,53.6],s9:[53.6,63.3],s10:[63.3,67]};
+var $=function(i){return document.getElementById(i)};
+function cl(x){return x<0?0:x>1?1:x}
+function eo(x){x=cl(x);return 1-Math.pow(1-x,3)}            // ease-out
+function eb(x){x=cl(x);var c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)} // back-out (rebond)
+function st(el,o,tr,f){el.style.opacity=o;el.style.transform=tr||'none';if(f!==undefined)el.style.filter=f}
+// apparition standard : monte + fondu
+function up(id,t,t0,d,dist){var p=eo((t-t0)/(d||.45));st($(id),p,'translateY('+((1-p)*(dist||70))+'px)')}
+function pop(id,t,t0,extra){var p=cl((t-t0)/.4);var s=.6+.4*eb(p);st($(id),cl(p*2.5),(extra||'')+' scale('+s+')')}
+function render(t){
+  // fond animé
+  $('b1').style.transform='translate('+(560+180*Math.sin(t*.35))+'px,'+(-260+120*Math.cos(t*.27))+'px)';
+  $('b2').style.transform='translate('+(-300+160*Math.cos(t*.3))+'px,'+(1300+140*Math.sin(t*.22))+'px)';
+  $('b3').style.transform='translate('+(200+300*Math.sin(t*.18))+'px,'+(700+250*Math.cos(t*.25))+'px)';
+  // scènes : entrée (0,45 s) et sortie (0,35 s) avec zoom et flou
+  for(var k in SC){var a=SC[k][0],b=SC[k][1],el=$(k);
+    if(t<a-0.01||t>b+0.36){el.style.display='none';continue}
+    el.style.display='flex';
+    var pin=k==='s1'?1:eo((t-a)/.45), pout=cl((t-b)/.35);
+    st(el,pin*(1-pout),'translateY('+((1-pin)*90)+'px) scale('+((.95+.05*pin)*(1+.10*pout))+')','blur('+(pout*14)+'px)');
+  }
+  // 1 : une question à la fois, au centre
+  up('l1',t,0,.6,-40);
+  var Q=[['q1',0.55,2.18],['q2',2.22,3.95],['q3',4.0,6.25]];
+  Q.forEach(function(q){var pi=eb(cl((t-q[1])/.45)),po=eo((t-q[2]+.25)/.3);
+    st($(q[0]),cl((t-q[1])/.2)*(1-po),'translateY('+((1-pi)*160-po*220)+'px) scale('+(.85+.15*pi-.08*po)+')')});
+  // 2
+  var p=eb(cl((t-6.4)/.6));st($('l2'),cl((t-6.4)/.3),'scale('+(.5+.5*p)+')','drop-shadow(0 0 '+(60*(1-cl((t-6.6)/1.2)))+'px rgba(255,106,0,.9))');
+  up('t2a',t,7.7);up('t2b',t,8.5);
+  // 3
+  pop('g3',t,10.55);pop('c3a',t,13.5);pop('c3b',t,14.35);pop('c3c',t,15.2);
+  [['d1',11.0,-9],['d2',11.35,9],['d3',11.7,0]].forEach(function(d){var q=eb(cl((t-d[1])/.55));
+    st($(d[0]),cl((t-d[1])/.25),'translateY('+((1-q)*700)+'px) rotate('+(d[2]*q)+'deg) scale('+(1+.03*Math.sin((t-d[1])*1.2))+')')});
+  up('bd3',t,17.15,.45,160);
+  // 4 : logos un par un puis fil d'affiches
+  pop('g4',t,21.4);up('t4',t,21.7);
+  var sortieLogos=eo((t-24.35)/.4);
+  for(var i=1;i<=6;i++){var t0=23.7+(i-1)*.11;var q2=cl((t-t0)/.4);
+    st($('m'+i),cl(q2*2.5)*(1-sortieLogos),'translateY('+(-sortieLogos*120)+'px) scale('+((.6+.4*eb(q2))*(1-.3*sortieLogos))+')')}
+  var f=eo((t-24.45)/.5);st($('fil'),f,'translateX('+(80+(1-f)*600-Math.max(0,t-24.45)*470)+'px)');
+  [['p4a',23.3],['p4b',24.0],['p4c',24.8],['p4d',25.6],['p4e',27.1]].forEach(function(c){pop(c[0],t,c[1]);$(c[0]).classList.toggle('on',t>c[1]+.05)});
+  // 5
+  pop('g5',t,28.6);up('t5',t,28.9);
+  var pt=eo((t-29.6)/.6);st($('tel'),pt,'translateX('+((1-pt)*-500)+'px) rotate('+((1-pt)*-8)+'deg)');
+  $('chat').style.transform='translateY('+(-Math.min(1,cl((t-30.8)/4))*(1747*438/720-968))+'px)';
+  [['o1',33.55],['o2',33.85]].forEach(function(o){var q=eb(cl((t-o[1])/.5));st($(o[0]),cl((t-o[1])/.25),'translateX('+((1-q)*500)+'px)')});
+  pop('p5a',t,30.85);pop('p5b',t,33.6);$('p5a').classList.add('on');$('p5b').classList.add('on');
+  // 6
+  up('t6',t,35.6);
+  [['k1',36.3],['k2',37.3],['k3',38.3]].forEach(function(k){var q=eb(cl((t-k[1])/.5));st($(k[0]),cl((t-k[1])/.25),'translateX('+((1-q)*-1100)+'px)')});
+  up('f6',t,39.1);
+  // 7
+  up('t7',t,40.85);
+  [['e1',41.0],['e2',42.0],['e3',43.15],['e4',44.25]].forEach(function(e){var q=eb(cl((t-e[1])/.45));st($(e[0]),cl((t-e[1])/.2),'translateX('+((1-q)*-300)+'px) scale('+(.9+.1*q)+')')});
+  // 8
+  var p8=eb(cl((t-45.95)/.6));st($('l8'),cl((t-45.95)/.3),'scale('+(.5+.5*p8)+')','drop-shadow(0 0 '+(60*(1-cl((t-46.2)/1.2)))+'px rgba(255,106,0,.9))');
+  up('t8',t,46.9);pop('w8',t,49.85);up('i8',t,51.0);up('f8',t,51.6);
+  // 9 : compteurs
+  pop('g9',t,53.75);up('t9',t,54.0);
+  up('n1',t,55.8);up('n2',t,56.6);
+  var c1=Math.round(500*eo((t-57.85)/.8)),c2=Math.round(5000*eo((t-60.2)/.9)/50)*50;
+  $('v1').textContent=c1.toLocaleString('fr-FR')+' F';$('v2').textContent=c2.toLocaleString('fr-FR')+' F';
+  $('n1').style.boxShadow=t>58.6&&t<59.4?'0 0 0 4px #FF6A00':'none';$('n2').style.boxShadow=t>61.1&&t<61.9?'0 0 0 4px #FF6A00':'none';
+  up('r9',t,61.6);
+  // fin
+  var p10=eb(cl((t-63.4)/.6));st($('l10'),cl((t-63.4)/.3),'scale('+(.5+.5*p10)+')','drop-shadow(0 0 '+(60*(1-cl((t-63.6)/1.2)))+'px rgba(255,106,0,.9))');
+  up('t10',t,64.0);up('u10',t,64.4);
+  // fondu final
+  $('noir').style.opacity=cl((t-66.4)/.6);
+}
+window.render=render;render(+(location.hash.slice(1)||0));
+</script>
+</body></html>
