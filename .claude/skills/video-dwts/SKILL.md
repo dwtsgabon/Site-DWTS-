@@ -13,6 +13,9 @@ Règle d'Elie : **ne jamais générer une vidéo automatiquement.**
 
 Ne passe jamais à l'étape suivante sans réponse claire. Une réponse « ok » ou « oui » suffit, mais elle doit porter sur l'étape en cours.
 
+## Projets en cours
+- Vidéo de présentation : `marketing/video-presentation/` (SCRIPT.md = état, script validé et reste à faire).
+
 ## Voix off (toutes les vidéos DWTS)
 - Voix clonée ElevenLabs **« Elie Ryan »**, voice_id `UFztn0Bt9isMl7KChsdJ`, modèle `eleven_v4`, balise `[warmly]` en tête : ton doux, naturel, présentation marketing. Réglage validé par Elie (test du 23 oct. 2026, prise 2).
 - Ne jamais changer de voix sans sa demande. Chaque génération coûte des crédits : générer le texte final en une fois.
