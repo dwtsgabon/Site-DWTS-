@@ -42,6 +42,10 @@ Tout est gratuit (Google Sheets, Drive et Apps Script).
 4. En haut, choisir la fonction **installer**, cliquer **Exécuter**, puis accepter les autorisations
    (Google affiche « application non validée » : **Paramètres avancés → Accéder au projet**, c'est ton propre script).
 
+**Lecture automatique des captures** : dans Apps Script, menu de gauche **Services (+)** → **Drive API** → **Ajouter**.
+Le script lit alors le montant et le TID écrits sur la capture (reconnaissance de texte de Google Drive) ;
+la page de validation affiche la capture et ces valeurs, à corriger si besoin avant de valider. Sans ce service, tu les tapes toi-même sur la page.
+
 `installer` crée aussi le déclencheur qui fabrique les factures : accepter les autorisations demandées (Drive, e-mail, accès aux logos).
 
 Le tableau contient maintenant les feuilles **Paiements**, **Clients**, **Commissions**, **Versements**, **Devis** et **Retraits**,
