@@ -281,6 +281,9 @@ function inscrire_(p) {
     if (c.lignes.some(function (l) { return normaliserNumero_(l[0]) === numero; })) {
       return { ok: false, erreur: 'Ce numéro est déjà inscrit. Connectez-vous, ou écrivez-nous si vous avez oublié votre code.' };
     }
+    if (c.lignes.some(function (l) { return String(l[CL.EMAIL - 1]).trim().toLowerCase() === email; })) {
+      return { ok: false, erreur: 'Cette adresse e-mail est déjà utilisée. Connectez-vous, ou indiquez une autre adresse.' };
+    }
     // Sans code parrain : le code maison DWTS est mis automatiquement
     const parrain = String(p.parrain || '').trim().toUpperCase() || CONFIG.CODE_DWTS;
     if (parrain !== CONFIG.CODE_DWTS && !c.lignes.some(function (l) { return String(l[CL.CODE - 1]).toUpperCase() === parrain; })) {
@@ -302,16 +305,33 @@ function inscrire_(p) {
   return donnees;
 }
 
-/** Connexion avec numéro + code d'accès : renvoie un jeton valable CONFIG.DUREE_SESSION_JOURS jours. */
+/** Client trouvé par son adresse e-mail (colonne E-mail de Clients), ou null. */
+function trouverClientParEmail_(email) {
+  const c = lireClients_();
+  for (let i = 0; i < c.lignes.length; i++) {
+    if (String(c.lignes[i][CL.EMAIL - 1]).trim().toLowerCase() === email) return { feuille: c.feuille, ligne: i + 2, v: c.lignes[i], tous: c.lignes };
+  }
+  return null;
+}
+
+/**
+ * Connexion avec le numéro WhatsApp OU l'adresse e-mail, + code d'accès.
+ * Renvoie un jeton valable CONFIG.DUREE_SESSION_JOURS jours.
+ */
 function connecter_(p) {
-  const numero = normaliserNumero_(p.whatsapp);
-  if (!numero) return { ok: false, erreur: 'Numéro WhatsApp invalide.' };
+  const identifiant = String(p.identifiant || p.whatsapp || '').trim();
+  const parEmail = identifiant.indexOf('@') !== -1;
+  const email = identifiant.toLowerCase();
+  if (parEmail ? !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) : !normaliserNumero_(identifiant)) {
+    return { ok: false, erreur: 'Indiquez votre numéro WhatsApp ou votre adresse e-mail.' };
+  }
   const cache = CacheService.getScriptCache();
-  const cleEssais = 'essais_' + numero;
+  const cleEssais = 'essais_' + (parEmail ? email : normaliserNumero_(identifiant));
   const essais = Number(cache.get(cleEssais) || 0);
   if (essais >= 5) return { ok: false, erreur: 'Trop d\'essais. Réessayez dans une heure ou écrivez-nous.' };
-  const client = trouverClient_(numero);
-  if (!client) return { ok: false, erreur: 'Ce numéro n\'est pas inscrit. Créez votre espace sur la page Inscription.' };
+  const client = parEmail ? trouverClientParEmail_(email) : trouverClient_(normaliserNumero_(identifiant));
+  if (!client) return { ok: false, erreur: (parEmail ? 'Cette adresse e-mail' : 'Ce numéro') + ' n\'est pas inscrit. Créez votre espace sur la page Inscription.' };
+  const numero = normaliserNumero_(client.v[CL.WHATSAPP - 1]);
   if (pinDe_(client) !== String(p.pin || '').trim()) {
     cache.put(cleEssais, String(essais + 1), 3600);
     return { ok: false, erreur: 'Code d\'accès incorrect.' };
@@ -472,6 +492,8 @@ function changerProfil_(p) {
   if (!client) return SESSION_EXPIREE;
   const email = String(p.email || '').trim().toLowerCase().slice(0, 120);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, erreur: 'Adresse e-mail invalide.' };
+  const autre = trouverClientParEmail_(email);
+  if (autre && autre.ligne !== client.ligne) return { ok: false, erreur: 'Cette adresse e-mail est déjà utilisée par un autre compte.' };
   client.feuille.getRange(client.ligne, CL.EMAIL).setValue(email);
   return { ok: true, email: email };
 }
@@ -992,11 +1014,11 @@ function creerFacture_(v) {
     '<td style="text-align:right"><b>FACTURE N° <span style="color:' + couleur + '">' + numero + '</span></b><br>Date : ' + date + '</td>' +
     '</tr></table>' +
     '<table style="width:100%;border-collapse:collapse;margin-top:14px">' +
-    '<tr style="background:#111827;color:#fff"><td style="padding:6px">Désignation</td><td style="padding:6px;text-align:right">Total</td></tr>' +
-    '<tr><td style="padding:6px;border-bottom:1px solid #e5e7eb">' + designation + '</td>' +
-    '<td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:right">' + montantTexte + '</td></tr>' +
-    '<tr style="background:' + couleur + ';color:#fff;font-weight:bold"><td style="padding:8px;text-align:right">TOTAL PAYÉ</td>' +
-    '<td style="padding:8px;text-align:right">' + montantTexte + '</td></tr></table>' +
+    '<tr><td style="padding:6px;background:#111827;color:#fff">Désignation</td><td style="padding:6px;background:#111827;color:#fff;text-align:right;width:25%">Total</td></tr>' +
+    '<tr><td style="padding:6px;border-bottom:1px solid #e5e7eb">' + echapperHtml_(designation) + '</td>' +
+    '<td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:right;white-space:nowrap">' + montantTexte + '</td></tr>' +
+    '<tr><td style="padding:8px;text-align:right;background:' + couleur + ';color:#fff;font-weight:bold">TOTAL PAYÉ</td>' +
+    '<td style="padding:8px;text-align:right;white-space:nowrap;background:' + couleur + ';color:#fff;font-weight:bold">' + montantTexte + '</td></tr></table>' +
     '<p style="color:#4b5563;font-size:10px">Payé par mobile money le ' + date + (tid ? ' · TID : ' + tid : '') + '</p>' +
     '<p style="text-align:center;color:' + couleur + ';font-weight:bold;margin-top:18px">Merci pour votre confiance !</p>' +
     '</body></html>';
@@ -1086,13 +1108,14 @@ function recevoirDevis_(d) {
   const corps = lignes.map(function (l) {
     return '<tr><td style="' + cellule + '">' + echapperHtml_(l.prestation) + '</td>' +
       '<td style="' + cellule + '">' + echapperHtml_(l.formule) + (l.type === 'Mensuel' ? ' · mensuel' : '') + '</td>' +
-      '<td style="' + cellule + 'text-align:right">' + l.quantite + '</td>' +
-      '<td style="' + cellule + 'text-align:right">' + formaterXaf_(l.prix) + '</td>' +
-      '<td style="' + cellule + 'text-align:right">' + formaterXaf_(l.total) + '</td></tr>';
+      '<td style="' + cellule + 'text-align:center">' + l.quantite + '</td>' +
+      '<td style="' + cellule + 'text-align:right;white-space:nowrap">' + formaterXaf_(l.prix) + '</td>' +
+      '<td style="' + cellule + 'text-align:right;white-space:nowrap">' + formaterXaf_(l.total) + '</td></tr>';
   }).join('');
+  // Couleur sur chaque cellule (le convertisseur PDF ignore le fond d'une ligne entière) et montants sur une ligne
   const ligneTotal = function (titre, montant, fond) {
-    return '<tr' + (fond ? ' style="background:' + couleur + ';color:#fff;font-weight:bold"' : '') + '><td colspan="4" style="padding:6px;text-align:right">' + titre +
-      '</td><td style="padding:6px;text-align:right">' + formaterXaf_(montant) + '</td></tr>';
+    const style = 'padding:8px 6px;text-align:right;white-space:nowrap;' + (fond ? 'background:' + couleur + ';color:#fff;font-weight:bold;' : 'font-weight:bold;');
+    return '<tr><td colspan="4" style="' + style + '">' + titre + '</td><td style="' + style + '">' + formaterXaf_(montant) + '</td></tr>';
   };
   const conditions = branche === 'Visuo' ?
     'Paiement après validation de l\'aperçu, par Airtel Money (074 74 13 03) ou Mobicash (062 67 14 45). Les packs et la gestion se renouvellent chaque mois ; la publicité payante (Ads) n\'est pas comprise.' :
@@ -1105,8 +1128,11 @@ function recevoirDevis_(d) {
     '<table style="width:100%;margin-top:14px"><tr><td><div style="color:' + couleur + ';font-weight:bold;font-size:10px">PRÉPARÉ POUR</div>' + (entreprise ? '<b style="font-size:14px">' + echapperHtml_(entreprise) + '</b><br>' + echapperHtml_(nom) : '<b>' + echapperHtml_(nom) + '</b>') + '<br>' +
     echapperHtml_(numero) + '<br>' + echapperHtml_(email) + '</td>' +
     '<td style="text-align:right"><b>DEVIS N° <span style="color:' + couleur + '">' + reference + '</span></b><br>Date : ' + date + '<br>Valable jusqu\'au : ' + validite + '</td></tr></table>' +
-    '<table style="width:100%;border-collapse:collapse;margin-top:14px"><tr style="background:#111827;color:#fff"><td style="padding:6px">Prestation</td><td style="padding:6px">Formule</td>' +
-    '<td style="padding:6px;text-align:right">Qté</td><td style="padding:6px;text-align:right">Prix unitaire</td><td style="padding:6px;text-align:right">Total</td></tr>' + corps +
+    '<table style="width:100%;border-collapse:collapse;margin-top:14px"><tr>' +
+    '<td style="padding:6px;background:#111827;color:#fff">Prestation</td><td style="padding:6px;background:#111827;color:#fff;width:16%">Formule</td>' +
+    '<td style="padding:6px;background:#111827;color:#fff;text-align:center;width:7%">Qté</td>' +
+    '<td style="padding:6px;background:#111827;color:#fff;text-align:right;width:17%;white-space:nowrap">Prix unitaire</td>' +
+    '<td style="padding:6px;background:#111827;color:#fff;text-align:right;width:17%">Total</td></tr>' + corps +
     ligneTotal('Total unique', unique, false) + ligneTotal('Total mensuel', mensuel, false) + ligneTotal('TOTAL À PAYER AU DÉMARRAGE', unique + mensuel, true) + '</table>' +
     (precisions ? '<p style="margin-top:12px"><b>Précisions :</b> ' + echapperHtml_(precisions) + '</p>' : '') +
     '<p style="color:#4b5563;font-size:10px;margin-top:14px">' + conditions + '</p>' +
