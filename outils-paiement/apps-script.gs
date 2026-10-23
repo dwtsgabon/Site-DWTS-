@@ -18,6 +18,7 @@ const CONFIG = {
   URL_SITE: 'https://dwtsgabon.github.io/Site-DWTS-/', // les liens de validation des e-mails ouvrent cette adresse
   DOSSIER_CAPTURES: 'DWTS - Preuves de paiement', // dossier Google Drive des captures
   COMMISSION_DEX: 500, // FCFA par commande DEX payée par un client parrainé
+  NUMEROS_DWTS: ['074741303', '062671445'], // numéros qui reçoivent les paiements (Airtel Money, Mobicash)
   SEUIL_VERSEMENT: 5000, // retrait possible dès ce solde
   RETRAIT_DERNIER_WEEKEND: true, // true : retraits seulement le dernier week-end du mois ; false : tous les jours
   DUREE_SESSION_JOURS: 30, // Mon espace reste connecté pendant cette durée
@@ -47,7 +48,7 @@ const ENTETES_DEVIS = ['Reçu le', 'N° devis', 'Branche', 'WhatsApp', 'Nom', 'E
 //             H Code parrain | I Statut | J Commission | K Mois | L Alerte | M Désignation | N Facture
 const ENTETES_PAIEMENTS = ['Reçu le', 'WhatsApp', 'Service', 'Montant (XAF)', 'TID', 'SMS collé', 'Capture',
   'Code parrain', 'Statut', 'Commission (FCFA)', 'Mois', 'Alerte', 'Désignation (facture)', 'Facture'];
-const COL = { WHATSAPP: 2, SERVICE: 3, MONTANT: 4, TID: 5, SMS: 6, CAPTURE: 7, PARRAIN: 8, STATUT: 9, COMMISSION: 10,
+const COL = { WHATSAPP: 2, SERVICE: 3, MONTANT: 4, TID: 5, SMS: 6, CAPTURE: 7, PARRAIN: 8, STATUT: 9, COMMISSION: 10, ALERTE: 12,
   DESIGNATION: 13, FACTURE: 14 };
 // Clients : A WhatsApp | B Nom | C Code de son parrain | D Inscrit le | E Son code parrain | F Code d'accès | G E-mail | H Photo
 const ENTETES_CLIENTS = ['WhatsApp', 'Nom', 'Code de son parrain', 'Inscrit le', 'Son code parrain', 'Code d\'accès', 'E-mail', 'Photo (Drive)'];
@@ -600,7 +601,11 @@ function doPost(e) {
     // Montant et TID lus dans le SMS collé, sinon dans le texte de la capture (vérifiés sur la page de validation)
     const lu = lireSms_(sms || texteCapture);
     const feuille = feuille_(FEUILLE_PAIEMENTS, ENTETES_PAIEMENTS);
-    const alerte = lu.tid && tidDejaVu_(feuille, lu.tid) ? 'TID déjà envoyé : vérifier' : '';
+    const alertes = [];
+    if (lu.tid && tidDejaVu_(feuille, lu.tid)) alertes.push('TID déjà envoyé : vérifier');
+    const destinataire = destinataireInconnu_(sms || texteCapture);
+    if (destinataire) alertes.push('Payé au ' + destinataire + ' : pas un numéro DWTS');
+    const alerte = alertes.join(' · ');
     const parrain = parrainDuClient_(numero) || CONFIG.CODE_DWTS; // client non inscrit ou sans parrain : DWTS
 
     feuille.appendRow([
@@ -953,6 +958,7 @@ function infoValidation_(p) {
   return {
     ok: true, type: 'paiement', action: c.action, statut: v[COL.STATUT - 1], aTraiter: v[COL.STATUT - 1] === 'À vérifier',
     titre: c.action === 'valider' ? 'Valider ce paiement ?' : 'Refuser ce paiement ?',
+    alerte: v[COL.ALERTE - 1] || '',
     details: [['Montant', v[COL.MONTANT - 1] ? formaterXaf_(v[COL.MONTANT - 1]) : '? (capture : à lire)'], ['Service', v[COL.SERVICE - 1]],
       ['Client', String(v[COL.WHATSAPP - 1]).replace(/^'/, '')], ['TID', v[COL.TID - 1] || '—'], ['Parrain', v[COL.PARRAIN - 1] || '—'],
       ['SMS collé', v[COL.SMS - 1] || '—']],
@@ -1241,6 +1247,14 @@ function imageCapture_(lien) {
   } catch (erreur) {
     return '';
   }
+}
+
+/** Numéro qui a reçu l'argent (« au 0… ») s'il n'est pas un numéro DWTS, sinon ''. */
+function destinataireInconnu_(texte) {
+  const m = String(texte || '').match(/\bau\s*(?:\+?241\s*)?(0?\d[\d\s]{6,11}\d)/i);
+  if (!m) return '';
+  const numero = normaliserNumero_(m[1]);
+  return numero && CONFIG.NUMEROS_DWTS.indexOf(numero) === -1 ? numero : '';
 }
 
 function lireSms_(sms) {
