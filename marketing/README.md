@@ -8,6 +8,7 @@ Ce dossier contient les outils qui fabriquent les publications de DWTS (affiches
 - Reels = tutoriels courts utiles (Word, page de garde, CV, IA pour étudiants), puis appel à l'action.
 - **Un seul bouton partout : « Commander sur WhatsApp »** (affiches, fin des reels, légendes : `📲 Commander sur WhatsApp : wa.me/24162671445`).
 - **Toujours un prix visible** (vrais prix de `tarifs.html`) : CV dès 1 500 XAF, exposé dès 2 500 XAF, affiche dès 2 500 XAF, logo dès 6 500 XAF.
+- **Réalisations Logia** : ne pas dire qu'un outil est « le bot de DEX » ou « celui que nous utilisons pour DEX » (décision d'Elie). Dire « un bot que nous avons automatisé », « une de nos réalisations ».
 - **Preuve honnête** : « ✅ Aperçu avant paiement » (vrai pour DEX et Visuo). Jamais de faux avis, fausse urgence ou fausse rareté ; ajouter les vrais avis clients quand il y en aura.
 - Méthode de référence : skill `campagne-pub-ia` (test des 3 secondes, un seul message, bénéfice avant caractéristique).
 - Pas de publicité pour le bot de trading Sentinel-Grid.
@@ -68,7 +69,7 @@ Images encore jamais publiées : DEX `cv.jpg`, `lettre.jpg`, `expose-anglais.jpg
 | 30/10 | Visuo | mur d'affiches | culte traversée, veillée, salon adoration, conférence art, Afro Vibes |
 | 31/10 | Logia | prix géant + fondateur | photo Elie, capture gestion |
 | 03/11 | Visuo | formes + téléphone | Saveurs du Cap (logo + affiche restaurant) |
-| 05/11 | Logia | question + mot géant | conversation bot DEX |
+| 05/11 | Logia | question + mot géant | capture d'un bot réalisé par Logia |
 | 07/11 | Logia | écran + 3 cartes | capture pointage |
 
 ## Légendes (description sous l'affiche)
