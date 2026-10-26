@@ -28,6 +28,15 @@ Ce dossier contient les outils qui fabriquent les publications de DWTS (affiches
 - Le texte à l'écran doit suffire à comprendre la vidéo sans le son (85 % des vidéos sont vues sans le son).
 - Vérifier chaque rendu avec un cadre rouge sur les zones interdites avant de l'envoyer.
 
+## Style « pro » (à utiliser par défaut depuis la semaine 45)
+
+Décision d'Elie : les anciennes affiches (fond sombre dégradé, cartes en verre, pastilles, émojis) font « IA ». Nouveau style, calqué sur les agences concurrentes et amélioré :
+- titre en **capitales très grasses** (Montserrat 900), prix géants en **Anton** ; polices dans `marketing/polices/` ;
+- **une seule image forte et réelle** : capture du site dans un ordinateur, photo d'Elie détourée, vraies captures des logiciels ;
+- **bande d'infos en bas** (WhatsApp, site, Facebook, Port-Gentil) avec icônes au trait, pas d'émojis ;
+- fonds unis (bleu vif, bleu nuit ou clair), pas d'effet verre.
+Modèles : `pro-dwts-site` (site en ligne), `pro-logia-gestion` (offre + prix + fondateur), `pro-logia-catalogue` (catalogue de logiciels). Styles communs : `_pro.css`. Rendu : servir le dépôt (`npx http-server -p 8774`) puis capturer `/marketing/modeles/<modèle>.html` en 1080×1350.
+
 ## Veille concurrentielle (à refaire à chaque publication de concurrent envoyée par Elie)
 
 1. Noter ce que le concurrent **vend** et si DWTS le propose déjà (tarifs.html). Sinon, le signaler à Elie sans l'inventer.
