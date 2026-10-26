@@ -38,6 +38,39 @@ Décision d'Elie : les anciennes affiches (fond sombre dégradé, cartes en verr
 Autres inspirations reprises : Bloc Communication (grandes formes de couleur + téléphone, `pro-visuo-facebook`), Ghostroar (question au public en haut, mot géant, 3 bénéfices à icônes rondes, `pro-logia-bot`).
 Modèles : `pro-dwts-site` (site en ligne), `pro-logia-gestion` (offre + prix + fondateur), `pro-logia-catalogue` (catalogue de logiciels). Styles communs : `_pro.css`. Rendu : servir le dépôt (`npx http-server -p 8774`) puis capturer `/marketing/modeles/<modèle>.html` en 1080×1350.
 
+## Varier les visuels (règle d'Elie)
+
+Chaque publication a **sa propre mise en page**, choisie selon ce qu'elle raconte. Jamais deux publications d'affilée avec la même mise en page, et jamais les mêmes images deux fois en moins de 4 semaines. Avant de créer, relire le journal ci-dessous.
+
+Mises en page disponibles (`marketing/modeles/`) :
+| Mise en page | Modèle | Pour |
+|---|---|---|
+| Ordinateur avec capture du site | `pro-dwts-site` | annonce, site, outil web |
+| Fondateur + cartes des branches | `pro-dwts-presentation` | présentation, confiance |
+| Prix géant + fondateur + capture | `pro-logia-gestion` | offre avec prix fort |
+| Catalogue de produits en grille | `pro-logia-catalogue` | plusieurs offres d'une branche |
+| Éventail de 3 documents + prix | `pro-dex-expose` | résultat final |
+| Bande de pages numérotées | `pro-dex-pages` | montrer un travail étape par étape |
+| Mur d'affiches (mosaïque) | `pro-visuo-mur` | portfolio, quantité de réalisations |
+| Formes de couleur + téléphone | `pro-visuo-facebook` | réseaux sociaux, visibilité |
+| Question + mot géant + 3 bénéfices | `pro-logia-bot` | problème du client, service |
+| Écran d'ordinateur + 3 cartes | `pro-logia-pointage` | logiciel, réalisation sur devis |
+Si aucune ne colle, **en créer une nouvelle** (autres idées : avant/après, témoignage client, tutoriel en étapes, chiffre clé, comparatif).
+
+Images encore jamais publiées : DEX `cv.jpg`, `lettre.jpg`, `expose-anglais.jpg`, `expose-classicisme.jpg`, pages `expose-meyene-2..4.jpg` ; Visuo logos (Okoumé, Cap Fit, Glow by Mira, Nappy Queen, Délices de Maman), `action-grace`, `voeux-noel`, `sortie-ta-presence`.
+
+### Journal des visuels publiés
+| Date | Branche | Mise en page | Images |
+|---|---|---|---|
+| 26/10 | DWTS | ordinateur + site | capture accueil |
+| 27/10 | DWTS | fondateur + branches | photo Elie, 3 logos |
+| 28/10 | DEX | bande de pages | exposé Nzebi (garde, sommaire, page 5) |
+| 30/10 | Visuo | mur d'affiches | culte traversée, veillée, salon adoration, conférence art, Afro Vibes |
+| 31/10 | Logia | prix géant + fondateur | photo Elie, capture gestion |
+| 03/11 | Visuo | formes + téléphone | Saveurs du Cap (logo + affiche restaurant) |
+| 05/11 | Logia | question + mot géant | conversation bot DEX |
+| 07/11 | Logia | écran + 3 cartes | capture pointage |
+
 ## Légendes (description sous l'affiche)
 
 La légende **ne répète pas** le texte de l'affiche : l'image donne le titre et le prix, la légende raconte le reste. Structure observée chez les concurrents qui écrivent bien (Akxa, ONEG, PubPlanner, Outsourcia) :
