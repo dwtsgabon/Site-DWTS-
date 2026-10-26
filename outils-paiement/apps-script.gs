@@ -1021,8 +1021,7 @@ function creerFacture_(v) {
 
   const html =
     '<html><head><meta charset="utf-8"></head><body style="font-family:Arial,sans-serif;color:#111;margin:28px;font-size:12px">' +
-    '<table style="width:100%"><tr><td>' + imageLogo_(service, 64) + '</td>' +
-    '<td style="text-align:right">' + imageLogo_('DWTS', 48) + '</td></tr></table>' +
+    '<table style="width:100%"><tr><td>' + imageLogo_(service, 64) + '</td></tr></table>' +
     '<div style="font-weight:bold;margin-top:8px">DWTS · Digital World Technology Service</div>' +
     '<div style="color:#6b7280;font-size:10px;border-bottom:2px solid ' + couleur + ';padding-bottom:6px">' +
     'Port-Gentil, Gabon · WhatsApp 062 67 14 45 · digitalwtservice@gmail.com</div>' +

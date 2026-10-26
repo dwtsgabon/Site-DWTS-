@@ -2,6 +2,10 @@
 
 Format vertical 9:16 (1080 × 1920), environ 68 s. Voix : « Elie Ryan » (voir `.claude/skills/video-dwts/SKILL.md`).
 
+## État (26 oct. 2026)
+- Vidéo v3 validée par Elie : nouveau logo DWTS (grille) dans les scènes 1, 2, 8 et fin, orange remplacé par le bleu du logo (#2F86FF). Script, voix, musique et minutage inchangés (son repris de la v2).
+- `video.html` pointe maintenant directement vers les images du site (`assets/img/visuo/`) : rendu image par image avec `render(t)` à 30 i/s, puis ffmpeg.
+
 ## État (23 oct. 2026)
 - Vidéo montée (v2) : `DWTS-presentation.mp4` (1080 × 1920, 30 i/s, 87 s, son -14 LUFS). Scène parrainage refaite (code exemple PARRAIN-001, 500 F par commande DEX, 1 000 à 5 000 F/mois Visuo-Logia, exemple 6 000 F).
 - Sources : `video.html` (animation, `render(t)`), `mixage2.py` (voix nettoyée, musique baissée automatiquement sous la voix, effets égalisés), flow ElevenLabs « DWTS - Vidéo de présentation ».
