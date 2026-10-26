@@ -50,11 +50,17 @@
   --logia-cyan: #22D3EE;
   --logia-bleu: #1E6FD9;
 
+  /* Couleur de marque DWTS (celle du logo) ; les branches remettent l'orange plus bas */
+  --marque: #1E6FD9;             /* boutons : texte blanc lisible (contraste 4,8:1) */
+  --marque-rgb: 30, 111, 217;    /* même bleu, pour les transparences rgba() */
+  --marque-sur: #ffffff;         /* texte posé sur la couleur de marque */
+  --marque-texte: #5ea3ff;       /* bleu éclairci, lisible sur fond sombre */
+
   /* Accent de la page (remplacé plus bas selon la branche) */
-  --accent: var(--orange);
-  --accent-texte: var(--orange);
-  --degrade: linear-gradient(120deg, #FF6A00, #ffb067, #FF6A00);
-  --accent-2: #ffb067;
+  --accent: #2F86FF;
+  --accent-texte: var(--marque-texte);
+  --degrade: linear-gradient(120deg, #22D3EE, #1E6FD9, #8B3DFF, #FF6A00);
+  --accent-2: #22D3EE;
 
   --rayon: 22px;
   --nav-h: 72px;
@@ -62,6 +68,9 @@
 }
 
 /* Accent propre à chaque page (classe sur la balise <body>) */
+.page-dex, .page-visuo, .page-logia {   /* les branches gardent leur bouton orange d'origine */
+  --marque: var(--orange); --marque-rgb: 255, 106, 0; --marque-sur: var(--noir); --marque-texte: var(--orange);
+}
 .page-dex {
   --accent: var(--dex);
   --accent-texte: var(--dex-texte);
@@ -115,7 +124,7 @@ ul { list-style: none; }
 /* Lien « Aller au contenu » (visible seulement au clavier) */
 .lien-evitement {
   position: fixed; top: -100px; left: 16px; z-index: 1000;
-  background: var(--orange); color: var(--noir);
+  background: var(--marque); color: var(--marque-sur);
   padding: 10px 18px; border-radius: 10px; font-weight: 700;
   transition: top .2s;
 }
@@ -175,14 +184,14 @@ body::after {
 
 /* Boutons */
 .bouton {
-  --b-fond: var(--orange);
+  --b-fond: var(--marque);
   position: relative; display: inline-flex; align-items: center; gap: 12px;
   padding: 16px 28px; border-radius: 999px;
   font-weight: 700; font-size: 1rem; letter-spacing: -.01em;
-  background: var(--b-fond); color: var(--noir);
+  background: var(--b-fond); color: var(--marque-sur);
   overflow: hidden; isolation: isolate;
   transition: transform .35s var(--courbe), box-shadow .35s var(--courbe);
-  box-shadow: 0 10px 40px -10px rgba(255, 106, 0, .55);
+  box-shadow: 0 10px 40px -10px rgba(var(--marque-rgb), .55);
 }
 .bouton::before {               /* reflet qui traverse le bouton au survol */
   content: ""; position: absolute; inset: 0; z-index: -1;
@@ -190,7 +199,7 @@ body::after {
   transform: translateX(-120%);
   transition: transform .7s var(--courbe);
 }
-.bouton:hover { transform: translateY(-3px); box-shadow: 0 18px 50px -12px rgba(255, 106, 0, .75); }
+.bouton:hover { transform: translateY(-3px); box-shadow: 0 18px 50px -12px rgba(var(--marque-rgb), .75); }
 .bouton:hover::before { transform: translateX(120%); }
 .bouton svg { width: 20px; height: 20px; flex: none; }
 
@@ -438,7 +447,7 @@ body::after {
   font-size: clamp(1.4rem, 3vw, 2.4rem); font-weight: 800; letter-spacing: -.03em;
   white-space: nowrap; color: rgba(245,245,247,.9);
 }
-.defilant__piste span::after { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--orange); }
+.defilant__piste span::after { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--degrade); }
 .defilant__piste span:nth-child(even) { color: transparent; -webkit-text-stroke: 1px rgba(245,245,247,.5); }
 @keyframes defile { to { transform: translateX(-50%); } }
 
@@ -530,14 +539,14 @@ body::after {
   transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform .5s var(--courbe), border-color .4s;
 }
-.bloc-tech:hover { border-color: rgba(255,106,0,.45); }
+.bloc-tech:hover { border-color: rgba(var(--marque-rgb),.45); }
 .bloc-tech__icone {
   width: 64px; height: 64px; border-radius: 18px; margin-bottom: 28px;
   display: grid; place-items: center;
-  background: rgba(255,106,0,.1); border: 1px solid rgba(255,106,0,.3);
+  background: rgba(var(--marque-rgb),.1); border: 1px solid rgba(var(--marque-rgb),.3);
   transform: translateZ(50px);
 }
-.bloc-tech__icone svg { width: 32px; height: 32px; stroke: var(--orange); fill: none; stroke-width: 1.6; }
+.bloc-tech__icone svg { width: 32px; height: 32px; stroke: var(--marque-texte); fill: none; stroke-width: 1.6; }
 .bloc-tech h3 { font-size: 1.45rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: 12px; transform: translateZ(30px); }
 .bloc-tech p { color: var(--gris); transform: translateZ(20px); }
 .bloc-tech__index {
@@ -557,7 +566,7 @@ body::after {
 .presentation__logo {
   position: relative; border-radius: var(--rayon); padding: clamp(28px, 5vw, 60px);
   border: 1px solid var(--ligne);
-  background: radial-gradient(circle at 50% 40%, rgba(255,106,0,.14), transparent 65%), var(--surface);
+  background: radial-gradient(circle at 50% 40%, rgba(var(--marque-rgb),.2), transparent 65%), var(--surface);
 }
 .presentation__logo img { width: 100%; height: auto; }
 .presentation p { color: var(--gris); margin-top: 18px; max-width: 52ch; }
@@ -737,13 +746,13 @@ body::after {
 .liste-services li:nth-child(odd) { border-right: 1px solid var(--ligne); }
 .liste-services li::before {         /* puce lumineuse */
   content: ""; flex: none; width: 12px; height: 12px; border-radius: 4px;
-  background: var(--degrade-vignette, var(--orange));
+  background: var(--degrade-vignette, var(--marque));
   box-shadow: 0 0 14px var(--accent);
   transition: transform .4s var(--courbe);
 }
 .liste-services li::after {          /* trait qui se remplit au survol */
   content: ""; position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%;
-  background: var(--degrade-vignette, var(--orange));
+  background: var(--degrade-vignette, var(--marque));
   transform: scaleX(0); transform-origin: left; transition: transform .6s var(--courbe);
 }
 .liste-services li:hover { padding-left: 22px; }
@@ -803,13 +812,13 @@ body::after {
 
 
 /* ---------- 14. Tarifs ---------- */
-.page-tarifs { --degrade-vignette: linear-gradient(135deg, #FF6A00, #ffb067); }
+.page-tarifs { --degrade-vignette: linear-gradient(135deg, #1E6FD9, #22D3EE); }
 
-/* Halo orange qui suit la souris (fixe, derrière le contenu) */
+/* Halo de couleur qui suit la souris (fixe, derrière le contenu) */
 .halo {
   position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none;
   width: 700px; height: 700px; margin: -350px 0 0 -350px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,106,0,.22), rgba(255,106,0,.06) 40%, transparent 68%);
+  background: radial-gradient(circle, rgba(var(--marque-rgb),.22), rgba(var(--marque-rgb),.06) 40%, transparent 68%);
   transform: translate3d(50vw, 40vh, 0);
   will-change: transform;
 }
@@ -834,12 +843,12 @@ body::after {
 .onglet[aria-selected="true"] { color: #fff; }
 .onglet__fond {                  /* pastille qui glisse sous l'onglet actif */
   position: absolute; top: 6px; bottom: 6px; left: 0; width: 0; border-radius: 999px; z-index: -1;
-  background: var(--g, var(--orange));
+  background: var(--g, var(--marque));
   transition: transform .5s var(--courbe), width .5s var(--courbe), background .5s;
 }
 .onglets { isolation: isolate; }
 
-.panneau { --g: linear-gradient(135deg, #FF6A00, #ffb067); }
+.panneau { --g: linear-gradient(135deg, #1E6FD9, #22D3EE); }
 .panneau[hidden] { display: none; }
 .panneau--dex   { --g: linear-gradient(135deg, #1E6FD9, #0F2A4A); --acc: #79b0ff; --txt-plein: #fff; }
 .panneau--visuo { --g: linear-gradient(135deg, #FF6A00, #8B3DFF); --acc: #ff8a3d; --txt-plein: #fff; }
@@ -950,9 +959,9 @@ body::after {
 .pied h2 { font-size: .78rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gris); font-weight: 600; margin-bottom: 18px; }
 .pied ul { display: grid; gap: 10px; }
 .pied a { transition: color .25s; }
-.pied a:hover { color: var(--orange); }
+.pied a:hover { color: var(--marque-texte); }
 .pied__contact li { display: flex; gap: 12px; align-items: center; }
-.pied__contact svg { width: 18px; height: 18px; flex: none; stroke: var(--orange); fill: none; stroke-width: 1.8; }
+.pied__contact svg { width: 18px; height: 18px; flex: none; stroke: var(--marque-texte); fill: none; stroke-width: 1.8; }
 .pied__bas {
   margin-top: 60px; padding-top: 26px; border-top: 1px solid var(--ligne);
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
@@ -1489,8 +1498,8 @@ body::after {
 /* =========================================================
    23. PARRAINAGE : simulateur, étapes, commissions
    ========================================================= */
-.page-parrainage { --accent: #22D3EE; --accent-texte: #22D3EE; --accent-2: #FF6A00;
-  --degrade: linear-gradient(120deg, #22D3EE, #FF6A00, #22D3EE); }
+.page-parrainage { --accent: #22D3EE; --accent-texte: #22D3EE; --accent-2: #1E6FD9;
+  --degrade: linear-gradient(120deg, #22D3EE, #1E6FD9, #8B3DFF, #22D3EE); }
 .page-parrainage .bouton { --b-fond: #22D3EE; color: #04121c; box-shadow: 0 10px 40px -10px rgba(34,211,238,.6); }
 .page-parrainage .bouton--contour { color: var(--blanc); box-shadow: none; }
 .page-parrainage body, body.page-parrainage {
@@ -1516,7 +1525,7 @@ body::after {
 .sim__an { margin-top: 8px; color: var(--gris); }
 .sim__an b { color: var(--blanc); }
 .sim__seuil { margin-top: 20px; height: 8px; border-radius: 8px; background: rgba(255,255,255,.08); overflow: hidden; }
-.sim__seuil span { display: block; height: 100%; width: 0; border-radius: 8px; background: linear-gradient(90deg, #FF6A00, #22D3EE); transition: width .5s var(--courbe); }
+.sim__seuil span { display: block; height: 100%; width: 0; border-radius: 8px; background: linear-gradient(90deg, #1E6FD9, #22D3EE); transition: width .5s var(--courbe); }
 .sim__seuil-texte { margin-top: 8px; font-size: .85rem; color: var(--gris); }
 .sim__seuil-texte.ok { color: #4ade80; }
 .sim__lignes { margin-top: 30px; display: grid; gap: 22px; }
@@ -1566,11 +1575,11 @@ body::after {
 .gain__lignes small { font-size: .6em; color: var(--gris); font-weight: 600; }
 .gain__texte { font-size: .9rem; color: var(--gris); }
 .retrait { margin-top: 24px; display: flex; gap: 20px; align-items: center; padding: 24px 28px; border-radius: 22px;
-  background: linear-gradient(120deg, rgba(255,106,0,.14), rgba(34,211,238,.1)); border: 1px solid rgba(255,106,0,.35); }
-.retrait__icone { flex: none; width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; background: rgba(255,106,0,.15); }
-.retrait__icone svg { width: 30px; height: 30px; stroke: #FF6A00; fill: none; stroke-width: 1.8; }
+  background: linear-gradient(120deg, rgba(var(--marque-rgb),.16), rgba(34,211,238,.1)); border: 1px solid rgba(var(--marque-rgb),.4); }
+.retrait__icone { flex: none; width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; background: rgba(var(--marque-rgb),.15); }
+.retrait__icone svg { width: 30px; height: 30px; stroke: var(--marque-texte); fill: none; stroke-width: 1.8; }
 .retrait h3 { font-size: 1.25rem; font-weight: 800; }
-.retrait h3 span { color: #FF6A00; }
+.retrait h3 span { color: var(--marque-texte); }
 .retrait p { color: var(--gris); font-size: .95rem; margin-top: 4px; }
 
 /* Questions fréquentes (accordéon) */
