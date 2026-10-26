@@ -32,7 +32,7 @@ Ce dossier contient les outils qui fabriquent les publications de DWTS (affiches
 1. Noter ce que le concurrent **vend** et si DWTS le propose déjà (tarifs.html). Sinon, le signaler à Elie sans l'inventer.
 2. Faire la version DWTS **meilleure** : vraie capture ou vraie réalisation à la place des photos de banque d'images, un vrai prix visible, un seul bouton WhatsApp.
 3. Ne pas copier leurs défauts : statistiques sans source (« 80 % des PME… »), économies non prouvées, coordonnées en vrac, plusieurs boutons.
-4. Ce qui marche chez eux, à reprendre : outil concret montré à l'écran, offre gratuite utile (la page qui donne un logiciel de pointage gratuit fait 75 réactions, 22 commentaires, 15 partages ; les affiches à photo de banque d'images font 2 à 7 réactions), légende longue qui explique un problème puis pose une question.
+4. Ce qui marche chez eux, à reprendre : outil concret montré à l'écran, le mot « GRATUIT » avec une vraie capture d'outil (75 réactions, 22 commentaires, 15 partages ; les affiches à photo de banque d'images font 2 à 7 réactions). Attention : chez ce concurrent, le lien menait à une version payante. DWTS ne fait jamais ça : ce qui est annoncé gratuit est livré gratuit, en entier, légende longue qui explique un problème puis pose une question.
 5. Outil gratuit en place : logiciel de pointage (`marketing/outils-gratuits/`, affiche `post-logia-4`). Mot à commenter : « POINTAGE ».
 6. Modèles déjà faits en réponse : `post-logia-2` (logiciel de gestion), `post-logia-3` (bot WhatsApp), `post-visuo-3` (gestion de page Facebook). Styles communs : `_commun-concurrence.css`.
 
