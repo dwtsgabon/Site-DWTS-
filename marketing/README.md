@@ -16,6 +16,7 @@ Ce dossier contient les outils qui fabriquent les publications de DWTS (affiches
 - Voix off officielle : ElevenLabs **Paul K** (`voice_id` `ecxPjiGTvAfpGEams6ec`), modèle `eleven_v4`, **1 seule prise** par vidéo.
 - **Modèles d'affiches de référence** (inspirés des anciennes affiches d'Elie, refaits aux couleurs du nouveau logo) : `post-dwts-1` (fondateur + 3 branches), `post-dex-3` (problème → solution, vraies pages d'exposés), `post-visuo-2` (affiche d'événement, vraies affiches dans un téléphone). Photo détourée d'Elie : `marketing/photos/elie-detoure.png`.
 - Ne plus proposer les abonnements Netflix et IPTV : hors des trois branches, et risque juridique (revente de comptes, IPTV sans droits).
+- **Le texte et l'image doivent parler de la même chose.** Pour une offre aux entreprises, prendre les modèles par secteur du site (`assets/img/visuo/` : restaurant Saveurs du Cap, boutique Okoumé, salle de sport Cap Fit, salon Nappy Queen, avec leur logo et leur affiche) ; pour une offre « événement », les affiches d'événements (culte, camp, conférence). Vérifier chaque rendu en relisant texte et image ensemble.
 - Uniquement de vraies réalisations (`assets/img/dex`, `assets/img/visuo`, `assets/img/logia`), jamais d'images inventées.
 
 ## Règles de conception (compétence `meta-ads-dwts`, section 10)
