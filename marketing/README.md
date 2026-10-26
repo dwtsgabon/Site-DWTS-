@@ -35,6 +35,7 @@ Décision d'Elie : les anciennes affiches (fond sombre dégradé, cartes en verr
 - **une seule image forte et réelle** : capture du site dans un ordinateur, photo d'Elie détourée, vraies captures des logiciels ;
 - **bande d'infos en bas** (WhatsApp, site, Facebook, Port-Gentil) avec icônes au trait, pas d'émojis ;
 - fonds unis (bleu vif, bleu nuit ou clair), pas d'effet verre.
+Autres inspirations reprises : Bloc Communication (grandes formes de couleur + téléphone, `pro-visuo-facebook`), Ghostroar (question au public en haut, mot géant, 3 bénéfices à icônes rondes, `pro-logia-bot`).
 Modèles : `pro-dwts-site` (site en ligne), `pro-logia-gestion` (offre + prix + fondateur), `pro-logia-catalogue` (catalogue de logiciels). Styles communs : `_pro.css`. Rendu : servir le dépôt (`npx http-server -p 8774`) puis capturer `/marketing/modeles/<modèle>.html` en 1080×1350.
 
 ## Légendes (description sous l'affiche)
