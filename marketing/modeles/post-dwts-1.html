@@ -1,0 +1,41 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Présentation DWTS (fondateur + 3 branches). Inspirée de l'ancienne affiche « Des solutions numériques à votre image ». -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1350px;font-family:Inter,sans-serif;color:#f5f5f7;overflow:hidden;position:relative;
+ background:radial-gradient(760px 700px at 22% 62%,rgba(30,111,217,.55),rgba(30,111,217,0) 70%),radial-gradient(600px 500px at 100% 0%,rgba(34,211,238,.18),rgba(34,211,238,0) 70%),linear-gradient(165deg,#0b1428 0%,#070c18 60%,#05080f 100%)}
+.top{position:absolute;top:60px;left:70px;right:70px;display:flex;justify-content:space-between;align-items:center}
+.top img{height:84px}
+.tag{font-size:22px;font-weight:700;letter-spacing:3px;color:#5ea3ff;border:2px solid #5ea3ff;padding:10px 20px;border-radius:40px}
+h1{position:absolute;top:200px;left:70px;right:70px;font-size:100px;line-height:1;font-weight:900;letter-spacing:-3px}
+h1 span{background:linear-gradient(110deg,#22D3EE,#2F86FF 55%,#8B3DFF);-webkit-background-clip:text;color:transparent}
+.photo{position:absolute;left:-30px;top:440px;width:600px;-webkit-mask-image:linear-gradient(to bottom,#000 70%,transparent 97%),linear-gradient(90deg,transparent 0,#000 8%,#000 88%,transparent 100%);-webkit-mask-composite:source-in;
+ filter:drop-shadow(0 0 2px rgba(120,190,255,.9)) drop-shadow(0 0 26px rgba(30,111,217,.85))}
+.nom{position:absolute;left:70px;top:1000px;font-size:22px;font-weight:700;letter-spacing:4px;text-transform:uppercase;text-shadow:0 2px 12px #000}
+.nom small{display:block;margin-top:8px;font-size:19px;color:#22D3EE;letter-spacing:5px}
+.branches{position:absolute;left:570px;right:70px;top:480px;display:flex;flex-direction:column;gap:22px}
+.b{border-radius:22px;padding:24px 26px 24px 30px;background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);position:relative;overflow:hidden}
+.b::before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:var(--g)}
+.b b{display:block;font-size:40px;font-weight:900;letter-spacing:-1px}
+.b span{display:block;font-size:24px;color:#c9d2e3;margin-top:6px;line-height:1.3}
+.dex{--g:linear-gradient(#5ea3ff,#1E6FD9)} .dex b i{font-style:normal;color:#2F86FF}
+.vis{--g:linear-gradient(#FF6A00,#8B3DFF)} .log{--g:linear-gradient(#22D3EE,#1E6FD9)}
+.badges{position:absolute;top:1094px;left:70px;right:70px;display:flex;gap:12px;white-space:nowrap}
+.badges span{font-size:22px;font-weight:800;padding:10px 16px;border-radius:40px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.25)}
+.badges .price{background:#fff;color:#0a0a0b;border-color:#fff}
+.cta{position:absolute;bottom:56px;left:70px;right:70px;background:#1E6FD9;border-radius:28px;padding:28px 40px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 20px 50px -10px rgba(30,111,217,.7)}
+.cta b{font-size:36px;font-weight:800}.cta span{font-size:32px;font-weight:600}
+</style></head><body>
+<div class="top"><img src="assets/img/logo-dwts-clair.png"><div class="tag">SERVICES NUMÉRIQUES</div></div>
+<h1>Le digital,<br><span>à votre service.</span></h1>
+<img class="photo" src="marketing/photos/elie-detoure.png">
+<div class="nom">Elie Ryan Mbwendi Mbadinga<small>Fondateur · DWTS</small></div>
+<div class="branches">
+ <div class="b dex"><b>DE<i>X</i></b><span>Saisie et mise en forme de vos documents</span></div>
+ <div class="b vis"><b>VISUO</b><span>Logos, affiches, vidéos et sites web</span></div>
+ <div class="b log"><b>LOGIA</b><span>Logiciels et automatisations</span></div>
+</div>
+<div class="badges"><span class="price">Exposé dès 2 500 XAF</span><span class="price">Affiche dès 2 500 XAF</span><span>✅ Aperçu avant paiement</span></div>
+<div class="cta"><b>Commander sur WhatsApp</b><span>062 67 14 45</span></div>
+</body></html>

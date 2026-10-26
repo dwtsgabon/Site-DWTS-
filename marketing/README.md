@@ -14,6 +14,8 @@ Ce dossier contient les outils qui fabriquent les publications de DWTS (affiches
 - **Jamais de post texte seul** : chaque publication a une image (affiche) ou une vidéo. Facebook limite la portée des posts sans visuel.
 - Contact : WhatsApp 062 67 14 45 (`https://wa.me/24162671445`).
 - Voix off officielle : ElevenLabs **Paul K** (`voice_id` `ecxPjiGTvAfpGEams6ec`), modèle `eleven_v4`, **1 seule prise** par vidéo.
+- **Modèles d'affiches de référence** (inspirés des anciennes affiches d'Elie, refaits aux couleurs du nouveau logo) : `post-dwts-1` (fondateur + 3 branches), `post-dex-3` (problème → solution, vraies pages d'exposés), `post-visuo-2` (affiche d'événement, vraies affiches dans un téléphone). Photo détourée d'Elie : `marketing/photos/elie-detoure.png`.
+- Ne plus proposer les abonnements Netflix et IPTV : hors des trois branches, et risque juridique (revente de comptes, IPTV sans droits).
 - Uniquement de vraies réalisations (`assets/img/dex`, `assets/img/visuo`, `assets/img/logia`), jamais d'images inventées.
 
 ## Règles de conception (compétence `meta-ads-dwts`, section 10)
