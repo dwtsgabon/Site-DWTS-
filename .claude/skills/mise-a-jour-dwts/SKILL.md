@@ -32,6 +32,12 @@ https://github.com/dwtsgabon/Site-DWTS-/blob/main/outils-paiement/apps-script.gs
    « Numéro WhatsApp invalide. » = ancien code ; « Impossible d'ouvrir le fichier » avec `/u/3/` = plusieurs comptes connectés.
 4. Les liens des anciens e-mails de validation deviennent invalides si le projet change : refaire un essai avec une nouvelle preuve.
 
+## Liens officiels de DWTS (à réutiliser tels quels)
+- Page Facebook : https://www.facebook.com/share/1cHmkkojBE/ (lien « Facebook : DIGITAL WORLD TECHNOLOGY SERVICE » du bas de page).
+  L'environnement de Claude ne peut pas ouvrir facebook.com (réseau bloqué) : pour une image de la page, la demander à Elie.
+- Site : https://dwtsgabon.github.io/Site-DWTS-/
+- WhatsApp : +241 62 67 14 45
+
 ## Pièges déjà rencontrés
 - Plusieurs projets Apps Script (« Projet sans titre ») : le bon est celui ouvert depuis le Google Sheets et qui contient la feuille Retraits.
 - Page de validation sans champs Montant/TID et capture en simple lien = le déploiement utilisé fait tourner l'ancien code.
