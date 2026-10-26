@@ -1,0 +1,34 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- DEX problème → solution. Inspirée de l'ancienne affiche « Tu es élève ou étudiant et tu as un exposé ? ». -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1350px;font-family:Inter,sans-serif;color:#f5f5f7;overflow:hidden;position:relative;
+ background:radial-gradient(900px 700px at 85% 10%,rgba(30,111,217,.55),rgba(30,111,217,0) 60%),linear-gradient(165deg,#0F2A4A 0%,#0a0a0b 72%)}
+.top{position:absolute;top:56px;left:70px;right:70px;display:flex;justify-content:space-between;align-items:center}
+.top img{height:96px}
+.tag{font-size:22px;font-weight:700;letter-spacing:3px;color:#79b0ff;border:2px solid #79b0ff;padding:10px 20px;border-radius:40px}
+.bulles{position:absolute;top:200px;left:70px;display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+.bulles span{font-size:34px;font-weight:700;padding:16px 26px;border-radius:26px 26px 26px 8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18)}
+.bulles span:nth-child(2){margin-left:60px;background:rgba(121,176,255,.16);border-color:rgba(121,176,255,.4)}
+h1{position:absolute;top:385px;left:70px;right:70px;font-size:72px;line-height:1.02;font-weight:900;letter-spacing:-2.5px}
+h1 span{color:#79b0ff}
+.docs img{position:absolute;width:280px;border-radius:12px;box-shadow:0 30px 70px rgba(0,0,0,.6);background:#fff}
+.d1{left:130px;top:630px;transform:rotate(-8deg)}
+.d2{left:400px;top:600px;z-index:2}
+.d3{left:670px;top:630px;transform:rotate(8deg)}
+.badges{position:absolute;top:1060px;left:70px;right:70px;display:flex;gap:12px;white-space:nowrap}
+.badges span{font-size:25px;font-weight:800;padding:10px 18px;border-radius:40px;background:#132840;border:2px solid rgba(255,255,255,.25)}
+.badges .price{background:#fff;color:#0a0a0b;border-color:#fff}
+.cta{position:absolute;bottom:56px;left:70px;right:70px;background:#1E6FD9;border-radius:28px;padding:28px 40px;display:flex;justify-content:space-between;align-items:center}
+.cta b{font-size:36px;font-weight:800}.cta span{font-size:32px;font-weight:600}
+.paie{position:absolute;top:1132px;left:70px;right:70px;text-align:center;font-size:22px;color:#a9b6cf}
+</style></head><body>
+<div class="top"><img src="assets/img/logo-dex-marque-clair.png"><div class="tag">DOCUMENTS</div></div>
+<div class="bulles"><span>Ton exposé est écrit à la main ?</span><span>Pas le temps de le saisir ?</span></div>
+<h1>On le saisit, on le corrige,<br><span>on le met en forme.</span></h1>
+<div class="docs"><img class="d1" src="assets/img/dex/expose-nzebi.jpg"><img class="d2" src="assets/img/dex/expose-meyene.jpg"><img class="d3" src="assets/img/dex/expose-francais.jpg"></div>
+<div class="badges"><span class="price">Exposé dès 2 500 XAF</span><span>⏱ Livré en 24 h</span><span>✅ Aperçu avant paiement</span></div>
+<p class="paie">Paiement Airtel Money ou Mobicash, après validation de l'aperçu</p>
+<div class="cta"><b>Commander sur WhatsApp</b><span>062 67 14 45</span></div>
+</body></html>

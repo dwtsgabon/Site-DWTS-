@@ -1,0 +1,32 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Visuo affiche d'événement. Inspirée de l'ancienne affiche « Besoin d'une affiche pour un événement ? ». -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1350px;font-family:Inter,sans-serif;color:#f5f5f7;overflow:hidden;position:relative;
+ background:radial-gradient(800px 600px at 90% 5%,rgba(139,61,255,.55),rgba(139,61,255,0) 60%),radial-gradient(700px 600px at 0% 100%,rgba(255,106,0,.35),rgba(255,106,0,0) 60%),#0a0a0b}
+.top{position:absolute;top:56px;left:70px;right:70px;display:flex;justify-content:space-between;align-items:center}
+.top img{height:80px}
+.tag{font-size:22px;font-weight:700;letter-spacing:3px;color:#ff8a3d;border:2px solid #ff8a3d;padding:10px 20px;border-radius:40px}
+h1{position:absolute;top:180px;left:70px;right:70px;font-size:92px;line-height:1;font-weight:900;letter-spacing:-3px}
+h1 span{background:linear-gradient(120deg,#FF6A00,#ffb067);-webkit-background-clip:text;color:transparent}
+.fond img{position:absolute;width:300px;border-radius:14px;box-shadow:0 30px 70px rgba(0,0,0,.6)}
+.f1{left:90px;top:540px;transform:rotate(-9deg)}
+.f2{right:90px;top:540px;transform:rotate(9deg)}
+.tel{position:absolute;left:50%;top:440px;width:310px;height:600px;margin-left:-155px;border-radius:52px;background:#111;padding:16px;z-index:2;
+ box-shadow:0 0 0 3px #2a2a2f,0 40px 90px rgba(0,0,0,.7),0 0 80px rgba(139,61,255,.45)}
+.tel img{width:100%;height:100%;object-fit:cover;border-radius:38px}
+.tel::before{content:"";position:absolute;top:28px;left:50%;width:90px;height:22px;margin-left:-45px;border-radius:20px;background:#111;z-index:3}
+.badges{position:absolute;top:1085px;left:70px;right:70px;display:flex;gap:12px;white-space:nowrap;justify-content:center}
+.badges span{font-size:25px;font-weight:800;padding:10px 18px;border-radius:40px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.25)}
+.badges .price{background:#fff;color:#0a0a0b;border-color:#fff}
+.cta{position:absolute;bottom:56px;left:70px;right:70px;background:linear-gradient(120deg,#FF6A00,#8B3DFF);border-radius:28px;padding:28px 40px;display:flex;justify-content:space-between;align-items:center}
+.cta b{font-size:36px;font-weight:800}.cta span{font-size:32px;font-weight:600}
+</style></head><body>
+<div class="top"><img src="assets/img/logo-visuo-clair.png"><div class="tag">AFFICHES</div></div>
+<h1>Un événement ?<br><span>Il lui faut son affiche.</span></h1>
+<div class="fond"><img class="f1" src="assets/img/visuo/camp-jeunesse.jpg"><img class="f2" src="assets/img/visuo/conference-entrepreneuriat.jpg"></div>
+<div class="tel"><img src="assets/img/visuo/culte-noel.jpg"></div>
+<div class="badges"><span class="price">Affiche dès 2 500 XAF</span><span>⏱ Livrée en 48 h</span><span>✅ Aperçu avant paiement</span></div>
+<div class="cta"><b>Commander sur WhatsApp</b><span>062 67 14 45</span></div>
+</body></html>
