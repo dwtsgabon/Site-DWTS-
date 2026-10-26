@@ -141,12 +141,13 @@ def feuille_grille(wb):
     return ws
 
 
-def entete(ws, branche, derniere_col, largeur_logo, largeur_dwts):
-    """Logos de la branche (gauche) et de DWTS (droite), coordonnées. Aucun titre en haut du cadre."""
+def entete(ws, branche, derniere_col, largeur_logo, largeur_dwts=None):
+    """Logo de la branche (gauche), logo DWTS à droite si largeur_dwts, coordonnées. Aucun titre en haut du cadre."""
     logo, h = image(LOGOS[branche], largeur_logo)
     ws.add_image(logo, "A1")
-    dwts, _ = image(LOGOS["DWTS"], largeur_dwts)
-    ws.add_image(dwts, f"{derniere_col}1")
+    if largeur_dwts:   # devis seulement : les factures ne portent que le logo du service
+        dwts, _ = image(LOGOS["DWTS"], largeur_dwts)
+        ws.add_image(dwts, f"{derniere_col}1")
     lignes_logo = max(4, round(h / 20) + 1)
     r = lignes_logo + 1
     ws.cell(r, 1, NOM_DWTS).font = Font(bold=True, size=10)
@@ -267,7 +268,7 @@ def feuille_facture(wb, branche):
     ws = wb.create_sheet(f"Facture {branche}")
     for col, largeur in zip("ABCD", (38, 6, 12, 13)):
         ws.column_dimensions[col].width = largeur
-    r = entete(ws, branche, "D", 140 if branche == "DEX" else 190, 55)
+    r = entete(ws, branche, "D", 140 if branche == "DEX" else 190)
     accent = COULEURS[branche]
 
     ws.cell(r, 1, "FACTURÉ À").font = Font(bold=True, size=9, color=accent)
