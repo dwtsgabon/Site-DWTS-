@@ -14,7 +14,7 @@
 .numero button { flex: none; border: 1px solid var(--ligne); background: transparent; color: var(--blanc); border-radius: 999px; padding: 8px 14px; font: inherit; font-size: .85rem; cursor: pointer; }
 .numero button:hover { border-color: var(--accent); }
 .titulaire { font-size: .9rem; color: var(--gris); margin-top: 4px; }
-.alerte { border-left: 3px solid var(--accent); padding: 10px 14px; background: rgba(255, 106, 0, .08); border-radius: 0 12px 12px 0; color: var(--blanc); font-size: .95rem; }
+.alerte { border-left: 3px solid var(--accent); padding: 10px 14px; background: rgba(var(--marque-rgb), .08); border-radius: 0 12px 12px 0; color: var(--blanc); font-size: .95rem; }
 .champ { display: grid; gap: 6px; margin-bottom: 16px; }
 .champ label { font-weight: 600; font-size: .95rem; }
 .champ label small { color: var(--gris); font-weight: 400; }
@@ -60,7 +60,7 @@
 /* Carte profil */
 .profil-carte {
   display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center;
-  background: radial-gradient(120% 140% at 0% 0%, rgba(255, 106, 0, .16), transparent 55%), var(--surface);
+  background: radial-gradient(120% 140% at 0% 0%, rgba(var(--marque-rgb), .16), transparent 55%), var(--surface);
   border: 1px solid var(--ligne); border-radius: var(--rayon); padding: clamp(20px, 3.5vw, 32px); margin-bottom: 18px;
 }
 .profil-carte .surtitre { margin: 0 0 4px; }
@@ -99,7 +99,7 @@
 .kpi b { font-size: 1.35rem; letter-spacing: -.02em; }
 .kpi__icone { width: 38px; height: 38px; border-radius: 12px; background: var(--surface-2); display: grid; place-items: center; }
 .kpi__icone svg { width: 20px; height: 20px; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.kpi--accent { border-color: rgba(255, 106, 0, .45); background: linear-gradient(160deg, rgba(255, 106, 0, .16), var(--surface) 70%); }
+.kpi--accent { border-color: rgba(var(--marque-rgb), .45); background: linear-gradient(160deg, rgba(var(--marque-rgb), .16), var(--surface) 70%); }
 .kpi--accent b { color: var(--accent); }
 
 .grille-espace { display: grid; grid-template-columns: 1fr; gap: 0 20px; }
