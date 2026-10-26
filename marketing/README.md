@@ -56,9 +56,13 @@ Mises en page disponibles (`marketing/modeles/`) :
 | Formes de couleur + téléphone | `pro-visuo-facebook` | réseaux sociaux, visibilité |
 | Question + mot géant + 3 bénéfices | `pro-logia-bot` | problème du client, service |
 | Écran d'ordinateur + 3 cartes | `pro-logia-pointage` | logiciel, réalisation sur devis |
+| Documents annotés (bulles numérotées) | `pro-dex-cv` | montrer ce qui fait la différence |
+| Conseils numérotés + exemple | `pro-dex-conseils` | contenu utile, tutoriel |
+| Grille de logos | `pro-visuo-logos` | identités visuelles |
+| Chiffre clé géant + 3 cartes | `pro-dwts-parrainage` | un montant, une statistique vraie |
 Si aucune ne colle, **en créer une nouvelle** (autres idées : avant/après, témoignage client, tutoriel en étapes, chiffre clé, comparatif).
 
-Images encore jamais publiées : DEX `cv.jpg`, `lettre.jpg`, `expose-anglais.jpg`, `expose-classicisme.jpg`, pages `expose-meyene-2..4.jpg` ; Visuo logos (Okoumé, Cap Fit, Glow by Mira, Nappy Queen, Délices de Maman), `action-grace`, `voeux-noel`, `sortie-ta-presence`.
+Images encore jamais publiées : DEX `expose-anglais.jpg`, pages `expose-meyene-2..4.jpg` ; Visuo `action-grace`, `voeux-noel`, `sortie-ta-presence`, `invitation-anniversaire` (enfant flouté).
 
 ### Journal des visuels publiés
 | Date | Branche | Mise en page | Images |
@@ -71,6 +75,10 @@ Images encore jamais publiées : DEX `cv.jpg`, `lettre.jpg`, `expose-anglais.jpg
 | 03/11 | Visuo | formes + téléphone | Saveurs du Cap (logo + affiche restaurant) |
 | 05/11 | Logia | question + mot géant | capture d'un bot réalisé par Logia |
 | 07/11 | Logia | écran + 3 cartes | capture pointage |
+| 09/11 | DEX | documents annotés | cv.jpg, lettre.jpg |
+| 11/11 | DEX | conseils numérotés | expose-classicisme.jpg |
+| 13/11 | Visuo | grille de logos | logos Okoumé, Cap Fit, Glow by Mira, Nappy Queen, Délices de Maman |
+| 14/11 | DWTS | chiffre clé | aucune image (montants du parrainage) |
 
 ## Légendes (description sous l'affiche)
 
