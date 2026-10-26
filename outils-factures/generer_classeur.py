@@ -93,7 +93,9 @@ def article(branche, prestation, formule):
 def image(chemin, largeur):
     """Image redimensionnée en pixels, prête à insérer."""
     tmp = SORTIE.parent / f".tmp_{chemin.stem}_{largeur}.png"
-    im = Image.open(chemin).convert("RGB")
+    im = Image.open(chemin).convert("RGBA")
+    fond = Image.new("RGBA", im.size, (255, 255, 255, 255))   # logos transparents posés sur blanc
+    im = Image.alpha_composite(fond, im).convert("RGB")
     hauteur = round(im.height * largeur / im.width)
     im.resize((largeur, hauteur), Image.LANCZOS).save(tmp)
     return ImageXL(str(tmp)), hauteur
