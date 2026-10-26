@@ -37,6 +37,16 @@ Décision d'Elie : les anciennes affiches (fond sombre dégradé, cartes en verr
 - fonds unis (bleu vif, bleu nuit ou clair), pas d'effet verre.
 Modèles : `pro-dwts-site` (site en ligne), `pro-logia-gestion` (offre + prix + fondateur), `pro-logia-catalogue` (catalogue de logiciels). Styles communs : `_pro.css`. Rendu : servir le dépôt (`npx http-server -p 8774`) puis capturer `/marketing/modeles/<modèle>.html` en 1080×1350.
 
+## Légendes (description sous l'affiche)
+
+La légende **ne répète pas** le texte de l'affiche : l'image donne le titre et le prix, la légende raconte le reste. Structure observée chez les concurrents qui écrivent bien (Akxa, ONEG, PubPlanner, Outsourcia) :
+1. **Accroche** d'une phrase, différente du titre de l'affiche (un problème vécu, une situation).
+2. **Contexte** en 2-3 phrases : pourquoi c'est un problème, ce que ça coûte au client.
+3. **Notre réponse** expliquée simplement (comment ça se passe, pas la liste de l'affiche).
+4. **Question** pour faire commenter.
+5. **Bloc contact** : 🌐 site, 📲 WhatsApp, 📍 Port-Gentil, Gabon.
+6. **3 hashtags** maximum.
+
 ## Veille concurrentielle (à refaire à chaque publication de concurrent envoyée par Elie)
 
 1. Noter ce que le concurrent **vend** et si DWTS le propose déjà (tarifs.html). Sinon, le signaler à Elie sans l'inventer.
