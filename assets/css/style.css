@@ -238,22 +238,16 @@ body::after {
 }
 .nav__inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 
-/* Logo texte de la navigation : « DWTS » + petit nom complet */
+/* Logo de la navigation : grille DWTS + petit nom complet */
 .marque { display: inline-flex; align-items: center; gap: 12px; }
-.marque__sigle {
-  position: relative;
-  font-weight: 900; font-size: 1.45rem; letter-spacing: -.04em; line-height: 1;
-}
-.marque__sigle::after {          /* point orange, comme un nœud du circuit */
-  content: ""; display: inline-block; width: 7px; height: 7px; margin-left: 3px;
-  background: var(--orange); border-radius: 2px;
-  box-shadow: 0 0 12px var(--orange);
-}
+.marque__icone { display: inline-flex; }
+.marque__icone img { display: block; width: 36px; height: 36px; }
+.marque__icone .marque__icone--papier { display: none; }   /* version pour fond clair (DEX) */
 .marque__nom {
   font-size: .62rem; line-height: 1.25; letter-spacing: .16em; text-transform: uppercase;
   color: var(--gris); border-left: 1px solid var(--ligne); padding-left: 12px;
 }
-.marque__nom b { color: var(--orange); font-weight: 700; }
+.marque__nom b { color: #7fb0ff; font-weight: 700; }
 
 .nav__liens { display: flex; align-items: center; gap: 6px; }
 .nav__liens a:not(.bouton) {
@@ -951,7 +945,7 @@ body::after {
 /* ---------- 16. Pied de page ---------- */
 .pied { border-top: 1px solid var(--ligne); padding: 80px 0 40px; position: relative; overflow: hidden; }
 .pied__grille { display: grid; grid-template-columns: 1.3fr 1fr 1.2fr; gap: 50px; }
-.pied__logo img { width: 230px; height: auto; opacity: .95; }
+.pied__logo img { width: 260px; height: auto; }
 .pied__logo p { color: var(--gris); margin-top: 18px; font-size: .95rem; max-width: 34ch; }
 .pied h2 { font-size: .78rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gris); font-weight: 600; margin-bottom: 18px; }
 .pied ul { display: grid; gap: 10px; }
@@ -1060,9 +1054,9 @@ body::after {
 .theme-papier .nav__liens a:not(.bouton) { color: rgba(15,42,74,.72); }
 .theme-papier .nav__liens a:not(.bouton):hover { background: rgba(15,42,74,.06); color: var(--blanc); }
 .theme-papier .nav__burger span { background: var(--blanc); }
-.theme-papier .marque__sigle::after { background: #1E6FD9; box-shadow: none; }
+.theme-papier .marque__icone .marque__icone--sombre { display: none; }
+.theme-papier .marque__icone .marque__icone--papier { display: block; }
 .theme-papier .marque__nom b { color: #1E6FD9; }
-.theme-papier .pied__logo img { filter: invert(1) brightness(.35) sepia(1) hue-rotate(180deg) saturate(3); }
 .theme-papier .pied__geant { -webkit-text-stroke: 1px rgba(15,42,74,.07); }
 .theme-papier .pied__contact svg { stroke: #1E6FD9; }
 .theme-papier .pied a:hover { color: #1E6FD9; }

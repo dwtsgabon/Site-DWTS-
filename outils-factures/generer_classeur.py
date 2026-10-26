@@ -17,7 +17,7 @@ from PIL import Image
 RACINE = Path(__file__).resolve().parent.parent
 SORTIE = RACINE / "outils-factures" / "DWTS_Devis_Factures.xlsx"
 LOGOS = {
-    "DWTS": RACINE / "assets/img/logo-dwts.png",
+    "DWTS": RACINE / "assets/img/icone-dwts-grille.png",
     "DEX": RACINE / "assets/img/logo-dex-facture.png",
     "Visuo": RACINE / "assets/img/logo-visuo.png",
     "Logia": RACINE / "assets/img/logo-logia.png",
