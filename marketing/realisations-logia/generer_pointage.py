@@ -1,4 +1,6 @@
-"""Génère l'outil gratuit « Pointage du personnel » (Excel, compatible Google Sheets).
+"""Génère l'exemple de réalisation Logia « Pointage du personnel » (Excel, compatible Google Sheets).
+
+Modèle de démonstration pour montrer au client ce que Logia sait faire : il n'est ni offert ni publié.
 
 Usage : python3 generer_pointage.py  ->  Pointage-du-personnel-DWTS.xlsx
 """
@@ -44,7 +46,7 @@ def bandeau(ws, titre, sous_titre, largeur):
     ws.row_dimensions[2].height = 20
 
 
-SIGNATURE = 'Outil offert par Logia (DWTS) · Un logiciel sur mesure pour votre entreprise ? WhatsApp 062 67 14 45'
+SIGNATURE = 'Réalisé par Logia (DWTS) · Un logiciel sur mesure pour votre entreprise ? WhatsApp 062 67 14 45'
 
 wb = Workbook()
 
