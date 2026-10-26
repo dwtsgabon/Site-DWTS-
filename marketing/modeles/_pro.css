@@ -1,0 +1,11 @@
+/* Style « pro » (inspiré des agences concurrentes) : typo grasse en capitales, une seule image forte, bande d'infos en bas. Pas d'émojis, pas d'effet verre. */
+@font-face{font-family:Mont;src:url(/marketing/polices/Montserrat-VF.ttf);font-weight:100 900}
+@font-face{font-family:Anton;src:url(/marketing/polices/Anton-Regular.ttf)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1350px;font-family:Mont,sans-serif;overflow:hidden;position:relative;color:#fff}
+.logo{position:absolute;top:64px;left:72px;height:74px}
+.titre{position:absolute;left:72px;font-family:Mont;font-weight:900;text-transform:uppercase;line-height:.98;letter-spacing:-1px}
+.pied{position:absolute;left:0;right:0;bottom:0;height:150px;display:grid;grid-template-columns:1fr 1fr;gap:10px 40px;padding:28px 72px;align-content:center}
+.pied div{display:flex;align-items:center;gap:16px;font-size:23px;font-weight:600}
+.pied svg{width:34px;height:34px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.trait{position:absolute;height:6px;width:260px;background:linear-gradient(90deg,#22D3EE 0 33%,#1E6FD9 33% 66%,#8B3DFF 66%)}
