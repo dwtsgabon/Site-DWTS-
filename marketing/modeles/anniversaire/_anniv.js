@@ -4,7 +4,7 @@
 var P=new URLSearchParams(location.search);
 var D={prenom:'Elie Ryan',nom:'Mbwendi Mbadinga',jour:'30',mois:'Octobre',annee:'2026',jsem:'Vendredi',
  role:'Fondateur de DWTS',message:"Que cette nouvelle année t'apporte santé, succès et sagesse.",
- photo:'/marketing/photos/elie-detoure.png',photo2:'/marketing/photos/elie-pull.png',photo3:'/marketing/photos/elie-chemise.png',photo4:'/marketing/photos/elie-costume.png',surnom:'Elie',pourcent:'89',ligne1:'Mon'};
+ photo:'/marketing/photos/elie-manteau.png',photo2:'/marketing/photos/elie-costume-blanc.png',photo3:'/marketing/photos/elie-costume-noir.png',photo4:'/marketing/photos/elie-assis.png',surnom:'Elie',pourcent:'89',ligne1:'Mon'};
 var T={ // thèmes : fond 1, fond 2, accent, accent 2, texte
  bleu:['#061021','#123a78','#2F86FF','#22D3EE','#ffffff'],
  or:['#140b05','#4a2a10','#E2A93B','#F7D98B','#ffffff'],

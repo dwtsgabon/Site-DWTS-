@@ -54,13 +54,16 @@ Serveur local à la racine du dépôt (`npx http-server -p 8775 -s -c-1 .`), pui
 5. Ajouter une ligne au tableau et un aperçu dans `apercus/`.
 6. Montrer à Elie avant toute publication.
 
-## Photos disponibles (`marketing/photos/`)
+## Photos disponibles ()
 
-Détourées avec rembg (modèle `birefnet-portrait`, très propre sur les cheveux).
+Détourées avec rembg (modèle ). Les photos studio (générées par Elie avec Gemini) sont les photos **par défaut** ; l'étoile Gemini a été effacée.
 
-| Fichier | Tenue | Cadrage |
-|---|---|---|
-| `elie-detoure.png` | chemise noire, lunettes de soleil | buste, de face |
-| `elie-pull.png` | pull marron, lunettes | buste, léger sourire |
-| `elie-chemise.png` | chemise blanche à motifs | buste, de trois quarts |
-| `elie-costume.png` | gilet + cravate, selfie miroir | en pied jusqu'aux genoux (bas à fondre : traces du miroir) |
+| Fichier | Tenue | Cadrage | Usage par défaut |
+|---|---|---|---|
+|  | manteau marron, lunettes, éclairage studio | buste, de trois quarts | photo principale (modèles 0 à 8) |
+|  | costume noir, chemise blanche | debout, jusqu'aux cuisses | modèle 7 (en pied), 6 (part de cercle) |
+|  | costume noir, lunettes de soleil | debout, jusqu'aux cuisses | modèle 8 (petite photo), 6 |
+|  | t-shirt noir, assis | en entier (bouts de chaise visibles en bas) | modèle 6 (part de cercle, visage seul) |
+| , , ,  | anciennes photos (selfies) | — | en réserve |
+
+**Attention au cadrage :** les modèles sont réglés pour une photo buste comme . Une photo plus large ou plus serrée peut cacher le titre : toujours vérifier le rendu.
