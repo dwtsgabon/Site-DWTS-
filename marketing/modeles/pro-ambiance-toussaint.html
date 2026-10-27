@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Publication d'ambiance : Toussaint. Sobre, sans vente, sans contacts. Bougie dessinée (SVG), pas d'image de banque. -->
+<link rel="stylesheet" href="/marketing/modeles/_pro.css">
+<style>
+body{background:radial-gradient(520px 520px at 50% 47%,rgba(255,190,90,.20),rgba(255,190,90,0) 70%),linear-gradient(180deg,#0a1222 0%,#060b16 100%)}
+.etoiles{position:absolute;inset:0;background:radial-gradient(circle,rgba(255,255,255,.35) 1px,transparent 1.5px) 0 0/90px 90px,radial-gradient(circle,rgba(255,255,255,.18) 1px,transparent 1.5px) 45px 45px/130px 130px;-webkit-mask:linear-gradient(180deg,#000,transparent 45%)}
+.date{position:absolute;top:110px;left:0;right:0;text-align:center;font-size:22px;font-weight:600;letter-spacing:8px;color:#d9c39a}
+.titre{position:absolute;top:160px;left:0;right:0;text-align:center;font-family:Mont;font-weight:300;font-size:92px;letter-spacing:2px;color:#f4ead8;text-transform:none}
+.trait{position:absolute;top:290px;left:50%;width:120px;height:2px;margin-left:-60px;background:linear-gradient(90deg,transparent,#d9c39a,transparent)}
+svg.bougie{position:absolute;left:50%;top:360px;width:260px;margin-left:-130px}
+.texte{position:absolute;top:900px;left:120px;right:120px;text-align:center;font-size:34px;line-height:1.5;font-weight:400;color:#e6dccb}
+.texte b{font-weight:600;color:#fff}
+.sign{position:absolute;bottom:80px;left:0;right:0;display:flex;justify-content:center}
+.sign img{height:54px;opacity:.85}
+</style></head><body>
+<div class="etoiles"></div>
+<div class="date">1ER NOVEMBRE</div>
+<div class="titre">Toussaint</div>
+<div class="trait"></div>
+<svg class="bougie" viewBox="0 0 260 520">
+ <defs>
+  <radialGradient id="halo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffd27a" stop-opacity=".55"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>
+  <linearGradient id="flamme" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff9a2e"/><stop offset=".55" stop-color="#ffd166"/><stop offset="1" stop-color="#fff6d6"/></linearGradient>
+  <linearGradient id="cire" x1="0" x2="1"><stop offset="0" stop-color="#d9cfc0"/><stop offset=".45" stop-color="#fbf6ee"/><stop offset="1" stop-color="#c9bead"/></linearGradient>
+ </defs>
+ <circle cx="130" cy="120" r="120" fill="url(#halo)"/>
+ <path d="M130 40 C150 80 162 105 158 128 C154 152 140 162 130 162 C120 162 106 152 102 128 C98 105 110 80 130 40Z" fill="url(#flamme)"/>
+ <path d="M130 92 C138 110 141 122 139 134 C137 146 133 150 130 150 C127 150 123 146 121 134 C119 122 122 110 130 92Z" fill="#fffaf0" opacity=".9"/>
+ <rect x="127" y="158" width="6" height="18" rx="2" fill="#3a2a1a"/>
+ <path d="M70 182 Q130 166 190 182 L190 470 Q130 486 70 470Z" fill="url(#cire)"/>
+ <path d="M150 178 Q156 210 151 236 Q148 250 154 262" stroke="#efe6d8" stroke-width="10" fill="none" stroke-linecap="round"/>
+ <ellipse cx="130" cy="182" rx="60" ry="12" fill="#f3ece1"/>
+ <ellipse cx="130" cy="484" rx="110" ry="18" fill="#000" opacity=".35"/>
+</svg>
+<p class="texte">En ce jour de Toussaint, nous avons une pensée pour <b>ceux qui nous ont quittés</b> et pour toutes les familles qui se souviennent.</p>
+<div class="sign"><img src="/assets/img/logo-dwts-clair.png"></div>
+</body></html>
