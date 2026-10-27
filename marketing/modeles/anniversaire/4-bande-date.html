@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- Modèle 4 « bande date » : bande noire verticale avec la date, grand reflet en noir et blanc, photo couleur devant, nom en grosses lettres. Inspiré de « Kelly Ilunga ». -->
+<link rel="stylesheet" href="_anniv.css">
+<style>
+body{background:linear-gradient(135deg,var(--f1),var(--f2))}
+.reflet{position:absolute;right:-170px;top:-30px;width:980px;filter:grayscale(1) contrast(1.05);opacity:.6;-webkit-mask-image:linear-gradient(#000 40%,transparent 66%)}
+.bande{position:absolute;left:0;top:0;bottom:0;width:190px;background:#0b0b0f;color:#fff;text-align:center;padding-top:44px}
+.bande b{display:block;font-family:Anton;font-size:150px;line-height:1}
+.bande span{display:block;font-family:Anton;font-size:32px;letter-spacing:2px;text-transform:uppercase}
+.photo{left:110px;width:500px}
+.droite{position:absolute;right:44px;bottom:110px;width:400px;color:var(--texte);z-index:2}
+.droite small{display:flex;align-items:center;gap:12px;font-size:24px;font-weight:600;letter-spacing:6px;text-transform:uppercase}
+.droite small:before,.droite small:after{content:'';height:2px;width:46px;background:currentColor}
+.droite h2{font-family:Mont;font-weight:800;font-size:50px;line-height:1;text-transform:uppercase;letter-spacing:-1px}
+.droite b{display:block;margin-top:10px;font-family:Anton;font-weight:400;font-size:104px;line-height:.95;text-transform:uppercase;color:var(--acc);-webkit-text-stroke:2px #0b0b0f;text-shadow:5px 5px 0 #0b0b0f}
+.droite i{display:inline-block;margin-top:14px;padding:6px 14px;background:var(--acc2);color:#fff;font-style:normal;font-size:19px;font-weight:700;letter-spacing:3px;text-transform:uppercase}
+.droite p{margin-top:16px;font-size:18px;line-height:1.5;font-weight:500}
+.logo{left:44px;bottom:50px;height:28px;filter:brightness(0) invert(1)}
+</style></head><body data-theme="gris">
+<img class="reflet" data-photo>
+<img class="photo" data-photo>
+<div class="bande"><b data-v="jour"></b><span data-v="mois"></span></div>
+<div class="droite"><small>Joyeux</small><h2>Anniversaire</h2><b data-v="prenom"></b><i data-v="role"></i><p data-v="message"></p></div>
+<img class="logo">
+<script src="_anniv.js"></script>
+</body></html>

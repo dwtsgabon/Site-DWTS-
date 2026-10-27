@@ -106,6 +106,8 @@ La légende **ne répète pas** le texte de l'affiche : l'image donne le titre e
 
 ## Veille concurrentielle (à refaire à chaque publication de concurrent envoyée par Elie)
 
+**Bibliothèque des modèles d'anniversaire : `marketing/modeles/anniversaire/`** (modèles à paramètres : nom, date, photo, couleurs).
+
 **Bibliothèque des concurrents : `marketing/veille.md`** (une fiche par publication reçue, à lire avant chaque nouvelle publication et à compléter à chaque capture envoyée par Elie).
 
 1. Noter ce que le concurrent **vend** et si DWTS le propose déjà (tarifs.html). Sinon, le signaler à Elie sans l'inventer.

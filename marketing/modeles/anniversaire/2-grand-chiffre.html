@@ -1,0 +1,23 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- Modèle 2 « grand chiffre » : le jour en chiffre géant détouré derrière la personne, fond uni. Inspiré de « 29 October » et « 30 Irana ». -->
+<link rel="stylesheet" href="_anniv.css">
+<style>
+body{background:radial-gradient(800px 800px at 50% 55%,var(--f2),var(--f1) 75%)}
+.haut{position:absolute;top:56px;left:0;right:0;text-align:center}
+.haut b{display:block;font-family:Script;font-weight:400;font-size:130px;line-height:.9}
+.haut span{display:block;font-family:Serif;font-weight:700;font-size:92px;line-height:1;letter-spacing:2px;margin-top:-14px}
+.haut small{display:block;margin-top:14px;font-size:22px;font-weight:600;letter-spacing:10px;text-transform:uppercase;color:var(--acc)}
+.chiffre{position:absolute;left:0;right:0;top:330px;text-align:center;font-family:Mont;font-weight:800;font-size:860px;line-height:.82;letter-spacing:-30px;color:transparent;-webkit-text-stroke:5px var(--acc2);opacity:.9}
+.mois{position:absolute;right:70px;top:520px;writing-mode:vertical-rl;font-size:40px;font-weight:700;letter-spacing:14px;text-transform:uppercase}
+.photo{left:50%;margin-left:-390px;width:780px}
+.nom{position:absolute;left:0;right:0;bottom:56px;text-align:center;font-size:22px;font-weight:700;letter-spacing:6px;text-transform:uppercase;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+.logo{left:60px;top:60px;height:42px}
+</style></head><body data-theme="rouge">
+<div class="chiffre" data-v="jour"></div>
+<div class="mois" data-v="mois"></div>
+<img class="photo" data-photo>
+<div class="haut"><b>Joyeux</b><span>Anniversaire</span><small data-v="prenom"></small></div>
+<div class="nom"><span data-v="role"></span></div>
+<img class="logo">
+<script src="_anniv.js"></script>
+</body></html>

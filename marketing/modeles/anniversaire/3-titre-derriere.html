@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- Modèle 3 « titre derrière la tête » : grand titre doré, la personne passe devant, nom en écriture + capitales. Inspiré de « Dr. Samuel Afriyie ». -->
+<link rel="stylesheet" href="_anniv.css">
+<style>
+body{background:radial-gradient(900px 760px at 50% 40%,var(--f2),var(--f1) 72%)}
+.pts{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.10) 1.6px,transparent 1.8px);background-size:26px 26px;-webkit-mask-image:radial-gradient(500px 600px at 50% 45%,transparent 50%,#000 90%)}
+.sur{position:absolute;top:64px;left:0;right:0;text-align:center;font-size:34px;font-weight:500;letter-spacing:22px;text-transform:uppercase}
+.titre{position:absolute;top:110px;left:0;right:0;text-align:center;font-family:Anton;font-size:178px;line-height:1.1;letter-spacing:1px;text-transform:uppercase;background:linear-gradient(180deg,var(--acc2),var(--acc) 55%,#8a5a12);-webkit-background-clip:text;color:transparent}
+.photo{left:50%;margin-left:-400px;width:800px;bottom:120px;-webkit-mask-image:linear-gradient(#000 80%,transparent 99%)}
+.boite{position:absolute;left:66px;top:520px;border:2px solid var(--acc);padding:14px 18px;text-align:center;font-family:Anton;font-size:44px;line-height:1.05;letter-spacing:2px;text-transform:uppercase;color:var(--acc2)}
+.boite span{display:block;font-family:Mont;font-weight:700;font-size:20px;letter-spacing:4px}
+.cote{position:absolute;right:66px;top:520px;width:200px;font-size:19px;line-height:1.5;opacity:.85}
+.cote:after{content:'• • •';display:block;margin-top:8px;color:var(--acc);letter-spacing:4px}
+.bas{position:absolute;left:0;right:0;bottom:0;height:420px;background:linear-gradient(transparent,var(--f1) 45%)}
+.nom{position:absolute;left:0;right:0;bottom:118px;text-align:center}
+.nom b{display:block;font-family:Script;font-weight:400;font-size:96px;line-height:.8;color:var(--acc2)}
+.nom span{display:block;font-family:Serif;font-weight:800;font-size:70px;letter-spacing:3px;text-transform:uppercase;background:linear-gradient(180deg,#fff,var(--acc2) 40%,var(--acc));-webkit-background-clip:text;color:transparent}
+.ligne{position:absolute;left:0;right:0;bottom:62px;text-align:center;font-size:18px;font-weight:600;letter-spacing:9px;text-transform:uppercase;opacity:.8}
+.logo{left:60px;bottom:52px;height:32px}
+</style></head><body data-theme="or">
+<div class="pts"></div>
+<div class="sur">Joyeux</div>
+<div class="titre">Anniversaire</div>
+<img class="photo" data-photo>
+<div class="boite"><span data-v="jour"></span><span data-v="mois"></span></div>
+<div class="cote">Célébrer l'homme, le parcours et la vision.</div>
+<div class="bas"></div>
+<div class="nom"><b data-v="prenom"></b><span data-v="nom"></span></div>
+<div class="ligne" data-v="role"></div>
+<img class="logo">
+<script src="_anniv.js"></script>
+</body></html>
