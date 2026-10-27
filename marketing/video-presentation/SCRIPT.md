@@ -3,6 +3,7 @@
 Format vertical 9:16 (1080 × 1920), environ 68 s. Voix : « Elie Ryan » (voir `.claude/skills/video-dwts/SKILL.md`).
 
 ## État (26 oct. 2026)
+- v3.1 (27 oct.) : voix du parrainage (53,9 s à 82,6 s) remontée d'environ 3,5 dB, avec un peu de présence (2,5 kHz), à la demande d'Elie.
 - Vidéo v3 validée par Elie : nouveau logo DWTS (grille) dans les scènes 1, 2, 8 et fin, orange remplacé par le bleu du logo (#2F86FF). Script, voix, musique et minutage inchangés (son repris de la v2).
 - `video.html` pointe maintenant directement vers les images du site (`assets/img/visuo/`) : rendu image par image avec `render(t)` à 30 i/s, puis ffmpeg.
 
