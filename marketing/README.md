@@ -39,6 +39,20 @@ Décision d'Elie : les anciennes affiches (fond sombre dégradé, cartes en verr
 Autres inspirations reprises : Bloc Communication (grandes formes de couleur + téléphone, `pro-visuo-facebook`), Ghostroar (question au public en haut, mot géant, 3 bénéfices à icônes rondes, `pro-logia-bot`).
 Modèles : `pro-dwts-site` (site en ligne), `pro-logia-gestion` (offre + prix + fondateur), `pro-logia-catalogue` (catalogue de logiciels). Styles communs : `_pro.css`. Rendu : servir le dépôt (`npx http-server -p 8774`) puis capturer `/marketing/modeles/<modèle>.html` en 1080×1350.
 
+## Validation avant programmation (règle d'Elie, 27 oct. 2026)
+
+Chaque nouvelle publication est **montrée à Elie (visuel + légende + date et heure) avant d'être programmée**. On ne programme qu'après son accord.
+
+## Publications d'ambiance (fêtes, journées mondiales, humour, actualité)
+
+Environ 25 % des publications. Dates suivies dans l'agenda Google d'Elie (rappels « 📣 DWTS ») et dans le calendrier « Jours fériés au Gabon ».
+- Jours de deuil ou de recueillement (Toussaint…) : message sobre, **aucune vente, aucun contact, aucun prix**, logo discret.
+- Fêtes : une seule publication, sans « commandez ».
+- Humour : vise une situation, jamais une personne ; illustrations faites par nous, pas de mèmes copiés.
+- Foot et actualité : jamais de photo de vrai joueur ni de logo de club ; personnages dessinés aux couleurs, ton neutre envers les deux camps.
+- Jamais de politique, de religion clivante ni de drame.
+Modèle : `pro-ambiance-toussaint`.
+
 ## Varier les visuels (règle d'Elie)
 
 Chaque publication a **sa propre mise en page**, choisie selon ce qu'elle raconte. Jamais deux publications d'affilée avec la même mise en page, et jamais les mêmes images deux fois en moins de 4 semaines. Avant de créer, relire le journal ci-dessous.
