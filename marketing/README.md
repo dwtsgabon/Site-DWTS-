@@ -53,6 +53,25 @@ Environ 25 % des publications. Dates suivies dans l'agenda Google d'Elie (rappel
 - Jamais de politique, de religion clivante ni de drame.
 Modèle : `pro-ambiance-toussaint`.
 
+## Couleurs par marque et alternance clair / sombre (règle d'Elie, 27 oct. 2026)
+
+Constat du 27/10 : 10 publications sur 14 étaient sombres, toutes avec la même bande bleu nuit et trop de bleu. La page paraissait sombre et répétitive.
+
+1. **Même mise en page, couleur de la marque.** Chaque marque garde son style mais a son fond et sa couleur :
+
+| Marque | Fond | Couleurs | Bande du bas |
+|---|---|---|---|
+| DEX | papier clair (`#F7F4EC`) | bleu encre `#1E6FD9`, texte `#0F2A4A` | bleue `#1E6FD9` |
+| Visuo | crème `#FFF6EE` ou blanc lilas `#F8F4FF` | orange `#FF6A00` + violet `#8B3DFF` | violette `#5b21b6` ou orange |
+| Logia | blanc / turquoise très clair, ou vert | turquoise `#22D3EE` (texte `#0891b2`) | turquoise, texte noir |
+| DWTS | jaune `#FFC21A` ou blanc | bleu nuit `#0b1a33` + couleurs du logo | blanche |
+
+2. **Jamais deux publications sombres d'affilée** sur la page. Au plus 1 sur 3 en fond sombre.
+3. Fond sombre réservé à : deuil (Toussaint…), ambiance « soirée » ou anniversaire validé par Elie, et Logia quand les publications voisines sont claires.
+4. Le bleu n'est plus la couleur par défaut : il appartient à DEX et au logo DWTS.
+5. Avant de programmer, faire la planche des publications voisines et vérifier les points 2 et 4.
+6. Versions claires déjà faites : `pro-visuo-mur-clair`, `pro-logia-gestion-clair`, `pro-visuo-facebook-clair`, `pro-dex-conseils-clair`, `pro-dwts-parrainage-clair`.
+
 ## Varier les visuels (règle d'Elie)
 
 Chaque publication a **sa propre mise en page**, choisie selon ce qu'elle raconte. Jamais deux publications d'affilée avec la même mise en page, et jamais les mêmes images deux fois en moins de 4 semaines. Avant de créer, relire le journal ci-dessous.
@@ -86,15 +105,15 @@ Images encore jamais publiées : DEX `expose-anglais.jpg`, pages `expose-meyene-
 | 28/10 | DEX | bande de pages | exposé Nzebi (garde, sommaire, page 5) |
 | 29/10 | DWTS (ambiance) | anniversaire 5 « en téléchargement » | aucune photo |
 | 30/10 | DWTS (ambiance) | anniversaire 3 « titre doré » | photo studio Elie manteau |
-| 30/10 | Visuo | mur d'affiches | culte traversée, veillée, salon adoration, conférence art, Afro Vibes |
-| 31/10 | Logia | prix géant + fondateur | photo Elie, capture gestion |
-| 03/11 | Visuo | formes + téléphone | Saveurs du Cap (logo + affiche restaurant) |
+| 30/10 | Visuo | mur d'affiches (version claire crème) | culte traversée, veillée, salon adoration, conférence art, Afro Vibes |
+| 31/10 | Logia | prix géant + fondateur (version claire turquoise, photo studio) | photo Elie, capture gestion |
+| 03/11 | Visuo | formes + téléphone (version claire lilas) | Saveurs du Cap (logo + affiche restaurant) |
 | 05/11 | Logia | question + mot géant | capture d'un bot réalisé par Logia |
 | 07/11 | Logia | écran + 3 cartes | capture pointage |
 | 09/11 | DEX | documents annotés | cv.jpg, lettre.jpg |
-| 11/11 | DEX | conseils numérotés | expose-classicisme.jpg |
+| 11/11 | DEX | conseils numérotés (version papier) | expose-classicisme.jpg |
 | 13/11 | Visuo | grille de logos | logos Okoumé, Cap Fit, Glow by Mira, Nappy Queen, Délices de Maman |
-| 14/11 | DWTS | chiffre clé | aucune image (montants du parrainage) |
+| 14/11 | DWTS | chiffre clé (version jaune) | aucune image (montants du parrainage) |
 
 ## Légendes (description sous l'affiche)
 
