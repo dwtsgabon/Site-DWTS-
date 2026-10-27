@@ -33,8 +33,8 @@ Sans paramètre : anniversaire d'Elie (30 octobre). Exemple pour un autre :
 | `jour`, `mois`, `annee`, `jsem` | Date (jsem = jour de la semaine) | 30 / Octobre / 2026 / Vendredi |
 | `role` | Ligne sous le nom | Fondateur de DWTS |
 | `message` | Petit vœu (modèles 1 et 4) | Que cette nouvelle année t'apporte santé, succès et sagesse. |
-| `photo` | Photo principale **détourée** (PNG transparent) | `elie-detoure.png` (lunettes de soleil) |
-| `photo2`, `photo3`, `photo4` | Autres photos détourées (modèles 6, 7, 8) | `elie-pull.png`, `elie-chemise.png`, `elie-costume.png` (en pied) |
+| `photo` | Photo principale **détourée** (PNG transparent), cadrage buste | `elie-manteau.png` |
+| `photo2`, `photo3`, `photo4` | Autres photos détourées (modèles 6, 7, 8) | `elie-costume-blanc.png`, `elie-costume-noir.png`, `elie-assis.png` |
 | `surnom` | Mot géant du modèle 8 | Elie |
 | `theme` | Couleurs : `bleu`, `or`, `rouge`, `emeraude`, `violet`, `gris`, `creme` | selon le modèle |
 | `ligne1`, `pourcent` | Modèle 5 : mot en écriture, remplissage de la barre | Mon / 89 |
@@ -56,11 +56,14 @@ Serveur local à la racine du dépôt (`npx http-server -p 8775 -s -c-1 .`), pui
 
 ## Photos disponibles (`marketing/photos/`)
 
-Détourées avec rembg (modèle `birefnet-portrait`, très propre sur les cheveux).
+Détourées avec rembg (modèle `birefnet-portrait`). Les photos studio (générées par Elie avec Gemini) sont les photos **par défaut** ; l'étoile Gemini a été effacée.
 
-| Fichier | Tenue | Cadrage |
-|---|---|---|
-| `elie-detoure.png` | chemise noire, lunettes de soleil | buste, de face |
-| `elie-pull.png` | pull marron, lunettes | buste, léger sourire |
-| `elie-chemise.png` | chemise blanche à motifs | buste, de trois quarts |
-| `elie-costume.png` | gilet + cravate, selfie miroir | en pied jusqu'aux genoux (bas à fondre : traces du miroir) |
+| Fichier | Tenue | Cadrage | Usage par défaut |
+|---|---|---|---|
+| `elie-manteau.png` | manteau marron, lunettes, éclairage studio | buste, de trois quarts | photo principale (modèles 0 à 8) |
+| `elie-costume-blanc.png` | costume noir, chemise blanche | debout, jusqu'aux cuisses | modèle 7 (en pied), 6 (part de cercle) |
+| `elie-costume-noir.png` | costume noir, lunettes de soleil | debout, jusqu'aux cuisses | modèle 8 (petite photo), 6 |
+| `elie-assis.png` | t-shirt noir, assis | en entier (bouts de chaise visibles en bas) | modèle 6 (part de cercle, visage seul) |
+| `elie-detoure.png`, `elie-pull.png`, `elie-chemise.png`, `elie-costume.png` | anciennes photos (selfies) | — | en réserve |
+
+**Attention au cadrage :** les modèles sont réglés pour une photo buste comme `elie-manteau.png`. Une photo plus large ou plus serrée peut cacher le titre : toujours vérifier le rendu.
