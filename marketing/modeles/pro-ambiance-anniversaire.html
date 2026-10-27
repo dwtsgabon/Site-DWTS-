@@ -1,0 +1,33 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Publication d'ambiance : anniversaire du fondateur (30 octobre). Photo réelle détourée, confettis dessinés aux couleurs du logo. -->
+<link rel="stylesheet" href="/marketing/modeles/_pro.css">
+<style>
+body{background:radial-gradient(620px 620px at 50% 58%,rgba(47,134,255,.55),rgba(47,134,255,0) 70%),linear-gradient(180deg,#0b1730 0%,#071022 100%)}
+#conf{position:absolute;inset:0}
+.date{position:absolute;top:96px;left:0;right:0;text-align:center;font-size:22px;font-weight:700;letter-spacing:8px;color:#9fd8ff}
+.titre{position:absolute;top:140px;left:0;right:0;text-align:center;font-family:Mont;font-weight:900;font-size:104px;line-height:.95;text-transform:uppercase;letter-spacing:-1px}
+.titre span{display:block;background:linear-gradient(90deg,#22D3EE,#2F86FF 45%,#8B3DFF 75%,#FF6A00);-webkit-background-clip:text;color:transparent}
+.cercle{position:absolute;left:50%;top:420px;width:560px;height:560px;margin-left:-280px;border-radius:50%;background:radial-gradient(circle at 50% 40%,#2F86FF,#0F2A4A 75%);box-shadow:0 0 0 10px rgba(255,255,255,.08),0 0 0 22px rgba(47,134,255,.18)}
+.photo{position:absolute;left:50%;top:430px;width:600px;margin-left:-300px;-webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent 98%)}
+.nom{position:absolute;top:1040px;left:0;right:0;text-align:center}
+.nom b{display:block;font-size:40px;font-weight:800;letter-spacing:1px}
+.nom span{display:block;margin-top:8px;font-size:24px;font-weight:600;letter-spacing:5px;color:#9fd8ff;text-transform:uppercase}
+.sign{position:absolute;bottom:70px;left:0;right:0;display:flex;justify-content:center}
+.sign img{height:56px}
+</style></head><body>
+<svg id="conf" viewBox="0 0 1080 1350"></svg>
+<div class="date">30 OCTOBRE</div>
+<div class="titre">Joyeux<span>anniversaire</span></div>
+<div class="cercle"></div>
+<img class="photo" src="/marketing/photos/elie-detoure.png">
+<div class="nom"><b>Elie Ryan Mbwendi Mbadinga</b><span>Fondateur de DWTS</span></div>
+<div class="sign"><img src="/assets/img/logo-dwts-clair.png"></div>
+<script>
+// Confettis aux couleurs du logo, placés au hasard (graine fixe pour un rendu identique à chaque fois)
+var s=7,r=function(){s=(s*9301+49297)%233280;return s/233280},C=['#22D3EE','#2F86FF','#8B3DFF','#FF6A00','#FFC21A'],h='';
+for(var i=0;i<150;i++){var x=r()*1080,y=r()*1350;if(y>380&&y<1120&&x>230&&x<850)continue;if(y>80&&y<345&&x>100&&x<980)continue;if(y>1030&&y<1300&&x>190&&x<890)continue;var c=C[Math.floor(r()*5)],a=r()*360,w=8+r()*14;
+ h+=(r()<.5)?'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+w*.45+'" rx="2" fill="'+c+'" transform="rotate('+a+' '+x+' '+y+')" opacity=".9"/>':'<circle cx="'+x+'" cy="'+y+'" r="'+w*.35+'" fill="'+c+'" opacity=".85"/>';}
+document.getElementById('conf').innerHTML=h;
+</script>
+</body></html>
