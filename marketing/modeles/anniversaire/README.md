@@ -15,6 +15,9 @@ Aperçus : dossier `apercus/`.
 | 3 | `3-titre-derriere.html` | Grand titre doré, la personne passe devant, nom écriture + capitales | or | oui | « Dr. Samuel Afriyie » |
 | 4 | `4-bande-date.html` | Bande noire avec la date, reflet noir et blanc, nom en grosses lettres | gris | oui | « Kelly Ilunga » |
 | 5 | `5-chargement.html` | « Mon anniversaire en téléchargement… 89 % » — à publier **la veille** | bleu | non | « Mon anniversaire en téléchargement » |
+| 6 | `6-galerie.html` | Photo principale devant, 3 autres photos en noir et blanc dans des parts de cercle, rubans de vœux | creme | 4 photos | « Miss Grace Jason », « 2026 Gallery » |
+| 7 | `7-duo.html` | Grand portrait en reflet à gauche, la même personne en pied à droite | violet | 2 photos | « Hon. Nazeef », « Raymond Bright » |
+| 8 | `8-nom-geant.html` | Prénom en lettres géantes derrière la tête, date dans un cercle, petite photo en pied | bleu | 2 photos | « Celebrating Johnson » |
 
 ## Paramètres (dans l'adresse)
 
@@ -30,8 +33,10 @@ Sans paramètre : anniversaire d'Elie (30 octobre). Exemple pour un autre :
 | `jour`, `mois`, `annee`, `jsem` | Date (jsem = jour de la semaine) | 30 / Octobre / 2026 / Vendredi |
 | `role` | Ligne sous le nom | Fondateur de DWTS |
 | `message` | Petit vœu (modèles 1 et 4) | Que cette nouvelle année t'apporte santé, succès et sagesse. |
-| `photo` | Photo **détourée** (PNG transparent) | `/marketing/photos/elie-detoure.png` |
-| `theme` | Couleurs : `bleu`, `or`, `rouge`, `emeraude`, `violet`, `gris` | selon le modèle |
+| `photo` | Photo principale **détourée** (PNG transparent) | `elie-detoure.png` (lunettes de soleil) |
+| `photo2`, `photo3`, `photo4` | Autres photos détourées (modèles 6, 7, 8) | `elie-pull.png`, `elie-chemise.png`, `elie-costume.png` (en pied) |
+| `surnom` | Mot géant du modèle 8 | Elie |
+| `theme` | Couleurs : `bleu`, `or`, `rouge`, `emeraude`, `violet`, `gris`, `creme` | selon le modèle |
 | `ligne1`, `pourcent` | Modèle 5 : mot en écriture, remplissage de la barre | Mon / 89 |
 
 Les couleurs des thèmes sont dans `_anniv.js` (tableau `T`). Polices : Montserrat, Anton, Great Vibes (écriture), Playfair Display (classique), dans `marketing/polices/`.
@@ -49,8 +54,13 @@ Serveur local à la racine du dépôt (`npx http-server -p 8775 -s -c-1 .`), pui
 5. Ajouter une ligne au tableau et un aperçu dans `apercus/`.
 6. Montrer à Elie avant toute publication.
 
-## Idées en attente (il manque des photos)
+## Photos disponibles (`marketing/photos/`)
 
-- **Galerie / éventail** (« Grace Jason », « 2026 Gallery », « Miwa ») : une grande photo + 3 à 4 photos dans des parts. Il faut 3 à 4 photos de la même personne.
-- **Duo de photos** (« Raymond Bright », « Nazeef ») : la même personne en 2 tenues. Il faut 2 photos détourées.
-- **Nom géant** (« Johnson Philip ») : le prénom en lettres condensées géantes derrière la tête.
+Détourées avec rembg (modèle `birefnet-portrait`, très propre sur les cheveux).
+
+| Fichier | Tenue | Cadrage |
+|---|---|---|
+| `elie-detoure.png` | chemise noire, lunettes de soleil | buste, de face |
+| `elie-pull.png` | pull marron, lunettes | buste, léger sourire |
+| `elie-chemise.png` | chemise blanche à motifs | buste, de trois quarts |
+| `elie-costume.png` | gilet + cravate, selfie miroir | en pied jusqu'aux genoux (bas à fondre : traces du miroir) |
