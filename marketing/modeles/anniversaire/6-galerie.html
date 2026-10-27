@@ -1,0 +1,39 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- Modèle 6 « galerie en éventail » : photo principale devant, 3 autres photos en noir et blanc dans des parts de cercle. Inspiré de « Miss Grace Jason » et « 2026 Gallery ». -->
+<link rel="stylesheet" href="_anniv.css">
+<style>
+body{background:radial-gradient(900px 900px at 30% 20%,var(--f1),var(--f2))}
+.halo{position:absolute;left:40px;top:240px;width:1120px;height:1120px;border-radius:50%;background:radial-gradient(var(--acc) 0,transparent 62%);opacity:.35}
+.part{position:absolute;inset:0}
+.part img{position:absolute;object-fit:cover;object-position:50% 12%;filter:grayscale(1) contrast(1.1)}
+.part .fond{position:absolute;inset:0;background:linear-gradient(160deg,#3a3a3a,#111)}
+.photo{left:20px;width:660px;-webkit-mask-image:linear-gradient(90deg,#000 80%,transparent 99%)}
+.titre{position:absolute;left:64px;top:64px;color:var(--texte)}
+.titre small{display:block;font-size:26px;font-weight:600;letter-spacing:14px;text-transform:uppercase;color:var(--acc)}
+.titre h1{font-family:Anton;font-weight:400;font-size:132px;line-height:.95;text-transform:uppercase}
+.titre b{display:block;font-family:Script;font-weight:400;font-size:84px;line-height:1;margin-top:4px;color:var(--acc2)}
+.tags{position:absolute;left:64px;top:430px;display:flex;flex-direction:column;gap:8px}
+.tags span{padding:5px 14px;color:#fff;font-size:17px;font-weight:700;letter-spacing:2px;text-transform:uppercase;width:max-content}
+.date{position:absolute;right:56px;top:64px;border:2px solid var(--texte);color:var(--texte);padding:10px 16px;text-align:center;font-family:Anton;font-size:56px;line-height:1}
+.date span{display:block;font-family:Mont;font-weight:700;font-size:18px;letter-spacing:3px;text-transform:uppercase}
+.logo{left:64px;top:560px;height:38px;z-index:3}
+.bande{position:absolute;left:0;right:0;bottom:0;height:90px;background:var(--f1);opacity:.0}
+</style></head><body data-theme="creme">
+<div class="halo"></div>
+<div id="parts"></div>
+<img class="photo" data-photo="photo2">
+<div class="titre"><small>Joyeux</small><h1>Anniversaire</h1><b data-v="prenom"></b></div>
+<div class="tags"><span style="background:var(--acc)">Longue vie</span><span style="background:#1E6FD9">Santé</span><span style="background:#2a9d5c">Prospérité</span></div>
+<div class="date"><span data-v="jour" style="font-family:Anton;font-size:56px;letter-spacing:0"></span><span data-v="mois"></span></div>
+<img class="logo">
+<script>
+// 3 parts de cercle (centre 760,760 ; rayon 470), chacune avec une photo
+var cx=600,cy=800,R=560,parts=[[-64,-24,'photo'],[-20,20,'photo3'],[24,64,'photo4']],h='';
+parts.forEach(function(p){var pts=[cx+'px '+cy+'px'],x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+ for(var a=p[0];a<=p[1]+.01;a+=2){var r=a*Math.PI/180,x=cx+R*Math.cos(r),y=cy+R*Math.sin(r);pts.push(x.toFixed(1)+'px '+y.toFixed(1)+'px');x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y)}
+ x0=Math.min(x0,cx);y0=Math.min(y0,cy);x1=Math.max(x1,cx);y1=Math.max(y1,cy);
+ h+='<div class="part" style="clip-path:polygon('+pts.join(',')+')"><div class="fond"></div><img data-photo="'+p[2]+'" style="left:'+(x0+(x1-x0)*.25)+'px;top:'+y0+'px;width:'+((x1-x0)*.75)+'px;height:'+(y1-y0)+'px"></div>'});
+document.getElementById('parts').innerHTML=h;
+</script>
+<script src="_anniv.js"></script>
+</body></html>

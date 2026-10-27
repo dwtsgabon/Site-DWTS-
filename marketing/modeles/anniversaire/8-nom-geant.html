@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- Modèle 8 « nom géant » : le prénom en lettres géantes derrière la tête, date dans un cercle, petite photo en pied. Inspiré de « Celebrating Johnson ». -->
+<link rel="stylesheet" href="_anniv.css">
+<style>
+body{background:linear-gradient(160deg,var(--f2),var(--f1) 70%)}
+.voile{position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.07) 40% 55%,transparent 55%)}
+.sur{position:absolute;right:64px;top:56px;font-family:Serif;font-size:34px;letter-spacing:2px;opacity:.85}
+.geant{position:absolute;left:0;right:0;top:80px;text-align:center;font-family:Anton;font-size:440px;line-height:1;letter-spacing:6px;text-transform:uppercase;color:var(--texte)}
+.photo{left:120px;top:250px;bottom:auto;width:700px;-webkit-mask-image:linear-gradient(#000 70%,transparent 92%)}
+.pied{position:absolute;right:20px;bottom:330px;height:640px;-webkit-mask-image:linear-gradient(#000 50%,transparent 80%)}
+.rond{position:absolute;left:56px;top:560px;width:180px;height:180px;border-radius:50%;border:3px solid var(--texte);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.rond b{font-family:Mont;font-weight:800;font-size:70px;line-height:1}
+.rond span{font-family:Serif;font-size:30px;font-style:italic}
+.bas{position:absolute;left:64px;right:64px;bottom:70px}
+.bas small{display:block;font-size:30px;font-weight:700;letter-spacing:4px;text-transform:uppercase}
+.bas h2{font-family:Anton;font-weight:400;font-size:112px;line-height:1;text-transform:uppercase}
+.bas p{margin-top:12px;font-size:20px;line-height:1.5;opacity:.9;width:640px}
+.bas p:after{content:'';display:block;margin-top:16px;width:120px;height:3px;background:var(--acc2)}
+.logo{right:64px;bottom:70px;height:46px}
+</style></head><body data-theme="bleu">
+<div class="voile"></div>
+<div class="sur">Célébrons</div>
+<div class="geant" data-v="surnom"></div>
+<img class="photo" data-photo>
+<img class="pied" data-photo="photo4">
+<div class="rond"><b data-v="jour"></b><span data-v="mois"></span></div>
+<div class="bas"><small>Joyeux anniversaire</small><h2><span data-v="prenom"></span> <span data-v="nom" style="display:none"></span></h2><p data-v="message"></p></div>
+<img class="logo">
+<script src="_anniv.js"></script>
+</body></html>

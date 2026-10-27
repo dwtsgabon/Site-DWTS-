@@ -1,0 +1,28 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- Modèle 7 « duo » : grand portrait en reflet à gauche, la même personne en pied à droite, texte en écriture. Inspiré de « Hon. Nazeef » et « Raymond Bright ». -->
+<link rel="stylesheet" href="_anniv.css">
+<style>
+body{background:radial-gradient(900px 1000px at 70% 40%,var(--f2),var(--f1) 75%)}
+.reflet{position:absolute;left:-160px;top:-20px;width:900px;opacity:.38;-webkit-mask-image:linear-gradient(90deg,#000 45%,transparent 92%),linear-gradient(#000 50%,transparent 80%);-webkit-mask-composite:source-in;mask-composite:intersect}
+.pied{position:absolute;right:-10px;bottom:-40px;height:1250px;-webkit-mask-image:linear-gradient(#000 52%,transparent 78%)}
+.cercle{position:absolute;left:64px;top:150px;width:150px;height:150px;border-radius:50%;border:2px solid var(--acc);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--acc)}
+.cercle b{font-family:Anton;font-weight:400;font-size:58px;line-height:1}
+.cercle span{font-size:16px;font-weight:700;letter-spacing:3px;text-transform:uppercase}
+.txt{position:absolute;left:64px;bottom:120px;width:560px}
+.txt small{display:block;font-size:24px;font-weight:600;letter-spacing:12px;text-transform:uppercase}
+.txt b{display:block;font-family:Script;font-weight:400;font-size:150px;line-height:.95;color:var(--acc)}
+.txt .tiret{display:flex;align-items:center;gap:14px;margin-top:6px;font-size:20px;font-weight:600;letter-spacing:6px;text-transform:uppercase}
+.txt .tiret:before,.txt .tiret:after{content:'';height:2px;width:50px;background:currentColor}
+.txt h2{margin-top:10px;font-family:Mont;font-weight:900;font-size:60px;line-height:1;text-transform:uppercase;color:var(--acc)}
+.txt i{display:block;margin-top:10px;font-style:normal;font-size:20px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--acc2)}
+.txt p{margin-top:14px;font-size:19px;line-height:1.5;opacity:.85;width:470px}
+.vert{position:absolute;right:20px;bottom:120px;writing-mode:vertical-rl;font-size:16px;font-weight:700;letter-spacing:8px;text-transform:uppercase;opacity:.7}
+.logo{left:64px;top:60px;height:44px}
+</style></head><body data-theme="violet">
+<img class="reflet" data-photo="photo3">
+<img class="pied" data-photo="photo4">
+<div class="cercle"><b data-v="jour"></b><span data-v="mois"></span></div>
+<div class="txt"><small>Joyeux</small><b>Anniversaire</b><div class="tiret">à toi</div><h2 data-v="prenom"></h2><i data-v="role"></i><p data-v="message"></p></div>
+<img class="logo">
+<script src="_anniv.js"></script>
+</body></html>
