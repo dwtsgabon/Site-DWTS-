@@ -84,6 +84,8 @@ Images encore jamais publiées : DEX `expose-anglais.jpg`, pages `expose-meyene-
 | 26/10 | DWTS | ordinateur + site | capture accueil |
 | 27/10 | DWTS | fondateur + branches | photo Elie, 3 logos |
 | 28/10 | DEX | bande de pages | exposé Nzebi (garde, sommaire, page 5) |
+| 29/10 | DWTS (ambiance) | anniversaire 5 « en téléchargement » | aucune photo |
+| 30/10 | DWTS (ambiance) | anniversaire 3 « titre doré » | photo studio Elie manteau |
 | 30/10 | Visuo | mur d'affiches | culte traversée, veillée, salon adoration, conférence art, Afro Vibes |
 | 31/10 | Logia | prix géant + fondateur | photo Elie, capture gestion |
 | 03/11 | Visuo | formes + téléphone | Saveurs du Cap (logo + affiche restaurant) |
