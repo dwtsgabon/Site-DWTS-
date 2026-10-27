@@ -26,7 +26,7 @@ body{background:radial-gradient(620px 620px at 50% 58%,rgba(47,134,255,.55),rgba
 <script>
 // Confettis aux couleurs du logo, placés au hasard (graine fixe pour un rendu identique à chaque fois)
 var s=7,r=function(){s=(s*9301+49297)%233280;return s/233280},C=['#22D3EE','#2F86FF','#8B3DFF','#FF6A00','#FFC21A'],h='';
-for(var i=0;i<70;i++){var x=r()*1080,y=r()*1350;if(y>380&&y<1120&&x>230&&x<850)continue;var c=C[Math.floor(r()*5)],a=r()*360,w=8+r()*14;
+for(var i=0;i<150;i++){var x=r()*1080,y=r()*1350;if(y>380&&y<1120&&x>230&&x<850)continue;if(y>80&&y<345&&x>100&&x<980)continue;if(y>1030&&y<1300&&x>190&&x<890)continue;var c=C[Math.floor(r()*5)],a=r()*360,w=8+r()*14;
  h+=(r()<.5)?'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+w*.45+'" rx="2" fill="'+c+'" transform="rotate('+a+' '+x+' '+y+')" opacity=".9"/>':'<circle cx="'+x+'" cy="'+y+'" r="'+w*.35+'" fill="'+c+'" opacity=".85"/>';}
 document.getElementById('conf').innerHTML=h;
 </script>
