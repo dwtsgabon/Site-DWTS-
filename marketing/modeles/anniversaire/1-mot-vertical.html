@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- Modèle 1 « mot vertical » : grand mot couché à gauche, photo à droite avec son reflet géant en fond, prénom en écriture. Inspiré de « Happy Seun ». -->
+<link rel="stylesheet" href="_anniv.css">
+<style>
+body{background:radial-gradient(900px 900px at 70% 35%,var(--f2),var(--f1) 70%)}
+.reflet{position:absolute;right:-260px;top:-60px;width:1150px;opacity:.16;filter:grayscale(1);-webkit-mask-image:linear-gradient(#000 40%,transparent 80%)}
+.mot{position:absolute;z-index:2;left:30px;bottom:70px;font-family:Anton;font-size:300px;line-height:1;writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:4px}
+.date{position:absolute;left:350px;top:90px;writing-mode:vertical-rl;transform:rotate(180deg);font-size:19px;font-weight:600;letter-spacing:7px;text-transform:uppercase;color:var(--acc2)}
+.photo{left:330px;width:760px}
+.ombre{position:absolute;left:0;right:0;bottom:0;height:520px;background:linear-gradient(transparent,var(--f1) 85%)}
+.bloc{position:absolute;right:60px;bottom:120px;width:470px;text-align:right}
+.bloc small{display:block;font-size:20px;font-weight:600;letter-spacing:9px;text-transform:uppercase;color:var(--acc2)}
+.bloc b{display:block;font-family:Script;font-weight:400;font-size:120px;line-height:1.05;margin:6px 0 4px}
+.bloc i{display:block;font-style:normal;font-size:20px;font-weight:700;letter-spacing:4px;text-transform:uppercase}
+.bloc p{margin-top:16px;font-size:19px;line-height:1.5;opacity:.85}
+.logo{left:96px;top:60px;height:46px;transform:none}
+.datebas{position:absolute;left:330px;bottom:60px;font-size:18px;letter-spacing:5px;font-weight:600;text-transform:uppercase;opacity:.7}
+</style></head><body data-theme="bleu">
+<img class="reflet" data-photo>
+<div class="mot">Joyeux</div>
+<div class="date"><span data-v="jsem"></span> · <span data-v="jour"></span> <span data-v="mois"></span> · <span data-v="annee"></span></div>
+<img class="photo" data-photo>
+<div class="ombre"></div>
+<div class="bloc"><small>Anniversaire</small><b data-v="prenom"></b><i data-v="role"></i><p data-v="message"></p></div>
+<img class="logo" style="left:auto;right:60px;top:60px">
+<script src="_anniv.js"></script>
+</body></html>

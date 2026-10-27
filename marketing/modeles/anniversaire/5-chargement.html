@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- Modèle 5 « en téléchargement » : annonce la veille, sans photo. Barre de chargement aux couleurs du logo. Inspiré de « Mon anniversaire en téléchargement… ». -->
+<link rel="stylesheet" href="_anniv.css">
+<style>
+body{background:radial-gradient(700px 600px at 50% 48%,var(--f2),var(--f1) 75%)}
+.grille{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:54px 54px;-webkit-mask-image:radial-gradient(600px 600px at 50% 50%,#000,transparent)}
+.c{position:absolute;left:0;right:0;top:430px;text-align:center}
+.c b{display:block;font-family:Script;font-weight:400;font-size:150px;line-height:.7}
+.c h1{font-family:Mont;font-weight:800;font-size:96px;letter-spacing:-1px}
+.barre{position:relative;margin:34px auto 0;width:700px;height:40px;border-radius:40px;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 2px rgba(255,255,255,.15)}
+.barre div{height:100%;border-radius:40px;background:linear-gradient(90deg,#22D3EE,#2F86FF 45%,#8B3DFF 80%,#FF6A00)}
+.pc{position:absolute;right:-110px;top:2px;font-size:30px;font-weight:700}
+.c p{margin-top:26px;font-size:32px;font-weight:500;letter-spacing:1px}
+.c p:after{content:'';display:inline-block;width:3px;height:30px;margin-left:6px;vertical-align:-4px;background:var(--acc2)}
+.date{position:absolute;left:0;right:0;top:250px;text-align:center;font-size:22px;font-weight:600;letter-spacing:12px;text-transform:uppercase;color:var(--acc2)}
+.logo{left:50%;transform:translateX(-50%);bottom:80px;height:54px}
+</style></head><body data-theme="bleu">
+<div class="grille"></div>
+<div class="date"><span data-v="jour"></span> · <span data-v="mois"></span></div>
+<div class="c"><b data-v="ligne1"></b><h1>Anniversaire</h1>
+<div class="barre"><div data-pourcent></div><span class="pc"><span data-v="pourcent"></span>%</span></div>
+<p>En téléchargement…</p></div>
+<img class="logo">
+<script src="_anniv.js"></script>
+</body></html>

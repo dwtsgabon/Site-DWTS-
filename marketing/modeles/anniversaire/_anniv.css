@@ -1,0 +1,10 @@
+/* Base commune des modèles d'anniversaire (1080×1350). Couleurs en variables : changées par le paramètre ?theme= (voir _anniv.js). */
+@font-face{font-family:Mont;src:url(/marketing/polices/Montserrat-VF.ttf);font-weight:100 900}
+@font-face{font-family:Anton;src:url(/marketing/polices/Anton-Regular.ttf)}
+@font-face{font-family:Script;src:url(/marketing/polices/GreatVibes-Regular.ttf)}
+@font-face{font-family:Serif;src:url(/marketing/polices/PlayfairDisplay-VF.ttf);font-weight:400 900}
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1350px;overflow:hidden;position:relative;font-family:Mont,sans-serif;color:var(--texte);background:var(--f1)}
+.abs{position:absolute}
+.photo{position:absolute;bottom:0}
+.logo{position:absolute;height:52px}
