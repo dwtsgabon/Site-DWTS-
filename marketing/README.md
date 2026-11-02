@@ -53,6 +53,13 @@ Environ 25 % des publications. Dates suivies dans l'agenda Google d'Elie (rappel
 - Jamais de politique, de religion clivante ni de drame.
 Modèle : `pro-ambiance-toussaint`.
 
+## Sensibilisation (demande d'Elie, 2 nov. 2026)
+
+Pendant les mois de cause (Novembre bleu, Octobre rose, etc.), glisser **une publication de sensibilisation par semaine environ**, le matin (9 h), sans vente.
+- Messages de santé prudents : « parlez-en à votre médecin », jamais de conseil médical ni de chiffre sans source (citer la source dans la réponse à Elie).
+- Modèle : `modeles/pro-ambiance-novembre-bleu.html` (fond clair, ruban de la couleur de la cause).
+- Plan Novembre bleu 2026 : 03/11 (n°1, lancement) · 10/11 (idées reçues : « je n'ai mal nulle part ») · 19/11 (Journée internationale de l'homme) · 24/11 (où en parler à Port-Gentil : vérifier les campagnes réelles de l'année). Autre date du mois : 14/11, Journée mondiale du diabète.
+
 ## Couleurs par marque et alternance clair / sombre (règle d'Elie, 27 oct. 2026)
 
 Constat du 27/10 : 10 publications sur 14 étaient sombres, toutes avec la même bande bleu nuit et trop de bleu. La page paraissait sombre et répétitive.
@@ -107,6 +114,8 @@ Images encore jamais publiées : DEX `expose-anglais.jpg`, pages `expose-meyene-
 | 30/10 | DWTS (ambiance) | anniversaire 3 « titre doré » | photo studio Elie manteau |
 | 30/10 | Visuo | mur d'affiches (version claire crème) | culte traversée, veillée, salon adoration, conférence art, Afro Vibes |
 | 31/10 | Logia | prix géant + fondateur (version claire turquoise, photo studio) | photo Elie, capture gestion |
+| 02/11 | DWTS (ambiance) | « Bienvenue novembre » + calendrier | aucune image |
+| 03/11 | DWTS (ambiance) | Novembre bleu n°1 (ruban + 3 messages) | aucune image |
 | 03/11 | Visuo | formes + téléphone (version claire lilas) | Saveurs du Cap (logo + affiche restaurant) |
 | 05/11 | Logia | question + mot géant | capture d'un bot réalisé par Logia |
 | 07/11 | Logia | écran + 3 cartes | capture pointage |
