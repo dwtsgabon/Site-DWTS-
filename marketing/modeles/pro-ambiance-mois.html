@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Publication d'ambiance « Bienvenue <mois> » : fond clair, nom du mois aux couleurs du logo, calendrier du mois. Ne vend pas. Mois réglable : ?mois=11&annee=2026 -->
+<link rel="stylesheet" href="/marketing/modeles/_pro.css">
+<style>
+@font-face{font-family:Script;src:url(/marketing/polices/GreatVibes-Regular.ttf)}
+body{background:radial-gradient(600px 500px at 0 0,rgba(34,211,238,.18),transparent 70%),radial-gradient(600px 500px at 100% 100%,rgba(255,106,0,.16),transparent 70%),#FBFAF7;color:#0b1a33}
+.logo{left:50%;transform:translateX(-50%);top:70px;height:58px}
+.bv{position:absolute;top:175px;left:0;right:0;text-align:center;font-family:Script;font-size:130px;line-height:1;color:#0b1a33}
+.mois{position:absolute;top:290px;left:0;right:0;text-align:center;font-family:Anton;font-size:210px;line-height:1;letter-spacing:6px;text-transform:uppercase;background:linear-gradient(90deg,#FF6A00,#8B3DFF 40%,#1E6FD9 70%,#22D3EE);-webkit-background-clip:text;color:transparent}
+.cal{position:absolute;left:170px;right:170px;top:560px;background:#fff;border-radius:34px;padding:34px 38px;box-shadow:0 30px 70px rgba(11,26,51,.12)}
+.cal h3{text-align:center;font-size:24px;font-weight:800;letter-spacing:6px;color:#1E6FD9;margin-bottom:18px}
+.g{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center}
+.g b{font-size:18px;font-weight:800;color:#8a94a6}
+.g span{height:50px;display:grid;place-items:center;border-radius:14px;font-size:24px;font-weight:700}
+.g span.on{background:#0b1a33;color:#fff}
+.msg{position:absolute;top:1110px;left:90px;right:90px;text-align:center;font-size:31px;font-weight:700;line-height:1.35}
+.msg span{color:#FF6A00}
+.trait{left:50%;margin-left:-130px;top:1252px}
+</style></head><body>
+<img class="logo" src="/assets/img/logo-dwts.png">
+<div class="bv">Bienvenue</div>
+<div class="mois" id="mois"></div>
+<div class="cal"><h3 id="ann"></h3><div class="g" id="g"></div></div>
+<p class="msg">Nouveau mois, nouveaux objectifs.<br><span>Que novembre vous apporte de belles réussites.</span></p>
+<div class="trait"></div>
+<script>
+var P=new URLSearchParams(location.search),m=+(P.get('mois')||11),a=+(P.get('annee')||2026),j=+(P.get('jour')||0);
+var N=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+document.getElementById('mois').textContent=N[m-1];document.getElementById('ann').textContent=(N[m-1]+' '+a).toUpperCase();
+document.querySelector('.msg span').textContent='Que '+N[m-1]+' vous apporte de belles réussites.';
+var h='';['L','M','M','J','V','S','D'].forEach(function(d){h+='<b>'+d+'</b>'});
+var d1=(new Date(a,m-1,1).getDay()+6)%7,n=new Date(a,m,0).getDate();
+for(var i=0;i<d1;i++)h+='<span></span>';
+for(var k=1;k<=n;k++)h+='<span'+(k===1?' class="on"':'')+'>'+k+'</span>';
+document.getElementById('g').innerHTML=h;
+</script>
+</body></html>
