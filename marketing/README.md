@@ -118,6 +118,7 @@ Images encore jamais publiées : DEX `expose-anglais.jpg`, pages `expose-meyene-
 | 03/11 | DWTS (ambiance) | Novembre bleu n°1 (ruban + 3 messages) | aucune image |
 | 03/11 | Visuo | formes + téléphone (version claire lilas) | Saveurs du Cap (logo + affiche restaurant) |
 | 05/11 | Logia | question + mot géant | capture d'un bot réalisé par Logia |
+| 06/11 | DWTS (réaction) | question A/B fond jaune | aucune image |
 | 07/11 | Logia | écran + 3 cartes | capture pointage |
 | 09/11 | DEX | documents annotés | cv.jpg, lettre.jpg |
 | 11/11 | DEX | conseils numérotés (version papier) | expose-classicisme.jpg |
