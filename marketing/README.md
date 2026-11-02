@@ -138,17 +138,23 @@ La légende **ne répète pas** le texte de l'affiche : l'image donne le titre e
 5. Ne jamais annoncer « gratuit » (décision d'Elie) : le concurrent au logiciel de pointage « gratuit » menait à une version payante. Les outils montrés sont des **exemples de réalisation**, vendus sur devis : pointage du personnel (`marketing/realisations-logia/`, affiche `post-logia-4`).
 6. Modèles déjà faits en réponse : `post-logia-2` (logiciel de gestion), `post-logia-3` (bot WhatsApp), `post-visuo-3` (gestion de page Facebook). Styles communs : `_commun-concurrence.css`.
 
-## Semaine type
+## Semaine type (une publication par jour, décision d'Elie du 2 nov. 2026)
 
-| Jour | Facebook | Chaîne WhatsApp (publiée à la main) |
-|---|---|---|
-| Lundi | Affiche DEX (accroche courte) | Astuce du jour |
-| Mardi | Reel tuto 1 | Avant / après |
-| Mercredi | Affiche DEX | Offre DEX |
-| Jeudi | Reel tuto 2 | Astuce |
-| Vendredi | Affiche Visuo (ou Logia une semaine sur deux) | Réalisation Visuo |
-| Samedi | Reel tuto 3 | Question à la communauté |
-| Dimanche | — | Résumé de la semaine |
+| Jour | Facebook (19 h) |
+|---|---|
+| Lundi | Affiche DEX |
+| Mardi | Reel (tuto ou avant / après) |
+| Mercredi | Affiche Visuo |
+| Jeudi | Reel |
+| Vendredi | Affiche Logia ou DWTS |
+| Samedi | Publication pour faire réagir (question A/B, sondage, humour, actualité) |
+| Dimanche | Reel ou publication d'ambiance (fête, journée mondiale) |
+
+- 4 affiches ou publications + 2 à 3 reels par semaine. **Ne pas vendre tous les jours** : la publication du samedi et l'ambiance ne vendent pas (ou seulement en une phrase à la fin).
+- Couleurs par marque et jamais deux publications sombres d'affilée (section plus haut).
+- **Validation groupée** : chaque dimanche soir, montrer à Elie toute la semaine suivante d'un coup (7 visuels, 7 légendes, 7 horaires). Pour les reels, les scripts sont validés ensemble, puis les visuels, puis le montage (compétence `video-dwts`).
+- Modèle « question A/B » : `modeles/pro-dwts-sondage.html` (fond jaune DWTS).
+- Chaîne WhatsApp (publiée à la main par Elie) : reprendre la publication du jour.
 
 ## Fabriquer un reel
 
