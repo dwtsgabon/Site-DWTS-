@@ -1,0 +1,122 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Reel DEX « Ton sommaire en 30 secondes » (script validé par Elie le 2 nov. 2026). Écran Word reproduit (pas filmé), menus de Word en français. -->
+<link rel="stylesheet" href="/marketing/modeles/_reel.css">
+<style>
+:root{--fond:#F7F4EC;--encre:#0F2A4A;--accent:#1E6FD9}
+body::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(#F7F4EC 0 58px,#e4eaf4 58px 60px);opacity:.6}
+/* fenêtre Word */
+.word{position:absolute;left:60px;right:60px;top:600px;height:640px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 30px 70px rgba(15,42,74,.25);font-family:Mont}
+.wt{height:44px;background:#2B579A;color:#fff;font-size:20px;font-weight:600;display:flex;align-items:center;padding:0 20px}
+.tabs{display:flex;gap:30px;background:#f3f3f3;padding:14px 22px 0;font-size:24px;font-weight:600;color:#444}
+.tabs span{padding-bottom:12px}
+.tabs .on{color:#2B579A;border-bottom:5px solid #2B579A}
+.rub{display:flex;gap:16px;align-items:center;background:#f3f3f3;padding:16px 22px;border-bottom:2px solid #ddd;height:110px}
+.sty{border:2px solid #ccc;background:#fff;border-radius:8px;padding:10px 16px;font-size:22px;text-align:center;min-width:150px}
+.sty i{display:block;font-style:normal;font-size:30px;font-weight:700;color:#2B579A}
+.sty.hl{border-color:#1E6FD9;box-shadow:0 0 0 5px rgba(30,111,217,.3);background:#e8f0fe}
+.btn{border:2px solid #ccc;background:#fff;border-radius:8px;padding:12px 18px;font-size:24px;font-weight:600}
+.btn.hl{border-color:#1E6FD9;box-shadow:0 0 0 5px rgba(30,111,217,.3);background:#e8f0fe}
+.page{position:absolute;left:90px;right:90px;top:230px;bottom:0;background:#fff;padding:30px 40px;box-shadow:0 0 0 1px #e5e5e5}
+.page p{height:14px;background:#e6e9ee;border-radius:7px;margin:12px 0}
+.page .t1{font-size:30px;font-weight:800;color:#2B579A;margin:16px 0 8px}
+.page .t2{font-size:25px;font-weight:700;color:#2F6BBF;margin:12px 0 6px 20px}
+.sel{background:#cfe0ff;padding:2px 6px;border-radius:4px}
+.menu{position:absolute;left:380px;top:200px;width:420px;background:#fff;border:2px solid #ccc;border-radius:10px;box-shadow:0 20px 40px rgba(0,0,0,.2);padding:12px;font-size:22px}
+.menu div{padding:12px 14px;border-radius:6px}
+.menu .hl{background:#e8f0fe;outline:3px solid #1E6FD9}
+.som h4{font-size:30px;font-weight:800;color:#2B579A;margin-bottom:14px}
+.som div{display:flex;font-size:23px;margin:9px 0}
+.som div.s{padding-left:28px;font-size:21px;color:#333}
+.som div b{font-weight:600}
+.som div span{flex:1;border-bottom:3px dotted #aaa;margin:0 8px 6px}
+.ctx{position:absolute;left:420px;top:330px;width:400px;background:#fff;border:2px solid #ccc;border-radius:10px;box-shadow:0 20px 40px rgba(0,0,0,.2);padding:10px;font-size:22px}
+.ctx div{padding:11px 14px;border-radius:6px;color:#333}
+.ctx .hl{background:#e8f0fe;outline:3px solid #1E6FD9;color:#0F2A4A;font-weight:700}
+/* scène 1 */
+.acc{position:absolute;left:80px;right:80px;top:420px;font-size:112px;font-weight:900;line-height:1;letter-spacing:-2px}
+.acc span{color:#1E6FD9}
+.chrono{position:absolute;left:80px;top:870px;font-family:Anton;font-size:230px;line-height:1;color:#1E6FD9}
+.chrono small{font-family:Mont;font-size:44px;font-weight:800;color:#0F2A4A;margin-left:14px}
+/* fin */
+.logo{position:absolute;left:80px;top:300px;height:90px}
+.fin{position:absolute;left:80px;right:80px;top:470px;font-size:78px;font-weight:900;line-height:1.05}
+.fin span{color:#1E6FD9}
+.tags{position:absolute;left:80px;right:80px;top:760px;display:flex;flex-direction:column;gap:18px}
+.tags div{font-size:38px;font-weight:700;display:flex;align-items:center;gap:18px}
+.tags div:before{content:"✓";display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#1E6FD9;color:#fff;font-size:30px}
+.prix{position:absolute;left:80px;top:1000px;font-family:Anton;font-size:120px;line-height:1;color:#0F2A4A}
+.prix small{font-family:Mont;font-size:36px;font-weight:800;color:#1E6FD9;display:block;letter-spacing:3px}
+.wa{position:absolute;left:80px;right:80px;top:1150px;background:#1E6FD9;color:#fff;border-radius:30px;padding:24px 34px;font-size:46px;font-weight:800;text-align:center}
+</style></head><body>
+
+<!-- 1 · accroche (0–3 s), sans logo -->
+<div class="scene" style="--s:0s;--d:3s">
+ <div class="acc">Ton sommaire<br>en <span>30 secondes</span></div>
+ <div class="chrono pop" style="--s:.6s">0:30<small>chrono</small></div>
+</div>
+
+<!-- 2 · Titre 1 (3–10 s) -->
+<div class="scene" style="--s:3s;--d:7s">
+ <div class="etape">Étape 1</div>
+ <div class="h">Sélectionne tes titres,<br>clique sur <span>Titre 1</span></div>
+ <div class="word"><div class="wt">Mon exposé.docx – Word</div>
+  <div class="tabs"><span>Fichier</span><span class="on">Accueil</span><span>Insertion</span><span>Mise en page</span><span>Références</span></div>
+  <div class="rub"><div class="sty"><i>AaBb</i>Normal</div><div class="sty hl"><i>AaBb</i>Titre 1</div><div class="sty"><i>AaBb</i>Titre 2</div></div>
+  <div class="page"><div class="t1"><span class="sel">I. Introduction</span></div><p></p><p style="width:80%"></p><div class="t1">II. Le classicisme</div><div class="t2">1. Définition</div><p></p><p style="width:70%"></p></div>
+  <div class="clic" style="--s:5.5s;left:300px;top:150px"></div>
+ </div>
+</div>
+
+<!-- 3 · Références > Table des matières (10–17 s) -->
+<div class="scene" style="--s:10s;--d:7s">
+ <div class="etape">Étape 2</div>
+ <div class="h"><span>Références</span> → Table des matières → Table automatique</div>
+ <div class="word"><div class="wt">Mon exposé.docx – Word</div>
+  <div class="tabs"><span>Fichier</span><span>Accueil</span><span>Insertion</span><span>Mise en page</span><span class="on">Références</span></div>
+  <div class="rub"><div class="btn hl">Table des matières ▾</div><div class="btn">Ajouter le texte</div><div class="btn">Mettre à jour la table</div></div>
+  <div class="page"><p style="width:40%"></p><p></p></div>
+  <div class="menu pop" style="--s:12s;left:30px"><div>Intégré</div><div class="hl">Table automatique 1</div><div>Table automatique 2</div><div>Table manuelle</div></div>
+  <div class="clic" style="--s:13.5s;left:200px;top:300px"></div>
+ </div>
+</div>
+
+<!-- 4 · résultat (17–22 s) -->
+<div class="scene" style="--s:17s;--d:5s">
+ <div class="h">Et voilà : <span>les bons numéros</span> de page</div>
+ <div class="word"><div class="wt">Mon exposé.docx – Word</div>
+  <div class="page som" style="top:60px;left:60px;right:60px">
+   <h4>Sommaire</h4>
+   <div class="pop" style="--s:17.6s"><b>I. Introduction</b><span></span>3</div>
+   <div class="pop" style="--s:18s"><b>II. Le classicisme</b><span></span>4</div>
+   <div class="s pop" style="--s:18.4s">1. Définition<span></span>4</div>
+   <div class="s pop" style="--s:18.8s">2. Les grands auteurs<span></span>6</div>
+   <div class="pop" style="--s:19.2s"><b>III. Conclusion</b><span></span>9</div>
+   <div class="pop" style="--s:19.6s"><b>Bibliographie</b><span></span>10</div>
+  </div>
+ </div>
+</div>
+
+<!-- 5 · mettre à jour (22–27 s) -->
+<div class="scene" style="--s:22s;--d:5s">
+ <div class="etape">Astuce</div>
+ <div class="h">Texte modifié ? Clic droit →<br><span>Mettre à jour la table</span></div>
+ <div class="word"><div class="wt">Mon exposé.docx – Word</div>
+  <div class="page som" style="top:60px;left:60px;right:60px">
+   <h4>Sommaire</h4>
+   <div><b>I. Introduction</b><span></span>3</div><div><b>II. Le classicisme</b><span></span>4</div><div class="s">1. Définition<span></span>4</div>
+  </div>
+  <div class="ctx pop" style="--s:23s"><div>Couper</div><div>Copier</div><div class="hl">Mettre à jour la table…</div><div>Police…</div></div>
+ </div>
+</div>
+
+<!-- 6 · fin (27–33 s) -->
+<div class="scene last" style="--s:27s;--d:6s">
+ <img class="logo" src="/assets/img/logo-dwts.png">
+ <div class="fin">Pas le temps ?<br><span>Notre équipe DEX</span> s'en occupe.</div>
+ <div class="tags"><div>Saisie et mise en forme</div><div>Sommaire et pagination</div><div>Aperçu avant de payer</div></div>
+ <div class="prix"><small>EXPOSÉ DÈS</small>2 500 FCFA</div>
+ <div class="wa">WhatsApp · 062 67 14 45</div>
+</div>
+<div class="bar" style="--t:33s"></div>
+</body></html>

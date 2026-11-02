@@ -1,0 +1,18 @@
+/* Base des reels « pro » 1080×1920 (depuis nov. 2026). Couleurs par marque via variables. Zones de sécurité : contenu entre y=270 et y=1248. */
+@font-face{font-family:Mont;src:url(/marketing/polices/Montserrat-VF.ttf);font-weight:100 900}
+@font-face{font-family:Anton;src:url(/marketing/polices/Anton-Regular.ttf)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;overflow:hidden;position:relative;font-family:Mont,sans-serif;color:var(--encre);background:var(--fond)}
+.scene{position:absolute;inset:0;opacity:0;animation:show var(--d) linear var(--s) both}
+.scene.last{animation-name:last}
+@keyframes show{0%{opacity:0;transform:translateY(30px)}4%{opacity:1;transform:none}96%{opacity:1}100%{opacity:0}}
+@keyframes last{0%{opacity:0;transform:translateY(30px)}4%{opacity:1;transform:none}100%{opacity:1}}
+.pop{opacity:0;animation:pop .45s ease-out var(--s) both}
+@keyframes pop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
+.etape{position:absolute;left:80px;top:300px;font-size:30px;font-weight:800;letter-spacing:6px;color:var(--accent);text-transform:uppercase}
+.h{position:absolute;left:80px;right:80px;top:345px;font-size:62px;font-weight:900;line-height:1.05;letter-spacing:-1px}
+.h span{color:var(--accent)}
+.bar{position:absolute;left:0;bottom:0;height:12px;background:var(--accent);animation:grow var(--t) linear both}
+@keyframes grow{from{width:0}to{width:100%}}
+.clic{position:absolute;width:64px;height:64px;border-radius:50%;background:rgba(30,111,217,.25);border:4px solid var(--accent);opacity:0;animation:clic 1s ease-out var(--s) both}
+@keyframes clic{0%{opacity:0;transform:scale(.4)}30%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.5)}}
