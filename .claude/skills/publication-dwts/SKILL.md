@@ -28,4 +28,4 @@ Règles complètes : `marketing/README.md`. Bibliothèque des concurrents : `mar
 
 ## Heures habituelles
 
-Publications de marque à 19 h. Ambiance le matin (9 h). Teaser la veille au soir (21 h), après la publication de 19 h.
+Une publication par jour à 19 h (semaine type dans le README). Ambiance le matin (9 h). Teaser la veille au soir (21 h). Validation groupée de la semaine chaque dimanche soir.
