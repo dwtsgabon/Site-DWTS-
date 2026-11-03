@@ -12,7 +12,7 @@ Publicité hors Facebook (idée d'Elie, 3 nov. 2026) : flyers pour les élèves,
 
 ## Exporter
 Serveur local à la racine (`npx http-server -p 8775 -s -c-1 .`), puis page `flyer-dex.html?face=recto|verso&code=LYC-A&parrain=CODE` :
-- A5 300 ppp : capture 874×1240 avec `deviceScaleFactor: 2` ; PDF 148×210 mm (`printBackground`) pour l'imprimeur.
+- A5 300 ppp : capture 874×1240 avec `deviceScaleFactor: 2`, puis PDF fait à partir des images (PIL, `resolution=300`). **Ne pas utiliser `page.pdf()` : le QR code et les fonds blancs disparaissent du PDF.**
 - A3 : même page avec `deviceScaleFactor: 4`.
 - Vérifier le QR après export (lecture avec OpenCV `QRCodeDetector`).
 
