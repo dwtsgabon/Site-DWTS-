@@ -16,6 +16,10 @@ Serveur local à la racine (`npx http-server -p 8775 -s -c-1 .`), puis page `fly
 - A3 : même page avec `deviceScaleFactor: 4`.
 - Vérifier le QR après export (lecture avec OpenCV `QRCodeDetector`).
 
+## Décision d'Elie (3 nov. 2026) : une seule affiche, un seul QR code
+
+On imprime **une seule version** : `flyer-dex.html?code=GEN` (message « Bonjour DEX, j'ai vu l'affiche (GEN) »). Les QR par établissement ci-dessous restent disponibles si on veut un jour mesurer établissement par établissement.
+
 ## Établissements de Port-Gentil (liste validée par Elie le 3 nov. 2026)
 
 | Code | Établissement | Type |
