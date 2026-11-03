@@ -15,3 +15,28 @@ Serveur local à la racine (`npx http-server -p 8775 -s -c-1 .`), puis page `fly
 - A5 300 ppp : capture 874×1240 avec `deviceScaleFactor: 2` ; PDF 148×210 mm (`printBackground`) pour l'imprimeur.
 - A3 : même page avec `deviceScaleFactor: 4`.
 - Vérifier le QR après export (lecture avec OpenCV `QRCodeDetector`).
+
+## Établissements de Port-Gentil (liste validée par Elie le 3 nov. 2026)
+
+| Code | Établissement | Type |
+|---|---|---|
+| LAA | Lycée Joseph Ambouroué Avaro | lycée public |
+| LTB | Lycée Thuriaf Bantsantsa | lycée public |
+| LBA | Lycée de Bac Aviation | lycée public |
+| LTO | Lycée technique Jean-Fidèle Otando | lycée public |
+| LRW | Collège et lycée Raponda Walker | privé catholique |
+| LCL | Collège Charles Lwanga | privé |
+| LDE | Collège et lycée Delta | privé |
+| LIS | Lycée islamique | privé |
+| LPC | Lycée Pierre Corneille | privé (statut à confirmer) |
+| LVH | Lycée français Victor Hugo | programme français |
+| CPA | CES du Parc | collège public |
+| CBA | CES de Bac Aviation | collège public |
+| SDC | Sup de Com | supérieur |
+| SUP | Sup'Management Gabon | supérieur |
+| CSP | Centre de spécialisation professionnelle | formation technique |
+| ESF | ESFIP Port-Gentil | supérieur |
+| CMF | CMFEP de Ntchengué | formation |
+
+Fichiers d'impression : un PDF A5 recto-verso par code (`Flyer-DEX-<code>.pdf`). Pour l'affiche A3, imprimer le même PDF en A3 (agrandissement 141 %).
+Quand un message WhatsApp arrive avec « (LBA) », le client vient des flyers du lycée de Bac Aviation : noter les commandes par code pour savoir où réimprimer.
