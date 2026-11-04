@@ -24,6 +24,8 @@ Les captures d'écran ne sont pas stockées ici (le dépôt est public). Seule l
 | 10 | Empreinte Créative (graphiste) | ? | Création visuelle | Objet symbole + jeu de mots (« Ça ne doit pas t'amuser ») | **272** · 13 comm. · 8 partages | Novembre bleu n°2 |
 | 11 | AK Design RDC | RDC | Agence digitale | Image-métaphore (tortue sur skate), une seule couleur | 126 · 3 comm. | affiches DWTS / Visuo |
 | 12 | NKAP | Cameroun | Sites web | Question + rattache l'actualité (Movember) au service | ? | DWTS site, publications d'actualité |
+| 13 | Ghostroar Digital (2) | Cameroun | Sites, marketing, gestion | « Digitalisez votre avenir » + bande de 5 services | 4 · 1 comm. · 1 partage | `pro-dwts-presentation` |
+| 14 | Ghostroar Digital (3) | Cameroun | Marketing digital | « Votre communication attire. Mais convertit-elle ? » | 2 · 1 comm. · 1 partage | légendes question |
 
 **Leçon principale :** la seule publication qui a vraiment marché (75 réactions) montre **le vrai outil à l'écran**. Les affiches avec photo de banque d'images font 1 à 8 réactions.
 
@@ -126,6 +128,22 @@ Les captures d'écran ne sont pas stockées ici (le dépôt est public). Seule l
 - **Ce qui marche :** surfer sur l'actualité du mois avec une phrase drôle.
 - **À éviter :** photo de banque d'images, 3 numéros, trop de hashtags.
 - **Notre réponse :** une phrase d'actualité dans nos légendes du mois (sans transformer la cause en publicité).
+
+## 13. Ghostroar — « Digitalisez votre avenir »
+
+- **Date vue :** 04/11/2026 · **Réactions :** 4 · 1 comm. · 1 partage
+- **Visuel :** la même femme en veste verte (couleur de la marque) que dans leurs autres publications, qui touche des icônes en verre ; titre noir + vert ; **bande de 5 services avec icônes** (Développement web & mobile, Marketing, Community management, Plateformes de gestion, Solutions digitales) ; bouton vert avec le site.
+- **Légende :** seulement des hashtags.
+- **Ce qui marche :** identité très reconnaissable (même personnage, même vert à chaque publication : on reconnaît la marque sans lire le nom) ; la bande de services résume l'offre en un coup d'œil.
+- **À éviter :** image très « IA / banque d'images » et légende vide → presque aucune réaction.
+
+## 14. Ghostroar — « Votre communication attire. Mais convertit-elle ? »
+
+- **Réactions :** 2 · 1 comm. · 1 partage (2 h après publication)
+- **Visuel :** fond sombre, même personnage pensif devant un ordinateur, titre en 3 temps (fin / gras blanc / gras vert), trait vert, site en bas.
+- **Légende :** problème des entreprises → « nous vous accompagnons » → phrase d'élan → lien WhatsApp, site, 4 hashtags.
+- **Ce qui marche :** titre en 2 temps qui pose une question (attire… mais convertit ?).
+- **À retenir :** comparé aux publications Novembre bleu drôles (272 et 355 réactions), les belles images lisses « IA » font très peu de réactions. **Le beau ne suffit pas : il faut du vrai, de l'humour ou une vraie utilité.**
 
 ---
 
