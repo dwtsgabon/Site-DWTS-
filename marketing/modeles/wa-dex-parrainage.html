@@ -9,15 +9,19 @@ body{width:1080px;height:1920px;background:#F7F4EC;color:#0F2A4A}
 body::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(#F7F4EC 0 46px,#dfe7f3 46px 48px);opacity:.7}
 .logo{top:110px;height:92px}
 .tag{position:absolute;top:132px;right:72px;font-size:24px;font-weight:900;letter-spacing:3px;color:#0F2A4A;background:#FFC21A;padding:12px 20px;border-radius:12px}
-.titre{top:260px;font-size:84px;color:#0F2A4A;z-index:3}
+.titre{top:290px;font-size:80px;color:#0F2A4A;z-index:3}
 .titre span{color:#1E6FD9}
 .sous{position:absolute;left:72px;top:450px;width:600px;font-size:31px;font-weight:600;color:#41546e;line-height:1.3;z-index:3}
 .sous b{color:#0F2A4A}
-.photo{position:absolute;right:-10px;top:250px;height:600px;z-index:2;filter:drop-shadow(0 20px 30px rgba(15,42,74,.25))}
-.gain{position:absolute;left:56px;right:56px;top:570px;height:440px;background:#fff;border-radius:30px;box-shadow:0 30px 60px rgba(15,42,74,.12);padding:36px 44px;z-index:1}
+.notifs{position:absolute;right:44px;top:44px;width:330px;display:flex;flex-direction:column;gap:14px}
+.n{background:#F2F6FC;border:2px solid #dfe7f3;border-radius:18px;padding:12px 18px;display:flex;align-items:center;gap:14px}
+.n i{flex:none;width:46px;height:46px;border-radius:50%;background:#16a34a;color:#fff;font-style:normal;font-size:30px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.n b{display:block;font-size:30px;font-weight:900;color:#16a34a;line-height:1}
+.n span{font-size:19px;font-weight:600;color:#5a6b82}
+.gain{position:absolute;left:56px;right:56px;top:520px;height:490px;background:#fff;border-radius:30px;box-shadow:0 30px 60px rgba(15,42,74,.12);padding:36px 44px;z-index:1}
 .gain .big{font-family:Anton;font-size:170px;line-height:.95;color:#1E6FD9}
 .gain .big small{font-family:Mont;font-size:40px;font-weight:900;color:#0F2A4A;margin-left:10px}
-.gain .d{font-size:27px;font-weight:700;margin-top:10px;width:600px;line-height:1.3}
+.gain .d{font-size:27px;font-weight:700;margin-top:10px;width:520px;line-height:1.3}
 .ex{position:absolute;left:44px;right:44px;bottom:30px;background:#FFC21A;border-radius:18px;padding:18px 24px;font-size:28px;font-weight:800;display:flex;justify-content:space-between;align-items:center}
 .ex span{font-size:24px;font-weight:700}
 .et{position:absolute;left:56px;right:56px;top:1050px;height:590px;background:#1E6FD9;color:#fff;border-radius:30px;padding:38px 44px}
@@ -37,10 +41,10 @@ body::before{content:"";position:absolute;inset:0;background:repeating-linear-gr
 <img class="logo" src="/assets/img/logo-dex-marque-t.png">
 <div class="tag">PARRAINAGE</div>
 
-<div class="titre">Gagne de<br>l'argent avec<br><span>ta classe</span></div>
-<img class="photo" src="/marketing/photos/elie-costume-blanc.png">
+<div class="titre">Gagne de l'argent<br><span>avec ta classe</span></div>
 
 <div class="gain">
+ <div class="notifs"><div class="n"><i>+</i><div><b>+500 F</b><span>Exposé commandé</span></div></div><div class="n"><i>+</i><div><b>+500 F</b><span>CV commandé</span></div></div><div class="n"><i>+</i><div><b>+500 F</b><span>Exposé commandé</span></div></div></div>
  <div class="big">500 F<small>pour toi</small></div>
  <p class="d">à chaque exposé, CV ou rapport commandé par un camarade. Sans plafond.</p>
  <div class="ex">10 commandes = 5 000 F <span>sur ton Airtel Money ou Mobicash</span></div>
