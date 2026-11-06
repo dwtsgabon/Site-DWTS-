@@ -150,7 +150,7 @@ La légende **ne répète pas** le texte de l'affiche : l'image donne le titre e
 
 ## Semaine type (une publication par jour, décision d'Elie du 2 nov. 2026)
 
-| Jour | Facebook (19 h) |
+| Jour | Facebook (12 h 15, décision d'Elie du 6 nov. 2026 : pic Metricool à midi) |
 |---|---|
 | Lundi | Affiche DEX |
 | Mardi | Reel (tuto ou avant / après) |
