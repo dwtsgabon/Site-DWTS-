@@ -2,7 +2,7 @@
 <html><head><meta charset="utf-8">
 <!-- Image à repartager sur WhatsApp (statut + groupes), format vertical 1080x1920.
      Contenu utile (checklist) + renvoi vers la chaîne WhatsApp et la page Facebook.
-     ?qr=chemin du QR (par défaut : page Facebook) -->
+     Deux QR : chaîne WhatsApp et page Facebook. -->
 <link rel="stylesheet" href="/marketing/modeles/_pro.css">
 <style>
 body{width:1080px;height:1920px;background:#F7F4EC;color:#0F2A4A}
@@ -19,17 +19,18 @@ body::before{content:"";position:absolute;inset:0;background:repeating-linear-gr
 .c svg{width:32px;height:32px;fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
 .l h3{font-size:31px;font-weight:800;line-height:1.15}
 .l p{font-size:23px;color:#5a6b82;margin-top:5px;line-height:1.3}
-.capt{position:absolute;left:72px;right:72px;top:1345px;display:flex;align-items:center;gap:18px;font-size:27px;font-weight:700;color:#0F2A4A}
+.capt{position:absolute;left:72px;right:72px;top:1318px;display:flex;align-items:center;gap:18px;font-size:27px;font-weight:700;color:#0F2A4A}
 .capt svg{width:44px;height:44px;flex:none;fill:none;stroke:#1E6FD9;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.bas{position:absolute;left:0;right:0;bottom:0;height:430px;background:#1E6FD9;color:#fff;padding:44px 72px}
-.bas h2{font-size:44px;font-weight:900;text-transform:uppercase;line-height:1.05;width:640px}
-.res{margin-top:26px;display:flex;flex-direction:column;gap:16px;width:640px}
-.res div{display:flex;align-items:center;gap:16px;font-size:27px;font-weight:700}
-.res svg{width:40px;height:40px;flex:none;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.res small{font-weight:500;opacity:.9;font-size:23px;line-height:1.6}
-.qr{position:absolute;right:72px;top:40px;width:250px;text-align:center}
-.qr img{width:250px;height:250px;background:#fff;border-radius:18px;padding:12px}
-.qr p{font-size:20px;font-weight:700;margin-top:10px;line-height:1.25}
+.bas{position:absolute;left:0;right:0;bottom:0;height:500px;background:#1E6FD9;color:#fff;padding:40px 72px}
+.bas h2{font-size:40px;font-weight:900;text-transform:uppercase;line-height:1.05}
+.duo{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.bloc{display:flex;gap:20px;align-items:center}
+.bloc img{width:190px;height:190px;flex:none;background:#fff;border-radius:16px;padding:10px}
+.bloc h4{display:flex;align-items:center;gap:10px;font-size:25px;font-weight:800}
+.bloc svg{width:32px;height:32px;flex:none;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bloc p{font-size:21px;font-weight:500;line-height:1.3;margin-top:8px;opacity:.92}
+.tel{margin-top:30px;padding-top:22px;border-top:2px solid rgba(255,255,255,.3);font-size:27px;font-weight:700}
+.tel small{font-weight:500;font-size:23px;opacity:.9}
 </style></head><body>
 <img class="logo" src="/assets/img/logo-dex-marque-t.png">
 <div class="tag">ASTUCE ÉLÈVE</div>
@@ -50,16 +51,10 @@ body::before{content:"";position:absolute;inset:0;background:repeating-linear-gr
 
 <div class="bas">
  <h2>Une astuce scolaire chaque semaine</h2>
- <div class="res">
-  <div><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg><span>Chaîne WhatsApp DEX</span></div>
-  <div><svg viewBox="0 0 24 24"><path d="M15 3h-2a4 4 0 0 0-4 4v3H7v4h2v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h2z"/></svg><span>Digital World Technology Service</span></div>
-  <div><svg viewBox="0 0 24 24"><path d="M14 3v4a1 1 0 0 0 1 1h4M5 3h9l5 5v13H5z"/></svg><span>Exposé à taper ? 062 67 14 45<br><small>Saisie et mise en forme dès 2 500 FCFA</small></span></div>
+ <div class="duo">
+  <div class="bloc"><img src="/marketing/flyers/qr-chaine-whatsapp.svg"><div><h4><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>Chaîne WhatsApp</h4><p>Digital World Technologie Services</p></div></div>
+  <div class="bloc"><img src="/marketing/flyers/qr-facebook.svg"><div><h4><svg viewBox="0 0 24 24"><path d="M15 3h-2a4 4 0 0 0-4 4v3H7v4h2v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h2z"/></svg>Page Facebook</h4><p>Digital World Technology Service</p></div></div>
  </div>
- <div class="qr"><img id="qr" src="/marketing/flyers/qr-facebook.svg"><p>Scanne pour suivre<br>notre page Facebook</p></div>
+ <p class="tel">Exposé à taper ? 062 67 14 45 <small>· saisie et mise en forme dès 2 500 FCFA</small></p>
 </div>
-<script>
-const q=new URLSearchParams(location.search);
-if(q.get('qr'))document.getElementById('qr').src=q.get('qr');
-if(q.get('qrtexte'))document.querySelector('.qr p').innerHTML=q.get('qrtexte');
-</script>
 </body></html>
