@@ -1,0 +1,65 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Image à repartager sur WhatsApp (statut + groupes), format vertical 1080x1920.
+     Contenu utile (checklist) + renvoi vers la chaîne WhatsApp et la page Facebook.
+     ?qr=chemin du QR (par défaut : page Facebook) -->
+<link rel="stylesheet" href="/marketing/modeles/_pro.css">
+<style>
+body{width:1080px;height:1920px;background:#F7F4EC;color:#0F2A4A}
+body::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(#F7F4EC 0 46px,#dfe7f3 46px 48px);opacity:.7}
+.logo{top:120px;height:96px}
+.tag{position:absolute;top:150px;right:72px;font-size:22px;font-weight:800;letter-spacing:3px;color:#fff;background:#1E6FD9;padding:10px 18px;border-radius:10px}
+.titre{top:270px;font-size:92px;color:#0F2A4A}
+.titre span{color:#1E6FD9}
+.sous{position:absolute;left:72px;top:480px;width:900px;font-size:30px;font-weight:600;color:#41546e;line-height:1.35}
+.sous b{color:#0F2A4A}
+.carte{position:absolute;left:56px;right:56px;top:590px;background:#fff;border-radius:28px;box-shadow:0 30px 60px rgba(15,42,74,.12);padding:34px 44px;display:flex;flex-direction:column;gap:22px}
+.l{display:flex;gap:26px;align-items:flex-start}
+.c{flex:none;width:52px;height:52px;border-radius:12px;background:#1E6FD9;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.c svg{width:32px;height:32px;fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.l h3{font-size:31px;font-weight:800;line-height:1.15}
+.l p{font-size:23px;color:#5a6b82;margin-top:5px;line-height:1.3}
+.capt{position:absolute;left:72px;right:72px;top:1345px;display:flex;align-items:center;gap:18px;font-size:27px;font-weight:700;color:#0F2A4A}
+.capt svg{width:44px;height:44px;flex:none;fill:none;stroke:#1E6FD9;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.bas{position:absolute;left:0;right:0;bottom:0;height:430px;background:#1E6FD9;color:#fff;padding:44px 72px}
+.bas h2{font-size:44px;font-weight:900;text-transform:uppercase;line-height:1.05;width:640px}
+.res{margin-top:26px;display:flex;flex-direction:column;gap:16px;width:640px}
+.res div{display:flex;align-items:center;gap:16px;font-size:27px;font-weight:700}
+.res svg{width:40px;height:40px;flex:none;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.res small{font-weight:500;opacity:.9;font-size:23px;line-height:1.6}
+.qr{position:absolute;right:72px;top:40px;width:250px;text-align:center}
+.qr img{width:250px;height:250px;background:#fff;border-radius:18px;padding:12px}
+.qr p{font-size:20px;font-weight:700;margin-top:10px;line-height:1.25}
+</style></head><body>
+<img class="logo" src="/assets/img/logo-dex-marque-t.png">
+<div class="tag">ASTUCE ÉLÈVE</div>
+<div class="titre">Avant de rendre<br><span>ton exposé</span></div>
+<p class="sous">Vérifie ces 7 points. <b>Un oubli = des points perdus.</b></p>
+
+<div class="carte">
+ <div class="l"><div class="c"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><div><h3>Page de garde complète</h3><p>Établissement, matière, thème, noms, professeur, année.</p></div></div>
+ <div class="l"><div class="c"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><div><h3>Sommaire avec les pages</h3><p>Chaque partie se trouve en un coup d'œil.</p></div></div>
+ <div class="l"><div class="c"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><div><h3>Introduction claire</h3><p>Le sujet, la question posée, puis l'annonce du plan.</p></div></div>
+ <div class="l"><div class="c"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><div><h3>Parties équilibrées</h3><p>Des titres nets, à peu près la même longueur.</p></div></div>
+ <div class="l"><div class="c"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><div><h3>Conclusion</h3><p>Ce qu'il faut retenir, puis une ouverture.</p></div></div>
+ <div class="l"><div class="c"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><div><h3>Sources citées</h3><p>Livres, sites, cours : à la fin, dans une bibliographie.</p></div></div>
+ <div class="l"><div class="c"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><div><h3>Relu et numéroté</h3><p>Zéro faute, pages dans l'ordre et numérotées.</p></div></div>
+</div>
+
+<div class="capt"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Fais une capture et garde-la pour ton prochain exposé.</div>
+
+<div class="bas">
+ <h2>Une astuce scolaire chaque semaine</h2>
+ <div class="res">
+  <div><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg><span>Chaîne WhatsApp DEX</span></div>
+  <div><svg viewBox="0 0 24 24"><path d="M15 3h-2a4 4 0 0 0-4 4v3H7v4h2v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h2z"/></svg><span>Digital World Technology Service</span></div>
+  <div><svg viewBox="0 0 24 24"><path d="M14 3v4a1 1 0 0 0 1 1h4M5 3h9l5 5v13H5z"/></svg><span>Exposé à taper ? 062 67 14 45<br><small>Saisie et mise en forme dès 2 500 FCFA</small></span></div>
+ </div>
+ <div class="qr"><img id="qr" src="/marketing/flyers/qr-facebook.svg"><p>Scanne pour suivre<br>notre page Facebook</p></div>
+</div>
+<script>
+const q=new URLSearchParams(location.search);
+if(q.get('qr'))document.getElementById('qr').src=q.get('qr');
+if(q.get('qrtexte'))document.querySelector('.qr p').innerHTML=q.get('qrtexte');
+</script>
+</body></html>
