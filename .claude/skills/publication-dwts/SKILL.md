@@ -28,4 +28,4 @@ Règles complètes : `marketing/README.md`. Bibliothèque des concurrents : `mar
 
 ## Heures habituelles
 
-Une publication par jour à 19 h (semaine type dans le README). Ambiance le matin (9 h). Teaser la veille au soir (21 h). Validation groupée de la semaine chaque dimanche soir.
+Une publication par jour à 12 h 15 (pic Metricool de midi ; décision d'Elie du 6 nov. 2026). Le message de la chaîne WhatsApp est envoyé à Elie à 11 h 47 par la tâche du jour. Ambiance le matin (9 h). Teaser la veille au soir (21 h). Validation groupée de la semaine chaque dimanche soir.
