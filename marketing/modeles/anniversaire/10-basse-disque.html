@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- Modèle 10 « photo large + titre incliné » : pour une photo en PAYSAGE (musicien avec instrument, assis, en action). Le titre est incliné dans l'axe du manche, des anneaux de disque vinyle entourent la personne, nom en écriture et date dans un cadre en bas. -->
+<link rel="stylesheet" href="_anniv.css">
+<style>
+body{background:radial-gradient(1100px 1000px at 45% 62%,var(--f2),var(--f1) 78%)}
+.disque{position:absolute;left:-250px;top:300px;width:1050px;height:1050px;border-radius:50%;background:repeating-radial-gradient(circle,transparent 0 22px,rgba(255,255,255,.07) 22px 24px);border:3px solid var(--acc);opacity:.55}
+.disque:after{content:'';position:absolute;inset:300px;border-radius:50%;border:2px solid var(--acc2);opacity:.6}
+.cordes{position:absolute;left:-100px;right:-100px;top:150px;height:420px;transform:rotate(-8deg);background:repeating-linear-gradient(transparent 0 38px,rgba(255,255,255,.14) 38px 40px)}
+.titre{position:absolute;left:62px;top:200px;width:980px;transform:rotate(-8deg);transform-origin:left bottom}
+.titre i{display:block;font-family:Script;font-style:normal;font-size:190px;line-height:.9;color:var(--acc2);margin-left:6px}
+.titre b{display:block;font-family:Anton;font-weight:400;font-size:158px;line-height:1;letter-spacing:1px;text-transform:uppercase;background:linear-gradient(180deg,#fff,var(--acc2) 70%,var(--acc));-webkit-background-clip:text;color:transparent}
+.photo{left:-40px;width:1130px;bottom:0;z-index:2;-webkit-mask-image:linear-gradient(#000 78%,transparent 99%)}
+.ombre{position:absolute;z-index:3;left:0;right:0;bottom:0;height:430px;background:linear-gradient(transparent,var(--f1) 80%)}
+.nom{position:absolute;z-index:4;right:60px;bottom:70px;text-align:right}
+.nom small{display:block;font-size:18px;font-weight:700;letter-spacing:9px;text-transform:uppercase;color:var(--acc2)}
+.nom b{display:block;font-family:Script;font-weight:400;font-size:150px;line-height:1;margin:0 0 2px 0}
+.nom p{width:400px;margin-left:auto;font-size:19px;line-height:1.5;opacity:.85}
+.dt{position:absolute;z-index:4;right:60px;top:480px;width:250px;border:3px solid var(--acc);padding:16px 10px 12px;text-align:center;background:rgba(0,0,0,.18)}
+.dt b{display:block;font-family:Anton;font-weight:400;font-size:130px;line-height:.95;color:var(--acc2)}
+.dt span{display:block;font-size:24px;font-weight:700;letter-spacing:8px;text-transform:uppercase}
+.dt i{display:block;font-style:normal;font-size:14px;font-weight:600;letter-spacing:4px;text-transform:uppercase;opacity:.7;margin-top:6px}
+.logo{z-index:5;left:60px;top:52px;height:44px}
+.role{position:absolute;z-index:4;right:60px;top:60px;font-size:16px;font-weight:700;letter-spacing:6px;text-transform:uppercase;opacity:.8}
+</style></head><body data-theme="emeraude">
+<div class="disque"></div>
+<div class="cordes"></div>
+<div class="titre"><i>Joyeux</i><b>Anniversaire</b></div>
+<img class="photo" data-photo>
+<div class="ombre"></div>
+<div class="nom"><small>À toi</small><b data-v="prenom"></b><p data-v="message"></p></div>
+<div class="dt"><b data-v="jour"></b><span data-v="mois"></span><i><span style="display:inline;font-size:inherit;letter-spacing:inherit" data-v="jsem"></span> · <span style="display:inline;font-size:inherit;letter-spacing:inherit" data-v="annee"></span></i></div>
+<div class="role" data-v="role"></div>
+<img class="logo">
+<script src="_anniv.js"></script>
+</body></html>

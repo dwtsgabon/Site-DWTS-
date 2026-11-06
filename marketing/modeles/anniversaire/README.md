@@ -19,6 +19,7 @@ Aperçus : dossier `apercus/`.
 | 7 | `7-duo.html` | Grand portrait en reflet à gauche, la même personne en pied à droite | violet | 2 photos | « Hon. Nazeef », « Raymond Bright » |
 | 8 | `8-nom-geant.html` | Prénom en lettres géantes derrière la tête, date dans un cercle, petite photo en pied | bleu | 2 photos | « Celebrating Johnson » |
 | 9 | `9-joyeux-horizontal.html` | « Joyeux » géant horizontal en haut, photo à gauche avec reflet, jour en grand chiffre contour à droite, prénom en écriture | gris | oui | variante inversée du modèle 1 (demande d'Elie : deux anniversaires ne doivent pas se ressembler) |
+| 10 | `10-basse-disque.html` | Pour une photo en **paysage** (musicien avec instrument) : titre « Joyeux Anniversaire » incliné dans l'axe du manche, anneaux de disque vinyle et lignes de cordes en fond, date dans un cadre, prénom en écriture | emeraude | oui (large) | demande d'Elie : un cadre créatif qui suit la photo |
 
 ## Paramètres (dans l'adresse)
 
