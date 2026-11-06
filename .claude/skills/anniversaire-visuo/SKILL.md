@@ -10,6 +10,10 @@ Bibliothèque : `marketing/modeles/anniversaire/` (README = paramètres et thèm
 ## Entrées à récupérer
 Prénom (nom : mettre `%20`, un espace, sinon le nom d'Elie s'affiche), **date** (si absente : dire l'hypothèse, ex. date du jour), âge : **jamais affiché** sauf demande. Message : court, adapté à la tenue/ambiance de la photo, sans référence religieuse sauf demande.
 
+## Règles d'Elie
+- **Jamais la photo d'Elie** sur l'affiche d'un autre : les modèles ont par défaut `elie-*.png` pour `photo`, `photo2`, `photo3`, `photo4`. Toujours passer **toutes** les photos utilisées dans l'adresse, et si le client n'a qu'une photo, choisir un modèle qui n'en demande qu'une. Vérifier sur l'image qu'aucune photo d'Elie n'apparaît.
+- **Pas les mêmes modèles que l'anniversaire précédent** (voir le journal du README : 3 et 5 déjà utilisés pour Elie). Proposer d'autres, et en créer un nouveau (section « Ajouter un modèle » du README) si la bibliothèque ne suffit pas.
+
 ## Étapes
 1. **Regarder chaque photo** : format (portrait / paysage), cadrage (buste, en pied, assis), couleurs dominantes de la tenue et du fond.
 2. **Détourer** avec rembg `birefnet-portrait` (une photo par commande, ~1 min la première fois : le modèle de 1 Go se télécharge). Photo de groupe ou paysage : recadrer d'abord sur la personne. Effacer les objets d'autres personnes qui dépassent (baguette, chaise) sans toucher à l'instrument.
