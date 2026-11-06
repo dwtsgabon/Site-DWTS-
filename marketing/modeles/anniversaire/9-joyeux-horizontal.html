@@ -1,0 +1,33 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- Modèle 9 « Joyeux en grand sur le haut » : variante du modèle 1, version inversée. Mot « Joyeux » horizontal en haut, photo à gauche avec reflet, colonne de droite avec le jour en chiffre, le prénom en écriture et le vœu. Créé pour que deux anniversaires ne se ressemblent pas. -->
+<link rel="stylesheet" href="_anniv.css">
+<style>
+body{background:linear-gradient(160deg,var(--f1) 20%,var(--f2))}
+.reflet{position:absolute;left:-330px;top:120px;width:1100px;opacity:.13;filter:grayscale(1);transform:scaleX(-1);-webkit-mask-image:linear-gradient(#000 35%,transparent 80%)}
+.mot{position:absolute;z-index:1;left:56px;top:34px;font-family:Anton;font-size:270px;line-height:1.05;letter-spacing:2px;text-transform:uppercase;color:var(--texte)}
+.rang{position:absolute;z-index:1;left:62px;top:290px;font-size:22px;font-weight:700;letter-spacing:12px;text-transform:uppercase;color:var(--acc)}
+.photo{left:-70px;width:710px;z-index:2}
+.ombre{position:absolute;z-index:3;left:0;right:0;bottom:0;height:380px;background:linear-gradient(transparent,var(--f1) 90%)}
+.col{position:absolute;z-index:4;right:60px;width:380px;text-align:right}
+.jour{top:430px}
+.jour b{display:block;font-family:Anton;font-size:250px;line-height:.9;color:transparent;-webkit-text-stroke:4px var(--acc)}
+.jour span{display:block;font-size:30px;font-weight:700;letter-spacing:10px;text-transform:uppercase;margin-top:8px}
+.jour i{display:block;font-style:normal;font-size:17px;font-weight:600;letter-spacing:6px;text-transform:uppercase;opacity:.65;margin-top:8px}
+.nom{bottom:170px}
+.nom small{display:block;font-size:19px;font-weight:700;letter-spacing:8px;text-transform:uppercase;color:var(--acc)}
+.nom b{display:block;font-family:Script;font-weight:400;font-size:130px;line-height:1.05;margin:2px 0}
+.nom i{display:block;font-style:normal;font-size:18px;font-weight:700;letter-spacing:4px;text-transform:uppercase}
+.nom p{margin-top:14px;font-size:19px;line-height:1.5;opacity:.85}
+.logo{z-index:5;left:auto;right:60px;top:380px;height:0;display:none}
+.logo2{position:absolute;z-index:5;left:60px;bottom:50px;height:44px}
+</style></head><body data-theme="gris">
+<img class="reflet" data-photo>
+<div class="mot">Joyeux</div>
+<div class="rang">Anniversaire</div>
+<img class="photo" data-photo>
+<div class="ombre"></div>
+<div class="col jour"><b data-v="jour"></b><span data-v="mois"></span><i><span style="display:inline;font-size:inherit;letter-spacing:inherit;margin:0" data-v="jsem"></span> · <span style="display:inline;font-size:inherit;letter-spacing:inherit;margin:0" data-v="annee"></span></i></div>
+<div class="col nom"><small>À toi</small><b data-v="prenom"></b><i data-v="role"></i><p data-v="message"></p></div>
+<img class="logo logo2" style="display:block;height:44px;left:60px;right:auto;top:auto;bottom:50px">
+<script src="_anniv.js"></script>
+</body></html>

@@ -19,7 +19,7 @@ Prénom (nom : mettre `%20`, un espace, sinon le nom d'Elie s'affiche), **date**
 2. **Détourer** avec rembg `birefnet-portrait` (une photo par commande, ~1 min la première fois : le modèle de 1 Go se télécharge). Photo de groupe ou paysage : recadrer d'abord sur la personne. Effacer les objets d'autres personnes qui dépassent (baguette, chaise) sans toucher à l'instrument.
 3. **Photos du client : jamais dans le dépôt public.** Les copier dans `marketing/photos-tmp/` (non commité), rendre, puis **supprimer** ce dossier.
 4. **Choisir 5 modèles** selon la photo :
-   - Portrait buste/cuisses : `2-grand-chiffre`, `1-mot-vertical`, `4-bande-date`, `3-titre-derriere`, `8-nom-geant`.
+   - Portrait buste/cuisses : `2-grand-chiffre`, `1-mot-vertical`, `4-bande-date`, `3-titre-derriere`, `8-nom-geant`, `9-joyeux-horizontal`.
    - Deux photos : `7-duo` (la meilleure combinaison : portrait net + autre photo en reflet).
    - Photo large (musicien avec instrument, assis) : elle devient petite dans les modèles portrait ; la mettre en **reflet** (`7-duo`) plutôt qu'en photo principale.
    - Quatre photos et plus : `6-galerie`. Veille de l'anniversaire : `5-chargement`.

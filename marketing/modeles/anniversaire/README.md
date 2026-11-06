@@ -18,6 +18,7 @@ Aperçus : dossier `apercus/`.
 | 6 | `6-galerie.html` | Photo principale devant, 3 autres photos en noir et blanc dans des parts de cercle, rubans de vœux | creme | 4 photos | « Miss Grace Jason », « 2026 Gallery » |
 | 7 | `7-duo.html` | Grand portrait en reflet à gauche, la même personne en pied à droite | violet | 2 photos | « Hon. Nazeef », « Raymond Bright » |
 | 8 | `8-nom-geant.html` | Prénom en lettres géantes derrière la tête, date dans un cercle, petite photo en pied | bleu | 2 photos | « Celebrating Johnson » |
+| 9 | `9-joyeux-horizontal.html` | « Joyeux » géant horizontal en haut, photo à gauche avec reflet, jour en grand chiffre contour à droite, prénom en écriture | gris | oui | variante inversée du modèle 1 (demande d'Elie : deux anniversaires ne doivent pas se ressembler) |
 
 ## Paramètres (dans l'adresse)
 
