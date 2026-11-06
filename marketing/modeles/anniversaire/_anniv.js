@@ -12,6 +12,9 @@ var T={ // thèmes : fond 1, fond 2, accent, accent 2, texte
  emeraude:['#03231b','#0b5a44','#9fe3c4','#ffffff','#ffffff'],
  violet:['#1b0b36','#5b2aa6','#E9C46A','#c9b6ff','#ffffff'],
  creme:['#f7f1e8','#e6d3bb','#B8741A','#6b3410','#1d120a'],
+ orange:['#3d0e03','#c2410c','#FFD43B','#FFE9A8','#ffffff'],
+ bordeaux:['#1f040b','#6e1230','#F4B942','#FFD98A','#ffffff'],
+ rose:['#2b0624','#a3125f','#FFD166','#FFE29A','#ffffff'],
  gris:['#eef0f4','#c7ccd5','#FFC21A','#e3262e','#0b0b0f']};
 var V=function(k){return P.get(k)||D[k]};
 var nt=T[P.get('theme')]?P.get('theme'):(document.body.dataset.theme||'bleu'),t=T[nt],r=document.documentElement.style;

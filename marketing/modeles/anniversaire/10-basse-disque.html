@@ -5,13 +5,16 @@
 body{background:radial-gradient(1100px 1000px at 45% 62%,var(--f2),var(--f1) 78%)}
 .disque{position:absolute;left:-250px;top:300px;width:1050px;height:1050px;border-radius:50%;background:repeating-radial-gradient(circle,transparent 0 22px,rgba(255,255,255,.07) 22px 24px);border:3px solid var(--acc);opacity:.55}
 .disque:after{content:'';position:absolute;inset:300px;border-radius:50%;border:2px solid var(--acc2);opacity:.6}
-.cordes{position:absolute;left:-100px;right:-100px;top:150px;height:420px;transform:rotate(-8deg);background:repeating-linear-gradient(transparent 0 38px,rgba(255,255,255,.14) 38px 40px)}
+.basse{position:absolute;left:-330px;top:290px;width:1650px;transform:rotate(-10deg);color:var(--acc2);opacity:.32}
+.notes{position:absolute;inset:0;width:1080px;height:1350px;color:var(--acc2);opacity:.45}
+.eq{position:absolute;left:0;right:0;bottom:0;height:120px;display:flex;align-items:flex-end;gap:10px;padding:0 6px;z-index:4;opacity:.8}
+.eq i{flex:1;border-radius:6px 6px 0 0;background:linear-gradient(var(--acc2),var(--acc))}
 .titre{position:absolute;left:62px;top:200px;width:980px;transform:rotate(-8deg);transform-origin:left bottom}
 .titre i{display:block;font-family:Script;font-style:normal;font-size:190px;line-height:.9;color:var(--acc2);margin-left:6px}
 .titre b{display:block;font-family:Anton;font-weight:400;font-size:158px;line-height:1;letter-spacing:1px;text-transform:uppercase;background:linear-gradient(180deg,#fff,var(--acc2) 70%,var(--acc));-webkit-background-clip:text;color:transparent}
 .photo{left:-40px;width:1130px;bottom:0;z-index:2;-webkit-mask-image:linear-gradient(#000 78%,transparent 99%)}
 .ombre{position:absolute;z-index:3;left:0;right:0;bottom:0;height:430px;background:linear-gradient(transparent,var(--f1) 80%)}
-.nom{position:absolute;z-index:4;right:60px;bottom:70px;text-align:right}
+.nom{position:absolute;z-index:4;right:60px;bottom:150px;text-align:right}
 .nom small{display:block;font-size:18px;font-weight:700;letter-spacing:9px;text-transform:uppercase;color:var(--acc2)}
 .nom b{display:block;font-family:Script;font-weight:400;font-size:150px;line-height:1;margin:0 0 2px 0}
 .nom p{width:400px;margin-left:auto;font-size:19px;line-height:1.5;opacity:.85}
@@ -21,9 +24,21 @@ body{background:radial-gradient(1100px 1000px at 45% 62%,var(--f2),var(--f1) 78%
 .dt i{display:block;font-style:normal;font-size:14px;font-weight:600;letter-spacing:4px;text-transform:uppercase;opacity:.7;margin-top:6px}
 .logo{z-index:5;left:60px;top:52px;height:44px}
 .role{position:absolute;z-index:4;right:60px;top:60px;font-size:16px;font-weight:700;letter-spacing:6px;text-transform:uppercase;opacity:.8}
-</style></head><body data-theme="emeraude">
+</style></head><body data-theme="orange">
 <div class="disque"></div>
-<div class="cordes"></div>
+<svg class="basse" viewBox="0 0 1500 560" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+<path d="M60,270 C40,170 140,120 230,160 C290,185 320,125 400,120 C470,115 520,155 520,210 L520,310 C520,365 470,405 400,395 C320,385 290,435 230,460 C140,500 80,390 60,270 Z" fill="currentColor" fill-opacity=".08"/>
+<polygon points="520,215 1360,238 1360,268 520,292" fill="currentColor" fill-opacity=".06"/>
+<path d="M1360,232 L1470,206 L1478,262 L1360,272 Z"/>
+<rect x="330" y="235" width="70" height="62" rx="8"/><rect x="430" y="240" width="70" height="62" rx="8"/><rect x="150" y="238" width="60" height="70" rx="6"/>
+<path d="M175,255 L1360,243 M175,268 L1360,252 M175,281 L1360,261 M175,294 L1360,270"/>
+<path d="M640,218V290M760,220V292M870,222V294M970,224V296M1060,226V298M1140,228V299M1210,230V300M1275,232V301" stroke-width="3"/>
+<circle cx="260" cy="345" r="16"/><circle cx="320" cy="360" r="16"/>
+</svg>
+<svg class="notes" viewBox="0 0 1080 1350" fill="currentColor"><g id="n"><ellipse cx="0" cy="0" rx="22" ry="16" transform="rotate(-22)"/><rect x="17" y="-100" width="6" height="100"/></g>
+<use href="#n" transform="translate(830,800) scale(1.2)"/><use href="#n" transform="translate(930,760) scale(1.2)"/><use href="#n" transform="translate(110,420) scale(1)"/>
+<path d="M853,700 L953,660 M853,700v-100 M953,660v-100 M853,600 L953,560" stroke="currentColor" stroke-width="7" fill="none"/></svg>
+<div class="eq"></div>
 <div class="titre"><i>Joyeux</i><b>Anniversaire</b></div>
 <img class="photo" data-photo>
 <div class="ombre"></div>
@@ -32,4 +47,5 @@ body{background:radial-gradient(1100px 1000px at 45% 62%,var(--f2),var(--f1) 78%
 <div class="role" data-v="role"></div>
 <img class="logo">
 <script src="_anniv.js"></script>
+<script>var e=document.querySelector(".eq"),h=[40,90,60,130,80,160,100,60,140,90,50,120,170,80,110,60,150,100,70,130,45,95,140,75,115,60,160,90,55,125,85,145,65,105,150,70,120,50,95];h.forEach(function(v){var b=document.createElement("i");b.style.height=v+"px";e.appendChild(b)});</script>
 </body></html>
